@@ -1,53 +1,126 @@
 %===============================================================================
 % Autoři: Vladan Kudláč 2018
 \chapter{Úvod}
-Cílem této práce je vytvořit webovou aplikaci umožňující uživatelům upravovat videa v~internetovém prohlížeči bez nutnosti instalace dodatečných programů nebo rozšíření. Uživatel nahraje videa a obrázky ze svého zařízení nebo z~jiné služby a poté pomocí interaktivního grafického rozhraní sestříhá požadované video. Vytvořený projekt bude popsán souborem formátu XML, který zpracuje program \textit{MLT}\footnote{MLT -- sada nástrojů pro pro multimediální aplikace, \url{https://www.mltframework.org/}} na školním výpočetním clusteru. Dostupné možnosti úprav budou voleny tak, aby bylo možné editor použít pro tvorbu výukových videí. Editor bude vytvořen jako modul pro stávající projekt \textit{prednasky.com}.
-Systém bude architektury klient-server. Klient bude komunikovat se serverem pomocí zdokumentovného API, aby mohla být implementace serveru nezávislá na klientu a mohli v budoucnu vzniknout různé implementace klientů. Klient bude poskytovat grafické uživatelské rozhraní pomocí HTML, CSS a Javascriptu, server bude obsluhovat požadavky, generovat XML projektů a komunikovat s~dalšími serverovými moduly. Díky této práci vznikne editor se svobodnou licencí, jako alternativa k webovým editorům s licencí ve formě předplatného a uzavřeným kódem.
+Cílem této práce je vytvořit webovou aplikaci umožňující uživatelům upravovat videa v~internetovém prohlížeči bez nutnosti instalace dodatečných programů nebo rozšíření. Uživatel nahraje videa a obrázky ze svého zařízení nebo z~jiné služby a poté pomocí interaktivního grafického rozhraní vytvoří požadované video. Vytvořený projekt bude popsán souborem formátu XML, který zpracuje program \textit{MLT}\footnote{MLT -- sada nástrojů pro pro multimediální aplikace, \url{https://www.mltframework.org/}} na školním serveru. Dostupné možnosti úprav budou voleny tak, aby bylo možné editor použít pro tvorbu výukových videí. Editor bude vytvořen tak, aby mohl být použit jako modul pro stávající projekt \textit{prednasky.com}.
+Systém bude architektury klient-server. Klient bude komunikovat se serverem pomocí zdokumentovaného API, aby mohla být implementace serveru nezávislá na klientovi a mohli v budoucnu vzniknout různé implementace klientů. Klient bude poskytovat grafické uživatelské rozhraní pomocí HTML, CSS a JavaScriptu, server bude obsluhovat požadavky, generovat XML projektů a komunikovat s~dalšími serverovými moduly. Díky této práci vznikne editor se svobodnou licencí, jako alternativa k webovým editorům s licencí ve formě předplatného a uzavřeným kódem.
 
-Potřeby jednoduchého online video editoru vznikly při práci na portálu s výukovými videi \textit{Prednasky.com}. Při hledání řešení, které by šlo začlenit do projektu jsme zjistili, že nic takého na trhu není. Buď bylo řešení placené, nebo bylo zdarma, ale s omezenou funkčností. Ani jedno stávající řešení není s otevřeným zdrojovým kódem, které by licence dovolila použít jako komponentu projektu.
+Potřeby jednoduchého online video editoru vznikly při práci na portálu s výukovými videi \textit{Prednasky.com}. Při hledání řešení, které by šlo začlenit do projektu jsme zjistili, že nic takového na trhu není. Buď bylo řešení placené, nebo bylo zdarma, ale s omezenou funkčností. Ani jedno stávající řešení není s otevřeným zdrojovým kódem, které by licence dovolila použít jako komponentu projektu.
+
+V první kapitole zmiňuji a srovnávám významné video editory, zejména v oblasti dostupných funkcí a licence. Dále zmiňuji technologie a principy uživatelského rozhraní, u kterých jsem se inspiroval stávajícími editory. Druhá kapitola je věnována návrhu řešení. Objasňuje cíl práce, způsob, jakým jsem se editor rozhodl řešit a vysvětluje zvolené technologie. Ve třetí kapitole rozebírám teoretické základy pro práci s multimédii, na kterých má práce staví. Vysvětluji způsob práce s multimediálním frameworkem MLT a možnosti práce s multimédii přímo ve webovém prohlížeči. Ve čtvrté kapitole popisuji, jakým způsobem zvolené technologie používám, jak je projekt členěn a jak je implementován. V této kapitole uvádím požadavky pro nasazení, způsob nasazení a princip fungování programu. Pátá kapitola je věnována testování uživatelského rozhraní, získávání zpětné vazby a testování kódu. V závěrečné kapitole shrnuji aktuální stav projektu, uvádím budoucí směr vývoje a další možné aplikace, které mohou na základě otevřeného API vzniknout.
 
 \chapter{Existující řešení}
-Stávající řešení se dají rozdělit do dvou skupin. Desktopové video editory a online video editory. Při průzkumu existujících řešení jsem se zaměřoval zejména na projekty, které mají svobodnou licenci, nebo je lze využívat bezplatně.
+Při návrhu editoru jsem zkoumal existující videoeditory. Vybíral jsem editory známé od YouTuberů, všeobecně známé i na základě doporučení od mého vedoucího práce a známých. Stávající řešení se dají rozdělit do dvou skupin. Desktopové video editory a online video editory. Při průzkumu existujících řešení jsem se zaměřoval zejména na projekty, které mají svobodnou licenci, nebo je lze využívat bezplatně.
 
 \section{Desktopové editory}
-Mezi desktopovými video editory existuje řada bezplatných řešení s~licencemi vhodnými pro další i komerční využití. Rozhraní aplikací bývá podobné, rozsáhlé, pro jednoduché editace uživatel využívá zlomek funkcí. I~v~bezplatných aplikacích lze vytvořit libovolný projekt, oproti komerčním řešení nemají žádná omezení. Nevýhodou bývá pomalá křivka učení a nutnost provozovat aplikaci na dostatečně výkoném zařízení. Z~řešení s~otevřeným zdrojovým kódem lze vyjmenovat například projekty \textit{Shotcut}\footnote{Shotcut -- bezplatný nelineární multiplatformní editor s~otevřeným zdrojovým kódem,\\\url{https://www.shotcut.org/}} a \textit{Kdenlive}\footnote{Kdenlive -- bezplatný nelineární editor pro prostředí KDE4, \url{https://kdenlive.org/}}, které používají jako jádro framework MLT.
-\begin{figure}[ht]
+Mezi desktopovými video editory existuje řada bezplatných řešení s~licencemi vhodnými pro další i komerční využití. Rozhraní aplikací bývá podobné, rozsáhlé, pro jednoduché editace využívá uživatel zlomek funkcí. Nevýhodou bývá pomalá křivka učení a nutnost provozovat aplikaci na dostatečně výkoném zařízení.
+
+Z~řešení s~otevřeným zdrojovým kódem lze vyjmenovat například projekty \textit{Shotcut}\footnote{Shotcut -- bezplatný nelineární multiplatformní editor s~otevřeným zdrojovým kódem,\\\url{https://www.shotcut.org/}} a \textit{Kdenlive}\footnote{Kdenlive -- bezplatný nelineární editor pro prostředí KDE4, \url{https://kdenlive.org/}}, které používají jako jádro framework MLT. Oba projekty používají pro zpracování multimediálních souborů framework MLT. I~v~bezplatných aplikacích lze vytvořit libovolný projekt, oproti komerčním řešení není uživatel nijak omezován. U bezplatných řešení jsem zaznamenal problémy se stabilitou, základem je průběžné ukládání projektu. Rozhraní je u obou projektů téměř stejné, obrázek \ref{img:shotcut}. Na horní liště nabídek jsou umístěny globální akce projektu, jako otevření projektu, uložení, vpřed, zpět a vyvedení projektu. Pod nabídkou je obrazovka rozdělena do několika sloupců. Levý sloupec slouží ke správě zdrojů projektu, správě filtrů u vybrané položky na časové ose a pro nastavování vlastností a parametrů. Pro přepínání zobrazení používají oba programy karty/záložky. Pravý sloupec zobrazuje náhled zdrojových souborů nebo výsledného videa. Aktuální pozici vizualizuje svislá čára na časové ose. Přehrávání náhledu se ovládá prvky přímo pod videem. Vespod je umístěna časová osa. Operace nad časovou osou jsou umístěny v liště nabídek přímo nad osou. Osa obsahuje libovolné množství stop. Zvukové stopy mají zelenou barvu, video stopy barvu modrou.
+\begin{figure}[h]
 	\centering
 	\scalebox{0.6}{
 		\includegraphics{obrazky-figures/shotcup.png}
 	}
-	\caption{Uživatelské rozhraní nelineárního video editoru Shotcut. }\label{img:shotcut}
+	\caption{Uživatelské rozhraní nelineárního video editoru Shotcut.}\label{img:shotcut}
 \end{figure}
-Mezi bezplatné aplikace nevyužívající framework MLT patří program \textit{Openshot}\footnote{Openshot -- bezplatný nelineární editor s~prostředím GTK+, \url{https://www.openshot.org/}}, který přešel na vlastní jádro. Mezi kvalitní proprietární programy se řadí program \textit{iMovie} od firmy Apple, \textit{Adobe Premiere Pro} od firmy Adobe Systems a \textit{ VEGAS Movie Studio} od firmy Sony. Profesionální programy se od bezplatných liší zejména vyšší stabilitou, propracovanějšími filtry a šablonami. Licence se pohybují v~řádech tisícikorun a například Adobe nabízí svůj produkt pouze ve formě předplatného.
 
-Zajímavým projektem mezi desktopovými aplikacemi je editor \textit{fwf}\footnote{fwf -- JavaScriptový FFmpeg editor, \url{https://github.com/daem-on/fwf}.}. Jedná se o~lineární video editor využívající knihovnu FFmpeg\footnote{FFmpeg -- multiplatformní řešení pro nahrávání, konverzi a streamování audia a videa, \url{https://ffmpeg.org/}.}. Program je napsaný v~JavaScriptu a zkompilovaný pomocí nástroje Electron. Video editor nemá moc funkcí, chybí mu spolehlivost, ale lze se u~něj inspirovat s~použitými technologiemi.
+Bezplatnou aplikací nevyužívající framework MLT je například program \textit{Openshot}\footnote{Openshot -- bezplatný nelineární editor s~prostředím GTK+, \url{https://www.openshot.org/}}, který přešel na vlastní jádro. Jeho rozhraní je oproti předchozím dvou editorům velmi zjednodušené. Rozvržení zůstává stejné, pouze omezuje počet informací, které uživateli poskytuje. Nahoře se opět nacházejí akce k projektu, vlevo knihovna souborů, filtrů a přechodů, vpravo náhled s jednoznačnými ikonami a ve spodní části se nacházejí časové osy a rovněž se zde nastavují vlastnosti filtrů/přechodů. I přes zjednodušení rozhraní zde žádné funkce nechybí.
+
+Mezi kvalitní proprietární programy se řadí program \textit{iMovie} od firmy Apple, \textit{Adobe Premiere Pro} od firmy Adobe Systems a \textit{VEGAS Movie Studio} od firmy Sony. Profesionální programy se od bezplatných liší zejména vyšší stabilitou, propracovanějšími filtry a šablonami. Licence se pohybují v~řádech tisícikorun a například Adobe nabízí svůj produkt pouze ve formě předplatného. Z těchto programů jsem vyzkoušel \textit{iMovie}. Program od firmy Apple dělí pracovní prostor do stejných skupin. Na rozdíl od předešlých programů zobrazuje v levé polovině nejen soubory k aktuálnímu projektu, ale i soubory v knihovnách. V navrhovaném řešení je rovněž potřeba řešit sdílenou knihovnu s obecnými zdroji sdílenými například s uživateli fakulty. Odlišná je aplikace filtrů. Filtry se nacházejí nad náhledem videa, jako ikony pro skupiny filtrů. Po rozkliknutí ikony se zobrazí nabídka filtrů. Uživatel nikdy nenastavuje číselné hodnoty. Nastavení filtrů je řešeno vizuálními posuvníky, kapátky a dalšími nástroji. Zajímavě řešená je časová osa, která nemá pravítko s časem. Měřítko času je na ose proměnlivé, obrázek \ref{img:imovie}. Mezi klipy je mezera, ačkoliv konec předchozího a začátek následujícího klipu je ve stejný čas. Z mého pohledu se jedná o rušivý prvek, při přehrávání ukazatel aktuálního času přeskakuje a mění svou rychlost. Na druhou stranu lze do mezer pohodlně vkládat přechody. Za zvláštní vlastnost považuji nemožnost posouvat položky po časové ose, je možné pouze měnit pořadí položek. Pokud potřebujeme mít ve videu prázdné místo, musíme zde vložit jednolitou barvu z knihovny (záložky Pozadí). Nad časovou osou chybí lišta nástrojů. Nástroje k položkám časové osy jsou dostupné skrze kontextovou nabídku vyvolanou stiskem pravého tlačítka myši nebo skrze klávesové zkratky. Video stopy jsou laděny do modrých barev, zvukové stopy do barev zelených. Z programu iMovie jsem čerpal tmavé barevné schéma.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.3}{
+		\includegraphics{obrazky-figures/iMovie.png}
+	}
+	\caption{Uživatelské rozhraní iMovie. Časová osa nemá jednotné měřítko.}\label{img:imovie}
+\end{figure}
+
+Zajímavým projektem mezi desktopovými aplikacemi je open source editor \textit{fwf}\footnote{fwf -- JavaScriptový FFmpeg editor, \url{https://github.com/daem-on/fwf}.} -- lineární video editor využívající knihovnu \textit{FFmpeg}\footnote{FFmpeg -- multiplatformní řešení pro nahrávání, konverzi a streamování audia a videa, \url{https://ffmpeg.org/}.}. Program je napsaný v~JavaScriptovém frameworku \textit{Vue.js}\footnote{Vue.js -- open source JavaScriptový framwork pro tvorbu uživatelských rozhraní, \url{https://vuejs.org/}.} a zkompilovaný pomocí nástroje \textit{Electron}.\footnote{Electron -- nástroj pro tvorbu desktopových aplikací za pomocí JavaScriptu, HTML a CSS, \url{https://electronjs.org/}.} Video editor má pouze základní funkce, není příliš spolehlivý, ale lze se u~něj inspirovat s~použitými technologiemi pro implementaci uživatelského rozhraní, obrázek \ref{img:fwf}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.4}{
+		\includegraphics{obrazky-figures/fwf.png}
+	}
+	\caption{Uživatelské rozhraní editoru \textit{fwf}, sestavené nástrojem Electron.}\label{img:fwf}
+\end{figure}
+Na časovou osu byla použita knihovna \textit{vis.js}.\footnote{vis.js -- JavaScriptová knihovna na vizualizaci dat, \url{http://visjs.org/}.}. \textit{Timeline} je jen jedním z vizualizačních nástrojů knihovny. Knihovna slouží k zobrazení událostí od Unixové epochy (00:00:00,000 1. ledna 1970), zatímco projekt začíná časem 0. Dále jsem z projektu použil font Source Sans Pro zveřejněnou pod svobodnou Open Font Licencí a pro ikony odnož použitého fontu Material Icons od Google (licence Apache-2.0).
 
 \section{Webové editory}
-U~webových editorů je velký rozdíl mezi placenými řešeními a neplacenými. Placených aplikací je nepřeberné množství s~mnoha funkcemi, bezplatná řešení mají krkolomná rozhraní a zásadní omezení. Řešení s~otevřeným zdrojovým kódem a svobodnou licencí jsem nenašel žádné.
+Na webový editor jsem nezískal žádný tip. Lidé v mém okolí raději sáhli po open source editoru či stáhli placený program obsahující crack pomocí torrentu. U~webových editorů je velký rozdíl mezi placenými řešeními a neplacenými. Placených aplikací je nepřeberné množství s~mnoha funkcemi, bezplatná řešení mají zásadní omezení. Řešení s~otevřeným zdrojovým kódem a svobodnou licencí jsem nenašel žádné.
 
-Placena řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~placených editorů zmiňuji \textit{Magisto}\footnote{Magisto -- proprietární online editor, \url{https://www.magisto.com/}.}, \textit{WeVideo}\footnote{WeVideo --  proprietární online editor, \url{https://www.wevideo.com}.}, \textit{Loopster}\footnote{Loopster -- proprietární online editor, \url{https://www.loopster.com}.} a \textit{Animatron}\footnote{Animatron -- proprietární online editor s~nejdražším předplatným, \url{https://www.animatron.com}.}. Všechny uvedené online editory mají roční předplatné, k~začátku roku 2019 se cena za nejlevnější předplatné pohybuje okolo 1341\,Kč. V~rámci nejnižšího předplatného by záznamy přednášek narážely na  maximální rozlišení výsledného videa a na maximální velikost vstupních souborů. Pro nenáročné uživatele by mohl být dostačující nástroj \textit{Clipchamp}\footnote{Clichamp -- proprietární online editor, který lze používat s~omezeními bezplatně, \url{https://clipchamp.com}.}, který nabízí i bezplatný plán s~omezením rozlišení videí na 480p.
+Placená řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~placených editorů zmiňuji \textit{WeVideo}\footnote{WeVideo --  proprietární online editor, \url{https://www.wevideo.com}.}, \textit{Magisto}\footnote{Magisto -- proprietární online editor, \url{https://www.magisto.com/}.}, \textit{Loopster}\footnote{Loopster -- proprietární online editor, \url{https://www.loopster.com}.}, \textit{Animatron}\footnote{Animatron -- proprietární online editor s~nejdražším předplatným, \url{https://www.animatron.com}.} a \textit{Clipchamp}\footnote{Clichamp -- proprietární online editor, který lze používat s~omezeními bezplatně, \url{https://clipchamp.com}.}.
 
-U~bezplatných řešení jsme omezeni zejména funkcemi. Na internetu existuje řada jednoúčelových nástrojů pro úpravu videa. Komplexní video editory jsem našel dva -- \textit{Kizoa}\footnote{Kioza -- bezplatný lineární online video editor, \url{https://www.kizoa.com}.} a \textit{Movie Maker Online}\footnote{Movie Maker Online -- bezplatný online editor, \url{https://moviemakeronline.com/}.}, ani jeden není vyvíjen jako software s~otevřeným zdrojovým kódem.
+\textit{WeVideo} je poskytováno v mnoha plánech. Nejdražší varianta neomezuje velikostí souboru ani maximální délkou. Uživatelské rozhraní umožňuje pracovat s video soubory již během nahrávání na server. Náhled je generován v prohlížeči, výsledné video na serveru. Po dokončení zpracování je uživateli zaslán email. Videa vytvořená v bezplatném plánu obsahují vodoznak.
 
-Editor \textit{Kizoa} je vytvořen v~programu Adobe Flash, obsahuje dostatečné množství efektů, přechodů a nastavení. Vespod zobrazuje jednu časovou osu, jedná se o~lineární editor. Hlavní nevýhodou je vázanost na Adobe Flash Player, který je dnes na ústupu a jeho podpora skončí v~roce 2020\,\cite{FlashPlayer}.
-\begin{figure}[ht]
+\textit{Magisto} nabízí pouze placelé plány. Nejlevnější plán limituje maximální délkou výsledného videa 2,5 minuty. Nejdražší plám má rovněž velmi limitující omezení -- 10 minut.
+
+\textit{Loopster} nabízí ve všech plánech výstupní rozlišení 1080p. Zásadním problémem pro zpracovávání přednášek je maximální délka -- 30 minut u nejdražšího plánu.
+
+\textit{Animatron} slouží spíše k tvorbě krátkých upoutávek a reklam. Umožňuje v nejdražším předplatném vytvořit projekt o maximální délce 10 minut. Bezplatný plán neumožňuje stažení videa, pouze vystavení videa na sociálních sítích. Při práci s editorem jsem zaznamenal problém s různou orientací stejného videa napříč editorem.
+
+Pro nenáročné uživatele by mohl být dostačující nástroj \textit{Clipchamp}, který nabízí i bezplatný plán s~omezením rozlišení videí na 480p. Velikost projektu omezena není a video není opatřeno reklamním vodoznakem. Rozhraní je shodné s desktopovými programy, obrázek \ref{img:clipchamp}. Editor běží pouze v prohlížeči Google Chrome a zpracování videa probíhá na straně webového prohlížeče. Uživatel nesmí videoeditor během zpracovávání opustit. Doba zpracování videa o délce do 2 minut trvá i při rozlišení 480p cca 20 minut.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.5}{
+		\includegraphics{obrazky-figures/clipchamp.png}
+	}
+	\caption{Uživatelské rozhraní nelineárního online video editoru \textit{Clipchamp Create}.}\label{img:clipchamp}
+\end{figure}
+
+Další dva editory uvádím pro úplnost, ani jeden není použitelný -- \textit{Kizoa}\footnote{Kioza -- bezplatný lineární online video editor, \url{https://www.kizoa.com}.} a \textit{Movie Maker Online}\footnote{Movie Maker Online -- bezplatný online editor, \url{https://moviemakeronline.com/}.}.
+
+Editor \textit{Kizoa} je vytvořen v~programu \textit{Adobe Flash}, obsahuje dostatečné množství efektů, přechodů a nastavení. Vespod zobrazuje jednu časovou osu, jedná se o~lineární editor. Hlavní nevýhodou je vázanost na \textit{Adobe Flash Player}, který je dnes na ústupu a jeho podpora skončí v~roce 2020\,\cite{FlashPlayer}. Bezplatné předplatné nabídne 2 minuty videa s rozlišením 720p, nejdražší předplatné 4K video bez omezení délky.
+\begin{figure}[h]
 	\centering
 	\scalebox{0.53}{
 		\includegraphics{obrazky-figures/kizoa.png}
 	}
-	\caption{Uživatelské rozhraní online lineárního video editoru Kizoa. }\label{img:kizoa}
+	\caption{Uživatelské rozhraní online lineárního video editoru Kizoa.}\label{img:kizoa}
 \end{figure}
 
-Movie Maker Online představuje video editor s~netradičním uživatelským rozhraním. Nevyužívá zásuvných modulů a osu s~videem zobrazuje vertikálně. Jedná se o~nelineární editor, který má 4 stopy -- zvukovou, stopu s~pozadím, hlavní stopu a stopu s~překryvným textem. Přidat nebo odebrat stopu není možné. Editor je řešen jako jedna stránka, na které se pod sebou nacházejí jednotlivé kroky. Nahrávání souborů probíhá v~prvním kroku, poté se musí uživatel přesunout ke kroku 2 a provést editace. Pro uživatele desktopových aplikací se jedná o~zcela jiné rozhraní, ve kterém se budou těžko orientovat. Na rozdíl od předchozího řešení neumožňuje Movie Maker Online projekt uložit nebo exportovat a později opětovně použít. 
-\begin{figure}[ht]
+\textit{Movie Maker Online} představuje video editor s~netradičním uživatelským rozhraním. Nevyužívá zásuvných modulů a osu s~videem zobrazuje vertikálně. Jedná se o~nelineární editor, který má 4 stopy -- zvukovou, stopu s~pozadím, hlavní stopu a stopu s~překryvným textem. Přidat nebo odebrat stopu není možné. Editor je řešen jako jedna stránka, na které se pod sebou nacházejí jednotlivé kroky. Nahrávání souborů probíhá v~prvním kroku, poté se musí uživatel přesunout ke kroku 2 a provést editace. Pro uživatele desktopových aplikací se jedná o~zcela jiné rozhraní, ve kterém se budou těžko orientovat. Na rozdíl od předchozího řešení neumožňuje \textit{Movie Maker Online} projekt uložit nebo exportovat a později opětovně použít. Program lze používat bez registrace, výsledné video o rozlišení 720p je opatřeno vodoznakem a nesmí přesáhnout 10 minut. Program by měl nabízet předplatné, aktuálně ale nelze získat.
+\begin{figure}[h]
 	\centering
 	\scalebox{0.53}{
 		\includegraphics{obrazky-figures/moviemakeronline.png}
 	}
-	\caption{Uživatelské rozhraní online video editoru Movie Maker Online. }\label{img:moviemakeronline}
+	\caption{Uživatelské rozhraní online video editoru Movie Maker Online.}\label{img:moviemakeronline}
 \end{figure}
 
 \section{Shrnutí}
+U desktopových aplikací máme široký výběr. Všechny testované programy mají podobný způsob ovládání i podobné funkce. Nemusíme se bát sáhnout po bezplatném open source řešení, i tyto programy obsahují dostatek funkcí pro kvalitní tvorbu. Neobsahují omezení na maximální rozlišení nebo délku výsledného videa. Dražší programy nabídnou propracovanější filtry a vyšší stabilitu. Při návrhu online videoeditoru je dobré zachovat rozhraní, které uživatelé znají právě z těchto aplikací. Z pohledu technologií je zajímavý jednoduchý open source lineární editor \textit{fwf}, který je napsát v JavaScriptovém framoworku \textit{Vue.js}.
+
+Webových řešení je rovněž široký výběr. Mezi jednotlivými aplikacemi je velký rozdíl ve funkcích a zejména v omezeních výsledného videa. Z testovaných řešení nabízí neomezenou délku videa pouze program \textit{WeVideo}, \textit{Clipchamp Create}, který ale zpracovává videa v prohlížeči a \textit{Kizoa}, kterého jsem vyřadil ze srovnání kvůli vázanosti na \textit{Adobe Flash}. V rozhraních jsou větší rozdíly, než u desktopových aplikací. Uživatel desktopových editorů videa nebude mít problém s orientací v jednom z online editorů, vyjma \textit{Movie Maker Online} se zcela odlišným rozhraním. Nabízených tarify a zásadní omezení online videoeditorů srovnávám v tabulce \ref{tab:prices}.
+
+V případě, že požadujeme online editor videí, ale zároveň potřebujeme mít svá data pod kontrolou na svém serveru, připadá v úvahu pouze program \textit{Clipchamp Create}. Program provádí veškeré operace přímo v prohlížeči. Renderování delších videí s rozlišením větší než 480p vyžaduje výkoný hardware. V tomto případě je lepší sáhnout po desktopové aplikace. Pokud chceme zpracovávat videa online, ale na našem serveru, máme smůlu.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    Program   & Magisto & Animatron\\
+    \hline
+    Plány   & 480p, 2,5 min 230 Kč & 720p, 15 s 0 Kč\\
+            & 720p, 10 min 461 Kč   & 720p, 1 min 230 Kč\\
+            & 1080p, 10 min 1614 Kč & 1080p, 5 min 899 Kč\\
+            &                       & 1080p, 10 min 1360 Kč\\
+    \hline
+    Pozn.   & Měsíční i roční předplatné. & Měsíční i roční předplatné.\\
+    \hline
+    \hline
+    Program & Loopster                                  & WeVideo\\
+    \hline
+    Plány   & 1080p, 20 min, 10 GB 115 Kč               & 480p, 5 min/měs., 1 GB, 0 Kč\\
+            & 1080p, 30 min, 20 GB 230 Kč               & 720p, 30 min/měs., 20 GB, 230 Kč\\
+            & 1080p, 30 min, 100 GB 2975 Kč / 3 měs.    & 4K, neomezeno 369 Kč\\
+            &                                           & 4K, 3 uživ. 1383 Kč + 922 Kč/uživ.\\
+    \hline
+    Pozn.   & Roční předplatné.                         & Měsíční i roční předplatné.\\
+            & Poslední plán účtován čtvrtletně.         & Poslední plán je multilicence.\\
+    \hline
+    \end{tabular}
+    \caption{Přehled tarifů placených online video editorů. Pokud není uvedeno jinak, cena je za měsíc. Videa delší než 30 minut nabízí pouze WeVideo.}
+    \label{tab:prices}
+\end{table}
 
 \chapter{Návrh řešení}
 \section{Požadavky na řešení}
@@ -173,7 +246,9 @@ Nápověda k~prvkům je řešena pomocí informačních bublin (někdy též too
 	\caption{Prototyp uživatelského rozhraní.}\label{img:mockup}
 \end{figure}
 
-\section{Multimediální framework}
+\section{Návrh architektury}
+
+\section{Návrh API}
 
 \chapter{Práce s multimédii}
 \section{MLT framework}
@@ -300,10 +375,10 @@ Více stop (\texttt{track}) může být přehráváno současně pouze použijem
 S~pomocí těchto konstrukcí jsme schopni nadefinovat nejčastější operace, které se při zpracovávání přednášek provádí.
 
 \section{Práce s videi v prohlížeči}
-S příchodem HTML5 prvků \texttt{<video>} a \texttt{<audio>} a jejich JavaScriptového API vzniká možnost práce s multimédií na webu. Práci s multimediálními prvky implementovali od roku 2010 všechny moderní prohlížeče. Za moderní desktopové prohlížeče považuji program Google Chrome, Safari, Mozilla Firefox, Opera, Microsoft Edge. Prohlížeč Internet Explorer má sice dle serveru StatCounter 5.48\% zastoupení, což jej řadí mezi Microsoft Edge a Operu\cite{statcounter}, avšak i Microsoft jej v únoru označil za \uv{řešení pro kompatibilitu}, nikoliv webový prohlížeč.\cite{internetExplorer} Po představení prohlížeče Microsoft Edge získává Internet Explorer bezpečnostní záplaty, ale neprobíhá implementace nových webových standardů. Při vývoji nových projektů by tedy nekompatibilita s Internet Explorer neměla být brána v potaz. Následující kapitoly čerpají z knihy \textit{HTML5 - audio a video: kompletní průvodce}. \cite{HTML5multimedia}
+S příchodem HTML5 prvků \texttt{<video>} a \texttt{<audio>} a jejich JavaScriptového API vzniká možnost práce s multimédií na webu. Práci s multimediálními prvky implementovali od roku 2010 všechny moderní prohlížeče. Za moderní desktopové prohlížeče považuji program Google Chrome, Safari, Mozilla Firefox, Opera, Microsoft Edge. Prohlížeč Internet Explorer má sice dle serveru StatCounter 5.48\% zastoupení, což jej řadí mezi Microsoft Edge a Operu\,\cite{statcounter}, avšak i Microsoft jej v únoru označil za \uv{řešení pro kompatibilitu}, nikoliv webový prohlížeč\,\cite{internetExplorer}. Po představení prohlížeče Microsoft Edge získává Internet Explorer bezpečnostní záplaty, ale neprobíhá implementace nových webových standardů. Při vývoji nových projektů by tedy nekompatibilita s Internet Explorer neměla být brána v potaz. Následující kapitoly čerpají z knihy \textit{HTML5 - audio a video: kompletní průvodce}\,\cite{HTML5multimedia} a z komunitního projektu MDN Web Docs\footnote{MDN Web Docs -- portál s webovou dokumentací provozovaný společností Mozilla, \url{https://developer.mozilla.org/}}.
 
 \subsection{Kódování mediálních zdrojů}
-Veškerá data v počítači je potřeba kódovat. Na vyšší úrovni pohlížíme na kódování jako na formát dat. Formáty kódování audia  jsou například MP3, AAC, Vorbis, FLAC a formáty kódování videa například MPEG-2, MPEG-4 , H.264, HEVC, Theora, VP9, AV1.  Z pohledu uživatele se liší zejména licencí pro použití a způsobem komprese dat. Multimediální soubory mohou obsahovat více video a audio stop, titulky či jiná podpůrná data, proto se multimediální soubory vždy obalují do multimediálních kontejnerů, jako například AVI, MP4, FLV, RealMedia, Matroška. Výběr formátu videa tak typicky zahrnuje výběr multimediálního kontejneru, formátu kódování videa a formátu kódování audia. Kodek je zařízení nebo počítačový program, který dokáže převádět zakódovaná data do jiné podoby, v případě webových aplikací je kodekem internetový prohlížeč. V době, kdy organizace W3C\footnote{World Wide Web Consortium (W3C) -- mezinárodní sdružení vytvářející webové standardy, \url{https://www.w3.org/}.} vytvářela specifikaci pro HTML5 prvky \texttt{<video>} a \texttt{<audio>} byla snaha standardizovat formát, který by byl podporován ve všech prohlížečích neúspěšná kvůli požadavku na royalty free licenci.\cite{HTML5multimedia} Od té doby se nejvíce rozšířil formát MP4 H.264, který ovšem odmítá Mozilla a Theora, který odmítá Apple. Pokud se podíváme dnes na srovnání podporovaných kodeků, tabulka \ref{tab:codecs}, zjistíme, že situace není jednoduchá.
+Veškerá data v počítači je potřeba kódovat. Na vyšší úrovni pohlížíme na kódování jako na formát dat. Formáty kódování audia  jsou například MP3, AAC, Vorbis, FLAC a formáty kódování videa například MPEG-2, MPEG-4 , H.264, HEVC, Theora, VP9, AV1.  Z pohledu uživatele se liší zejména licencí pro použití a způsobem komprese dat. Multimediální soubory mohou obsahovat více video a audio stop, titulky či jiná podpůrná data, proto se multimediální soubory vždy obalují do multimediálních kontejnerů, jako například AVI, MP4, FLV, RealMedia, Matroška. Výběr formátu videa tak typicky zahrnuje výběr multimediálního kontejneru, formátu kódování videa a formátu kódování audia. Kodek je zařízení nebo počítačový program, který dokáže převádět zakódovaná data do jiné podoby, v případě webových aplikací je kodekem internetový prohlížeč. V době, kdy organizace W3C\footnote{World Wide Web Consortium (W3C) -- mezinárodní sdružení vytvářející webové standardy, \url{https://www.w3.org/}.} vytvářela specifikaci pro HTML5 prvky \texttt{<video>} a \texttt{<audio>} byla snaha standardizovat formát, který by byl podporován ve všech prohlížečích neúspěšná kvůli požadavku na royalty free licenci\,\cite{HTML5multimedia}. Od té doby se nejvíce rozšířil formát MP4 H.264, který ovšem odmítá Mozilla a Theora, který odmítá Apple. Pokud se podíváme dnes na srovnání podporovaných kodeků, tabulka \ref{tab:codecs}, zjistíme, že situace není jednoduchá.
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|l|l||l|l|l|l|l|}
@@ -395,18 +470,108 @@ function transitionLuma() {
     }
 }
 \end{lstlisting}
-Na každou událost lze zaregistrovat více obslužných funkcí, po skončení přechodu je nutné obsluhu funkcí \texttt{transitionLuma} odregistrovat. Pokud je zbývající čas menší nebo roven délce přechodu, nastaví se \texttt{opacity} na hodnotu rovnou podílu zbývajícího času s délkou přechodu (klesá rovnoměrně od 1 k 0).
+Na každou událost lze zaregistrovat více obslužných funkcí, po skončení přechodu je nutné obsluhu funkcí \texttt{transitionLuma} odregistrovat. Pokud je zbývající čas menší nebo roven délce přechodu, nastaví se \texttt{opacity} na hodnotu rovnou podílu zbývajícího času s délkou přechodu (klesá rovnoměrně od 1 k 0). Ve webovém prohlížeči lze sestrojit i jiné přechody s odsunutím, zvětšováním, postupným odkrýváním, ale tyto filtry nejsou pro tvorbu přednášek vhodné a proto je není potřeba implementovat.
 
 Stejnou technikou se sestrojí roztmívání a zatmívání obrazu (přechod z černé / do černé), pouze bude druhá scéna až za podkladovou černou vrstvou (\texttt{z-index se zápornou hodnotou}).
 
 \subsection{Filtry}
-Pokud potřebujeme aplikovat filtr obrazu, nabízí se dvě možnosti -- řešení pomocí SVG filtrů a řešení pomocí vykreslování do Canvas. Obě varianty mají své přednosti, SVG najde uplatnění u jednoduchých filtrů, vykreslování do Canvas nám dá absolutní kontrolu nad výsledným videem.
+Pokud potřebujeme aplikovat filtr obrazu, nabízí se dvě možnosti -- řešení pomocí CSS filtrů a řešení pomocí vykreslování do Canvas. Obě varianty mají své přednosti, CSS najde uplatnění u jednoduchých filtrů, vykreslování do Canvas nám dá absolutní kontrolu nad výsledným videem.
 
-\subsubsection{Obrazové filtry pomocí SVG}
+\subsubsection{Obrazové filtry pomocí CSS}
+HTML5 obsahuje pracovní návrh CSS vlastnosti \texttt{filter}. Vlastnost aplikuje grafické efekty na libovolné objekty, včetně obrázků a video elementů. CSS vlastnost má několik definovaných filtrů a možnost odkazovat na SVG filtry. Ačkoliv se jedná o pracovní návrh, CSS filtry jsou podporovány všemi rozšířenými prohlížeči (Internet Explorer je nepodporuje).\footnote{CITACE cssFilter \url{https://developer.mozilla.org/en-US/docs/Web/CSS/filter}} Microsoft Edge podporuje předdefinované filtry, ale kvůli chybě nepodporuje odkazování na SVG filtry. Největší předností CSS filtrů je způsob aplikování na video. Filtr je uložen v CSS třídě, případně lze přiřadit přímo k elementu. U \texttt{<video>} elementu stačí nastavit třídu filtru a filtr se aplikuje, vykreslování zajistí prohlížeč. Jaké předdefinované filtry vlastnost \text{filter} nabízí, ukazuje tabulka \ref{tab:filters}.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+    \hline
+    Funkce filtru   & Výchozí & Možné hodnoty & Chování filtru \\
+    \hline
+    \textbf{brightness}  & 1 & >=0\% / >=0 & 0\% černý obraz, >100\% větší jas \\
+    \textbf{contrast}    & 1 & >=0\% / >=0 & 0\% šedý obraz, >100\% větší kontrast\\
+    \textbf{saturate}    & 1 & >=0\% / >=0 & 0\% vybledlý, >100\% větší sytost\\
+    grayscale   & 0 & 0\%-100\% / 0-1 & 0\% původní obraz, 100\% šedotónový\\
+    invert      & 0 & 0\%-100\% / 0-1 & 0\% původní obraz, 100\% invertovaný\\
+    sepia       & 0 & 0\%-100\% / 0-1 & 0\% původní obraz, 100\% sépiový\\
+    opacity     & 1 & 0\%-100\% / 0-1 & 0\% průhledný, 100\% neprůhledný\\
+    hue-rotate  & 0 & úhel (deg/grad/rad/turn) & posun barev (s periodou 360$^{\circ}$)\\
+    blur        & 0 & vzdálenost, vyjma \% & rozmazání o danou vzdálenost \\
+    drop-shadow & none & viz vlastnost \texttt{box-shadow} & efekt zrcadlení\\
+    \hline
+    \end{tabular}
+    \caption{Seznam definovaných filtrů. Klíčovými filtry jsou jas, kontrast a sytost.}
+    \label{tab:filters}
+\end{table}\\
 
+Poslední možnou hodnotou, které může \texttt{filter}, je \text{url()}. V tomto případě se nejedná o filtr, ale o odkaz na SVG element. SVG element se používá jako kontejner pro SVG filtry. SVG filtry jsou z pohledu standardu ve stavu \uv{doporučení}. Aktuálně kvůli chybě nefungují v prohlížeči Mirosoft Edge. Po aplikování filtrů bylo patrné snížení počtu snímků za sekundu, při aplikování jednoho filtru bylo přehrávání videa dostatečně plynulé. Pokud bychom chtěli aplikovat více obrazových filtrů současně (4 a více), vyplatí se realizovat filtry pomocí Canvas. K dispozici je 17 filtrů, jejich přehled uvádím v tabulce \ref{tab:svg}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+    \hline
+    Filtr   & Popis & Možné použití \\
+    \hline
+    feBlend & míchání barev objektů/bitmap & přidání vodoznaku \\
+    feColorMatrix & změna barev pixelů tranformační maticí & barevný odstín, sytost \\
+    feComponentTransfer & úprava barevných složek & jas, kontrast \\
+    feConvolveMatrix & aplikování konvoluční matice na obraz & rozmazání, doostření \\
+    feGaussianBlur & Gaussovské rozmazání obrazu & rozmazání \\
+    feComposite & operace nad skládáním SVG objektů & \\
+    feDiffuseLighting & aplikace difúzní složky osvětlovacího modelu & \\
+    feDisplacementMap & nahrazení pixelů pixely z jiného zdroje & \\
+    feDropShadow & vytvoření efektu stínu/zrcadlení & \\
+    feFlood & vyplění objektu konstantní barvou & \\
+    feImage & převádí externí zdroj na bitmapu & \\
+    feMerge & aplikuje filtry současně, ne postupně & \\
+    feMorphology & zvýšení/snížení tloušťky objektů & \\
+    feOffset & posun objektů v ose x, y & \\
+    feSpecularLighting & aplikace lesklé složky osvětlovacího modelu & \\
+    feTile & vyplnění objektu texturou & \\
+    feTurbulence & generování textury pomocí Perlinova šumu & \\
+
+    \hline
+    \end{tabular}
+    \caption{Seznam SVG filtrů s možným využitím ve videoeditoru.}
+    \label{tab:svg}
+\end{table}
+Pro potřeby úprav videí nevyužijeme zdaleka všechny funkce, lze se tedy omezit na předdefinované filtry, které fungují i v prohlížeči Microsoft Edge. JavaScript umožňuje výpočetní operace nad daty pro zvýšení výkonu přesunout na pozadí do samostatného vlákna, pro tuto techniku se používá termín Web Workers.\footnote{Web Workers -- standardizované API pro běh skriptů na pozadí, \url{https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers}.} Přímo v prohlížeči můžeme například analyzovat obsah videa a detekovat v něm objekty (například rozpoznání obličeje). Vytváření vláken přináší režii, která se vyplatí až při náročných skriptech, aplikování filtrů na videa pomocí Web Workers počet zpracovaných snímků za sekundu zvýší minimálně, ve většině prohlížečů spíše způsobí snížení (v závislosti na implementaci Web Workers). 
 
 \subsubsection{Obrazové filtry pomocí Canvas}
+Zatímco CSS a SVG filtry umožňují manipulovat s výsledným obrazem na základě přiřazení CSS stylů a tříd, Canvas přestavuje kreslící plátno složené z 2D matice pixelů. Jedná se o bitmapu, jejíž vykreslení musíme sami zajistit. Vykreslováním do canvasu lze dosáhnout větší počtu vykreslených snímků za sekundu, než při použití CSS/SVG filtrů. Canvas je vhodné použít vždy, pokud nepotřebujeme přístup k objektům filtrů pomocí DOM. Rychlost vykreslení závisí na velikosti plátna. Při velkém formátu je výhodnější SVG, než canvas. Obě techniky je možné kombinovat.
 
+Pro zobrazení videa skrze \texttt{<canvas>} bude zapotřebí jak \texttt{<canvas>}, tak i \texttt{<video>} element. Z video elementu se budou vzorkovat snímky a vykreslovat jako bitmapy v \texttt{<canvas>}. Ovládání videa bude stále skrze JavaScriptové API \texttt{<video>} elementu, ale zobrazení obstará \texttt{<canvas>}. Z toho důvodu je nutné video element skrýt pomocí CSS vlastnosti \texttt{display: none}.
+
+Během přehrávání je potřeba zajistit pravidelné překreslování Canvasu. Lze použít události \texttt{timeupdate}, ale tato událost je odpálena jen každých 15 ms až 250 ms, což na pohodlné přehrávání nestačí. Druhou možností je nastavit obsluhu události \texttt{play} na funkci, která bude zajišťovat překreslování. Na konci funkce pro překreslení  se otestuje, zda-li se video stále přehrává (\texttt{video.paused || video.ended}) a případně se naplánuje opětovné zavolání funkce za 0 milisekund -- \texttt{setTimeout(repaint, 0)}. V některých prohlížečích se funkce \texttt{timeupdate} neodpálí po načtení metadat a prvního snímku, pro tyto prohlížeče pomůže funkci vykreslení zavolat i pro \texttt{loadedmetadata}. Následující ukázka získá aktuální snímek z \texttt{<video>} elementu, tyto data si zkopíruje do pomocného pole a poté postupně projde a modifikuje jednotlivé pixely (v tomto případě sníží jas na polovinu). Pole pixelů je organizováno po řádcích, přičemž každý pixel se skládá ze 4 po sobě jdoucích složek (RGBA) -- každý pixel má v poli velikost 4. Po modifikaci pixelů dojde k vyčištění původního plátna (nastaví průhledné plátno) a poté vykreslý modifikovaný obraz. Pokud se video stále přehrává, naplánuje ihned další spuštění funkce \texttt{painFrame}.
+\begin{lstlisting}[style=JavaScript]
+video.addEventListener('play', paintFrame, false);
+const context = canvas.getContext('2d');
+
+function paintFrame() {
+    context.drawImage(video, 0, 0, 480, 270, 0, 0, 480, 270);
+    const frame = context.getImageData(0, 0, 480, 270);
+    const output = context.createImageData(480, 270);
+    
+    for (let x = 0; x < 480; x++) {
+        for (let y = 0; y < 270; y++) {
+            let index = 4 * (x + 480 * y);
+            output.data[index + 0] = frame.data[index + 0] / 2; // R
+            output.data[index + 1] = frame.data[index + 1] / 2; // G
+            output.data[index + 2] = frame.data[index + 2] / 2; // B
+            output.data[index + 3] = frame.data[index + 3]; // A
+        }
+    }
+    context.clearRect(0, 0, 480, 270);
+    context.putImageData(output, 0, 0);
+    if (!video.paused && !video.ended) {
+        setTimeout(paintFrame, 0);
+    }
+}
+\end{lstlisting}
+
+V ukázce není vyřešeno škálování. Metoda \texttt{drawImage} vezme originální obraz, nikoliv zmenšený obraz \texttt{<video>} elementu. Pro bezpečné použití by bylo zapotřebí zjišťovat větší rozměr videa a ten přizpůsobit velikosti plátna. Dále by muselo být video ručně centrováno. V prohlížeči Mozilla Firefox se videa natáčená na výšku zobrazují v \texttt{<canvas>} otočená o 90$^{\circ}$. Z tohoto důvodu jsem od filtrů pomocí Canvas opustil.
+
+Canvas najde uplatnění zejména v případech, kdy pracujeme s důvěryhodnými daty a provádíme nad nimi náročné operace. 
+
+\subsection{Shrnutí}
+HTML5 je živý standard, který neustále rozšiřuje možnosti tvorby webového obsahu. Práce s multimédii je v HTML5 prakticky neomezená, ale ne všechny funkce jsou standardizovány. Při implementaci je nutné sledovat stav standardu a rozšířenost v prohlížečích. Vždy je nutné začít výběrem formátu multimédií. Pokud chceme mít jistotu, že každý uživatel bude mít prohlížeč s kompatibilním kodekem, musíme prohlížeči videa nabízet alespoň ve 2 formátech. Jednoduché úpravy obrazu provádíme pomocí CSS filtrů, na složitější filtry použijeme SVG filtry. Chceme-li přistupovat přímo k obrazovým datům, použijeme Canvas. Jednoduchý videoeditor si pro náhledové video vystačí s CSS filtry -- dostatečně rychlé, na implementaci jednoduché a s podporou v moderních prohlížečích.
 
 \chapter{Realizace, experimenty}
 
@@ -451,7 +616,7 @@ Volba PHP vs Node.js. Volba EcmaScript vs TypeScript vs CoffeeScript.
 \subsection{Node.js}
 Node.js vytváří běhové prostředí JavaScriptu postavené na JavaScriptovém enginu V8 od firmy Google. Umožňuje používat JavaScript jako systémový jazyk, který má přístup k paměťi, bufferům, procesům, souborům a soketům. Cílem Node.js je poskytovat snadnou cestu k vytvoření škálovatelných síťových aplikací. Node.js nepoužívá vlákna, je založen na událostech a asynchronním vykonávání blokujících operací, umožňuje snadnou modularitu. Právě eliminací blokujících operací pomocí asynchronní obsluhy řízenou událostmi lze dosáhnout vysokého výkonu. PHP vytváří pro každý požadavek samostatné vlákno a v případě blokující operace čeká na vyřízení, Node.js používá pro všechny požadavky jedno vlákno a namísto paralelního zpracování používá Node.js pseudoparalelní zpracování.
 
-Pro porovnání rychlosti vykonání programu, uvedu příklad jednoduchého programu, ve kterém se v prázdném cyklu inkrementuje miliadkrát čítač. Doba běhu programu je pro jednotlivé jazyky následující -- JavaScript (Node.js verze 9.3.0) 0,635 sekund, jazyk C (Apple LLVM 8.1.0) 2,398 sekund a Python (3.6.1) 31,096 sekund. Všechny testy probíhaly na zařízení MacBook Pro s procesorem Intel Core i7 2,8 GHz. Překladač V8 JavaScript kompiluje namísto interpretování, díky tomu lze využívat vysokoúrovňový jazyk bez nutnosti vzdát se rychlosti kompilovaných jazyků.\cite{MasteringNodejs}
+Pro porovnání rychlosti vykonání programu, uvedu příklad jednoduchého programu, ve kterém se v prázdném cyklu inkrementuje miliadkrát čítač. Doba běhu programu je pro jednotlivé jazyky následující -- JavaScript (Node.js verze 9.3.0) 0,635 sekund, jazyk C (Apple LLVM 8.1.0) 2,398 sekund a Python (3.6.1) 31,096 sekund. Všechny testy probíhaly na zařízení MacBook Pro s procesorem Intel Core i7 2,8 GHz. Překladač V8 JavaScript kompiluje namísto interpretování, díky tomu lze využívat vysokoúrovňový jazyk bez nutnosti vzdát se rychlosti kompilovaných jazyků\,\cite{MasteringNodejs}.
 
 JavaScript na klientské straně je pro interaktivní webovou aplikaci nutnost. Díky běhu JavaScriptu na klientské i serverové části mohou programátoři používat jeden jazyk v rámci projektu. Dále se otevírá možnost používat stejný kód na serveru i na straně klienta. Stačí vhodně členit funkce do modulů a tyto moduly poté importovat jak na straně serveru, tak na straně klienta. V mé práci takto sdílím kód pro práci s časovými značkami.
 
@@ -600,7 +765,7 @@ Všechny nahraná videa jsou na serveru překonvertována na videa s CFR, nejprv
 \chapter{Závěr}
 V~závěru bych rád shrnul úkony, které mě čekají v~letním semestru.
 
-Zjistit možnosti JavaScriptu ve zpracování multimédií. Efekty nebo přechody je možné simulovat přímo v~prohlížeči.\,\cite{ManipulatingVideo} V~nadcházejícím semestru bude cílem mimo jiné zhodnotit dopad na výkon přehrávače při simulování efektů na straně prohlížeče.
+Zjistit možnosti JavaScriptu ve zpracování multimédií. Efekty nebo přechody je možné simulovat přímo v~prohlížeči\,\cite{ManipulatingVideo}. V~nadcházejícím semestru bude cílem mimo jiné zhodnotit dopad na výkon přehrávače při simulování efektů na straně prohlížeče.
 
 Porovnat a popřemýšlet o~server/client side přístupu. Při přiložení video-souboru je nutné video předzpracovat (délka, miniatura), jsou dvě možnosti -- předzpracování provede server, uživatel musí počkat na nahrání a předzpracování souboru, nebo provede předzpracování klient, JavaScript internetového prohlížeče, výhodou je, že uživatel nemusí čekat na nahrání videa na server.
 
