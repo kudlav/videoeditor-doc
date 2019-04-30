@@ -57,7 +57,7 @@ Placená řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~pla
 
 \textit{Animatron} slouží spíše k tvorbě krátkých upoutávek a reklam. Umožňuje v nejdražším předplatném vytvořit projekt o maximální délce 10 minut. Bezplatný plán neumožňuje stažení videa, pouze vystavení videa na sociálních sítích. Při práci s editorem jsem zaznamenal problém s různou orientací stejného videa napříč editorem.
 
-Pro nenáročné uživatele by mohl být dostačující nástroj \textit{Clipchamp}, který nabízí i bezplatný plán s~omezením rozlišení videí na 480p. Velikost projektu omezena není a video není opatřeno reklamním vodoznakem. Rozhraní je shodné s desktopovými programy, obrázek \ref{img:clipchamp}. Editor běží pouze v prohlížeči Google Chrome a zpracování videa probíhá na straně webového prohlížeče. Uživatel nesmí videoeditor během zpracovávání opustit. Doba zpracování videa o délce do 2 minut trvá i při rozlišení 480p cca 20 minut.
+Pro nenáročné uživatele by mohl být dostačující nástroj \textit{Clipchamp Create}, který nabízí i bezplatný plán s~omezením rozlišení videí na 480p. Velikost projektu omezena není a video není opatřeno reklamním vodoznakem. Rozhraní je shodné s desktopovými programy, obrázek \ref{img:clipchamp}. Editor běží pouze v prohlížeči Google Chrome a zpracování videa probíhá na straně webového prohlížeče. Uživatel nesmí videoeditor během zpracovávání opustit. Doba zpracování videa o délce do 2 minut trvá i při rozlišení 480p cca 20 minut.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.5}{
@@ -123,10 +123,52 @@ V případě, že požadujeme online editor videí, ale zároveň potřebujeme m
 \end{table}
 
 \chapter{Návrh řešení}
-\section{Požadavky na řešení}
-Operace nad videi jsou členěny do několika částí, pro větší přehlednost uvádím diagram případů užití pro každou část zvlášť.
+Hlavním cílem práce je vytvořit videoeditor, který bude fungovat ve všech moderních prohlížečích a výsledné zpracování videa nebude probíhat na straně klienta. K dosažení těchto cílů bude za nutné vytvořit webovou aplikaci. Stejně jako stávající řešení by i tento editor měl provádět veškeré úkony pomocí JavaScriptu a asynchronních požadavků, bez nutnosti znovu načítat celou stránku. Vzhledem ke komplexnosti uživatelského rozhraní není vhodné zvolit čistý JavaScript. Vyplatí se sáhnout po JavaScriptovém frameworku, usnadňují časté operace, udržují dobré návyky a pomáhají vytvořit čistý kód.
 
-V~seznamu zdrojů je možné nahrávat obrázkové a video soubory. Podporované formáty video souborů jsou shodné s~formáty, které podporuje multimediální framework FFmpeg. Z~obrázkových souborů je podporován formát PNG a JPEG, obrázek \ref{img:ucd-zdroj}.
+Nejpoužívanějšími\footnote{Wappalyzer -- doplněk prohlížeče pro analýzu webových technologií, data od uživatelů agreguje do statistik, \url{https://www.wappalyzer.com/categories/javascript-frameworks}.} frameworky jsou: React, Backbone.js, RequireJS, AngularJS, nebo třeba Vue.js (používané programem \textit{fwf}). Z těchto frameworků jsem vybral React, který je zároveň i šablonovacím systémem a má kvalitní dokumentaci. Šablonovací systém používám zejména k rozdělení uživatelského rozhraní na komponenty.
+
+Webová aplikace bude potřebovat i serverovou část, na kterou klient nahraje soubory, popíše serveru operace nad soubory a dá pokyn pro vyhotovení výsledného videa. Tuto architekturu označujeme jako klient-server. Mezi klientem a serverem je nutné komunikovat. Pro výměnu dat po síti musejí obě části používat dohodnutý serializační formát. JavaScript nejčastěji používá \textit{XML} nebo \textit{JSON}. \textit{JSON} (JavaScriptový objektový zápis) je novější a zápis ve formátu \textit{JSON} je validním kódem JavaScriptu. \textit{XML} (rozšiřitelný značkovací jazyk) na druhou stranu umožňuje přenos binárních dat. Se serverem bude komunikovat JavaScript, volba formátu \textit{JSON} je tedy výhodná.
+
+Sever bude mít za úkol 2 činnosti. Nejprve bude muset uživateli poskytnout soubory s HTML, CSS a JavaScriptem a poté reagovat na JavaScriptové asynchronní požadavky. Při návrhu jsem se rozhodoval mezi implementací serveru pomocí jazyka PHP a pomocí Node.js. Jazyk PHP vznikal v době statických stránek a osobních webů, Node.js je obvykle spojován se single page aplikacemi. Node.js jsem si vybral právě protože plánuji vytvořit single page aplikaci, kvůli možnosti používat stejný jazyk pro klientskou i serverovou část a také kvůli asynchronnímu přístupu k blokujícím operacím. Po PHP bych naopak sáhl při tvorbě e-shopu, blogu či informačního systému.
+
+Server bude pro klienta dosputný skrze rozhraní (API). Rozhraní bude sloužit k vyvolání akcí na serveru i k získávání dat. Existuje více koncepcí pro komunikaci a tvorbu API, například \textit{XML-RPC}, \textit{SOAP} nebo \textit{REST}. \textit{XML-RPC} a \textit{SOAP} používají jako serializační formát pro výměnu dat \textit{XML}, kvůli JavaScriptu na střaně klienta i serveru jsem ovšem zvolil \textit{JSON}. \textit{REST} je způsob komunikace na základě HTTP požadavků. \textit{REST} není na HTTP vázaný, ale není praktický důvod používat odlišný protokol. Výchozím serializačním formátem pro výměnu dat je JSON, ovšem lze používat například i \textit{XML}.
+
+Multimediální soubory bude potřeba zpracovávat. \textit{Clipchamp Create} provádí zpracování na straně klienta ve webovém prohlížeči. Webový prohlížeč ani webové technologie ale nejsou navrženy na renderování videí, \textit{Clipchamp} vyvádí video déle, než bych byl ochotný čekat. Editor byl navržen aby zpracovával videa na serveru. K tomu může sloužit program \textit{FFmpeg} nebo \textit{MLT}. Program \textit{FFmpeg} používá například editor \textit{fwf} nebo Android aplikace \textit{Video Editor using FFmpeg}\footnote{Video Editor using FFmpeg -- open source editor videa pro android, \url{https://github.com/bhuvnesh123/FFmpeg-Video-Editor-Android}.}. \textit{FFmpeg} se používá skrze příkazový řádek. Každá operace představuje jeden příkaz (zkrátit video, přidat efekt, spojit videa). Na přadí operací záleží. Projekt by byl popsán souborem s posloupností příkazů pro FFmpeg, případně jedním dlouhým příkazem. Multimediální framework \textit{MLT} rovněž nabízí své nástroje skrze příkazový řádek. Projekt je možné popisovat posloupností příkazů a také pomocí serializačního formátu \textit{XML}. Celý projekt se popíše entitami \textit{XML} a programu \textit{MLT} se poté pouze předá \textit{XML} sobor. \textit{XML} soubor bude uložen po celou dobu na serveru a server jej bude editovat na základě požadavků klienta. \textit{REST API} je bezstavové, požadavek musí být úplný a stav projektu je uložen v \textit{XML} souboru projektu.
+
+\section{Návrh uživatelského rozhraní}
+Cílovou skupinou jsou počítačově gramotní uživatelé, kteří někdy používali program na editování videa. Rozhraní je voleno tak, aby připomínalo klasické desktopové aplikace a pomohlo uživatelům se zorientovat. Typickou úlohou pro videoeditor bude sestříhat záznam přednášky do výukového videa nebo vytvořit tutoriál ze záznamu z kamery nebo obrazovky. Aplikace bude využívána na na počítačích a noteboocích, není nutné přizpůsobovat rozhraní obrazovkám mobilních zařízení. Ovládání bude pomocí klávesnice a myši, dotekové obrazovky se sice nepředpokládají, ale ani nevylučují.
+
+Po načtení hlavní stránky se zobrazí úvodní stránka s možností vytvořit nový projekt. Stránka bude do budoucna připravena na rozšíření o další možnosti, jako jsou šablony, autentizace uživatelů, či seznam vlastních projektů. Pro zahájení editace uživatel zvolí \textit{Vytvořit nový projekt}, obrázek \ref{img:novy-projekt}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.5}{
+		\includegraphics{obrazky-figures/novy_projekt.png}
+	}
+	\caption{Úvodní obrazovka pro vytváření nových projektů.}\label{img:novy-projekt}
+\end{figure}
+
+Po vytvoření nového projektu se uživatel ocitne v rozhraní pro tvorbu videí. Aplikace je řešena jako single page aplikace. Uživatel po celou dobu pracuje na jedné obrazovce a i při dialozích je editor překryt pouze částečně, tak, aby měl uživatel pocit, že má svůj projekt po celou dobu pod kontrolou. Při návrhu uživatelského rozhraní editoru jsem se nejvíce inspiroval desktopovou aplikací \textit{iMovie}, \textit{Shotcut} a online nástrojem pro úpravu fotografií -- \textit{Photopea}\footnote{Photopea.com -- bezplatný editor fotografií, \url{https://www.photopea.com/}}.
+
+Uživatelské rozhraní editoru je rozděleno do 4 částí. Rozložení bylo navrženo a odzkoušeno na drátěném modelu, obrázek \ref{img:wireframe}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.3}{
+		\includegraphics{obrazky-figures/wireframe}
+	}
+	\caption{Drátěný model uživatelského rozhraní.}\label{img:wireframe}
+\end{figure}
+Na základě drátěného modelu byl zhotoven prototyp hlavního uživatelského rozhraní, obrázek \ref{img:mockup}.
+\begin{figure}[!h]
+	\centering
+	\scalebox{0.6}{
+		\includegraphics{obrazky-figures/mockup.png}
+	}
+	\caption{Prototyp uživatelského rozhraní.}\label{img:mockup}
+\end{figure}
+
+U horního obraje obrazovky se nachází panel nástrojů pro globální akce nad projektem -- zrušit úpravy nebo vyvést (dokončit) projekt. Do budoucna zde bude možnost přepínat jazykovou mutaci a možnost exportu nebo výmazu dat.
+
+Operace nad videi jsou členěny do 3 částí, tomu odpovídá a členění uživatelského rozhraní. V~levé části je seznam zdrojového materiálu (videí, obrázků, aj.), který je možné v~projektu použít. S~položkami seznamu se zdrojovým materiálem se pracuje přímo. Dostupné operace jsou zobrazeny po celou dobu. Pod poslední položkou se nachází tlačítko na přidání materiálu, případně je možné použít přetažení souboru do této oblasti. V~seznamu zdrojů je možné nahrávat obrázkové a video soubory. Podporované formáty video souborů jsou shodné s~formáty, které podporuje multimediální framework FFmpeg. Z~obrázkových souborů je podporován formát PNG a JPEG obrázek. Obrázek \ref{img:ucd-zdroj} zobrazuje diagram případů užití pro práci se zdrojovým materiálem.
 % [Uživatel]-(Nahrát video nebo obrázek),
 % [Uživatel]-(Odebrat video nebo obrázek),
 % [Uživatel]-(Vložit video na konec časové osy),
@@ -140,7 +182,20 @@ V~seznamu zdrojů je možné nahrávat obrázkové a video soubory. Podporované
 	\caption{Diagram případů užití pro práci se zdroji.}\label{img:ucd-zdroj}
 \end{figure}
 
-Časovou osu lze přibližovat a oddalovat tlačítky v~liště nástrojů časové osy. Pokud je časová osa přiblížena natolik, že není možné zobrazit všechny prvky časové osy, lze osu posouvat do stran uchopením prázdného místa na ose a přetažením osy do stran. V~novém projektu je k~dispozici jedna časová a jedna zvuková stopa. V~případě potřeby lze přidat novou stopu tlačítkem z~lišty nástrojů časové osy. K~dispozici je buď zvuková nebo video stopa. Odebrat ji lze tlačítkem vlevo pod názvem stopy. Kliknutím do prostoru časových hodnot osy se provede přemístění ukazatele aktuálního času, ukazatel lze rovněž uchopit a přesunout. V~čase ukazatele se bude přehrávat náhled videa a v~tomto čase lze provést střih videa, obrázek \ref{img:ucd-osa}.
+V~pravé polovině se nachází přehrávač předběžného náhledu výsledného videa. Přehrávač náhledu se ovládá tlačítky umístěnými přímo pod přehrávačem (přehrát, zastavit, skok na začátek nebo konec, skok na začátek nebo konec aktuální položky). Přehrávač přehrává pouze soubory umístěné na časové ose, nezobrazuje náhledy zdrojového materiálu. Aktuální pozici přehrávače udává ukazatel na časové ose. Přehrávání lze spustit původní rychlostí a pozastavit. K~manipulaci s~pozicí ve videu slouží skok na událost vpřed/vzad, který přesune ukazatel na nejbližší začátek nebo konec položky libovolné stopy, diagram případů užití zobrazuje obrázek \ref{img:ucd-prehravac}.
+% [Uživatel]-(Spustit přehrávání),
+% [Uživatel]-(Pozastavit přehrávání),
+% [Uživatel]-(Skok na událost vpřed nebo vzad),
+% [Uživatel]-(Další nebo předchozí snímek),
+\begin{figure}[!h]
+	\centering
+	\scalebox{0.4}{
+		\includegraphics{obrazky-figures/ucd-prehravac.pdf}
+	}
+	\caption{Diagram případů užití pro práci s~přehrávačem náhledu.}\label{img:ucd-prehravac}
+\end{figure}
+
+Ve spodní části je časová osa se zvukovými a obrazovými stopami. Časová osa zobrazuje pod sebou stopy v~pořadí, v~jakém byly vytvořeny. Stopy se přidávají a odebírají podle potřeby. Pokud uživatel uchopí položku a přetáhne ji pod poslední video/audio stopu, vytvoří se nová. Původní návrh počítal se zobrazováním názvů stop a manuálním přidávání stop. Po testování jsem se rozhodl odstínit uživatele od stop a nabídnout mu pracovní plochu, kde může přesouvat položky i vedle sebe, bez nutnosti řešit stopy. Položky se na časovou osu přidávají ze seznamu materiálu tlačítkem plus u~materiálu. Posun položek na časové ose se provede uchopením prvku a přetažením na nové místo, přesun na jinou časovou se provádí přetažením na jinou osu stejného typu. Uchopením položky za okraj lze měnit začátek nebo konec. U~každé položky je náhledový obrázek a textové informace o položce. S~vybranou položkou lze pracovat tlačítky na listě nástrojů u~horního okraje časové osy. V~aplikaci jsou dvě lišty nástrojů, globální akce a akce s~časovou osou. Pokud je na položku aplikován alespoň jeden filtr, zobrazí se v jejím levém horním rohu \uv{nálepka} s ikonou filtru. Časovou osu lze přibližovat a oddalovat tlačítky v~liště nástrojů časové osy. Pokud je časová osa přiblížena natolik, že není možné zobrazit všechny prvky časové osy, lze osu posouvat do stran uchopením prázdného místa na ose a přetažením osy do stran. V~novém projektu je k~dispozici prázdná zvuková a video stopa. Ukazatel aktuálního času lze uchopit a přesunout. V~čase ukazatele se bude přehrávat náhled videa a v~tomto čase lze provést střih videa, diagram případů užití -- obrázek \ref{img:ucd-osa}.
 % [Uživatel]-(Přiblížit časovou osu),
 % [Uživatel]-(Posunout časovou osu do stran),
 % [Uživatel]-(Přidat nebo odebrat časovou osu),
@@ -153,7 +208,7 @@ V~seznamu zdrojů je možné nahrávat obrázkové a video soubory. Podporované
 	\caption{Diagram případů užití pro práci s~časovou osou.}\label{img:ucd-osa}
 \end{figure}
 
-Po vybrání položky (videa nebo obrázku) na časové ose jsou k~dispozici v~panelu nástrojů časové osy následující akce. Položku lze smazat, okolní položky zůstávají, přechody se zruší. Lze přidat filtr obrazu (text, HTML překrytí, jas, kontrast, odstín, světlost, sytost, vyvážení bílé, otočit, velikost, poloha, ořezání, průhlednost, ostrost) nebo filtr zvuku (ztišit, zesílit/zeslabit). Přidat přechod mezi 2 položkami, položky s~přechody se při přesouvání chovají jako celek. Dále lze zobrazit souhrnné vlastnosti. Následující úkony se neprovádí přes panel nástrojů -- posun na časové ose se provede uchopením prvku a přetažením na nové místo, přesun na jinou časovou se provádí přetažením na jinou osu stejného typu a začátek nebo konec video souboru či délku obrázku lze změnit uchopením okraje položky a táhnutím na požadovanou pozici. Rozdělení v~bodě na 2 části se provede v~místě, na kterém je ukazatel časové osy, obrázek \ref{img:ucd-polozky}.
+Po vybrání položky (videa nebo obrázku) na časové ose jsou k~dispozici v~panelu nástrojů časové osy následující akce. Položku lze smazat, okolní položky zůstávají, přechody se zruší. Lze přidat filtr obrazu (text, HTML překrytí, jas, kontrast, odstín, světlost, sytost, vyvážení bílé, otočit, velikost, poloha, ořezání, průhlednost, ostrost) nebo filtr zvuku (ztišit, zesílit/zeslabit). Přidat přechod prolnutí mezi 2 položkami, položky s~přechody se při přesouvání chovají jako celek. Dále lze zobrazit souhrnné vlastnosti. Následující úkony se neprovádí přes panel nástrojů --  a začátek nebo konec video souboru či délku obrázku lze změnit uchopením okraje položky a táhnutím na požadovanou pozici. Akce s vybranou položkou zobrazuje diagram případů užití na obrázku \ref{img:ucd-polozky}.
 % [Uživatel]-(Posunout na časové ose),
 % [Uživatel]-(Přesunout na jinou časovou osu),
 % [Uživatel]-(Vybrat pro práci),
@@ -171,18 +226,9 @@ Po vybrání položky (videa nebo obrázku) na časové ose jsou k~dispozici v~p
 	\caption{Diagram případů užití pro práci s~položkami časové osy.}\label{img:ucd-polozky}
 \end{figure}
 
-V~pravé polovině se nachází přehrávač náhledu, ovládá se tlačítky pod přehrávačem. Aktuální pozici přehrávače udává ukazatel na časové ose. Přehrávání lze spustit původní rychlostí a pozastavit. K~manipulaci s~pozicí ve videu slouží skok na událost vpřed/vzad, který přesune ukazatel na nejbližší začátek nebo konec položky libovolné stopy. Pro nejjemnější doladění slouží skok na další/předchozí snímek, obrázek \ref{img:ucd-prehravac}.
-% [Uživatel]-(Spustit přehrávání),
-% [Uživatel]-(Pozastavit přehrávání),
-% [Uživatel]-(Skok na událost vpřed nebo vzad),
-% [Uživatel]-(Další nebo předchozí snímek),
-\begin{figure}[!h]
-	\centering
-	\scalebox{0.4}{
-		\includegraphics{obrazky-figures/ucd-prehravac.pdf}
-	}
-	\caption{Diagram případů užití pro práci s~přehrávačem náhledu.}\label{img:ucd-prehravac}
-\end{figure}
+Pokud je potřeba upřesnit, jakou akci chce uživatel provést (výběr filtru), zobrazí se rozbalovací nabídka. Vyžaduje-li akce zadání hodnot, zobrazí se modální okno. Modální okna jsou využívány i pro zobrazení vlastností. Nápověda k~prvkům je řešena pomocí informačních bublin (někdy též tooltip).
+
+Vyvedení videa (dokončení)
 
 Pokud má nový systém nahradit stávájící proces zpracování videa, musí zvládat všechny kroky úprav videa. V~Tabulce \ref{tab:uc1} uvádím v~současnosti nejčastější případ užití, kdy je potřeba oříznout začátek a konec videa a před video vložit úvodní obrazovku s~podmínkami použití.
 
@@ -213,42 +259,53 @@ Pokud má nový systém nahradit stávájící proces zpracování videa, musí 
     \label{tab:uc1}
 \end{table}
 
-\section{Uživatelské rozhraní}
-Při návrhu uživatelského rozhraní jsem se nejvíce inspiroval desktopovou aplikací \textit{Shotcut} a online nástrojem pro úpravu fotografií -- \textit{Photopea}\footnote{Photopea.com -- bezplatný editor fotografií, \url{https://www.photopea.com/}}.
-
-Uživatelské rozhraní je rozděleno do 3 částí. V~levé části se nachází seznam zdrojového materiálu (videí, obrázků, aj.), který je možné v~projektu použít. V~pravé části se nachází přehrávač předběžného náhledu výsledného videa. Ve spodní části je časová osa se zvukovými a obrazovými stopami. Rozložení bylo navrženo drátěným modelem, obrázek \ref{img:wireframe}.
-
-\begin{figure}[h]
-	\centering
-	\scalebox{0.3}{
-		\includegraphics{obrazky-figures/wireframe}
-	}
-	\caption{Drátěný model uživatelského rozhraní.}\label{img:wireframe}
-\end{figure}
-
-Globální akce, jako například zrušení či dokončení projektu, export projektu, jsou prováděny v~panelu nástrojů u~horního okraje obrazovky.
-
-Přehrávač náhledu se ovládá tlačítky umístěnými přímo pod přehrávačem (přehrát, zastavit, posun o~snímek, skok na začátek nebo konec). Přehrávač přehrává pouze soubory umístěné na časové ose, nezobrazuje náhledy zdrojového materiálu.
-
-S~položkami seznamu se zdrojovým materiálem se pracuje přímo. Po najetí nebo kliknutí na položku se zobrazí dostupné operace. Pod poslední položkou se nachází tlačítko na přidání materiálu, případně je možné použít přetažení souboru do oblasti seznamu.
-
-Časová osa zobrazuje pod sebou stopy v~pořadí, v~jakém byly přidány. Stopu lze odebrat či přidat novou zvukovou nebo obrazovou stopu tlačítkem pod poslední stopou. Položky se na časovou osu přidávají přetažením ze seznamu materiálu a nebo tlačítkem plus u~materiálu. Poloha položky se mění přetažením. Uchopením položky za okraj lze měnit začátek nebo konec. U~každé položky je náhledový obrázek a textové informace. S~vybranou položkou lze pracovat tlačítky na listě nástrojů u~horního okraje časové osy. V~aplikaci jsou dvě lišty nástrojů, globální akce a akce s~časovou osou. 
-
-Pokud je potřeba upřesnit, jakou akci chce uživatel provést (přidání filtru, osy), zobrazí se rozbalovací nabídka. Vyžaduje-li akce zadání hodnot, zobrazí se modální okno. Modální okna jsou využívány i pro zobrazení vlastností.
-
-Nápověda k~prvkům je řešena pomocí informačních bublin (někdy též tooltip), po najetí na položku na časové ose se zobrazí informační bublina s~vlastnostmi položky.
-
-\begin{figure}[h]
-	\centering
-	\scalebox{0.6}{
-		\includegraphics{obrazky-figures/mockup.png}
-	}
-	\caption{Prototyp uživatelského rozhraní.}\label{img:mockup}
-\end{figure}
-
-\section{Návrh architektury}
-
 \section{Návrh API}
+Stejně jako uživatelské rozhraní i serverové rozhraní je potřeba navrhnout a otestovat. Při návrhu je třeba dbát pravidel architektury \textit{REST}. \textit{REST} definuje, jakým způsobem lze pracovat s daty na serveru. K práci se využívají 4 metody -- vytvoření dat (Create), získání požadovaných dat (Retrieve), změnu (Update) a smazání dat (Delete). Tato čtveřice bývá označování zkratkou CRUD\,\cite{rest}.
+
+Nejprve jsem si ujasnil, jaké všechny operace bude API umožňovat. Jedná se o následující operace: vytvořit nový projekt, získat stav existujícího projektu, nahrát soubor ze zařízení, vložit nahraný soubor na časovou osu, přidat filtr, odebrat filtr, přidat přechod, odebrat přechod, posunout položku, rozdělit položku na 2 části, odebrat položku z časové osy, smazat nahraný soubor, vyvést (dokončit) projet, případně smazat projekt.
+
+Dalším krokem bylo identifikovat zdroje -- entity. Jednou z entit bude beze sporu \textbf{projekt}, dále \textbf{soubor} a \textbf{položka časové osy}. Dalšími entitami jsem určil \textbf{přechod} a \textbf{filtr}. Operace je možné provádět jen nad zdroji, po identifikaci zdrojů je potřeba přiřadit operace ke zdrojům.
+
+K projektu jsem přiřadil: vytvořit nový projekt, získat stav existujícího projektu, vyvést projet, smazat projekt. Nad souborem bude možné provádět: nahrát soubor ze zařízení, vložit nahraný soubor na časovou osu, smazat nahraný soubor. Položka časové osy bude umožňovat: posunout položku, rozdělit položku na 2 části, odebrat položku z časové osy. Filtr bude možné přidat a odebrat, stejně tak přechod bude možné přidat a odebrat.
+
+\textit{REST} ovšem rozlišuje 4 metody. Nyní je potřeba přiřadit operacím jednu z následujích metod: POST (Create), GET (Retrieve), PUT (Update), DELETE (Delete). Nové prostředky vytváříme při vytváření nového projektu, nahrávání souboru ze zařízení, přidání filtru a přechodu, pro tyto operace jsem zvolil metodu POST. Získávání stavu projektu je jednoznačně metoda GET. Pro rušení prostředků slouží metoda DELETE -- odebrání filtru, odebrání přechodu, odebrání položky z časové osy, smazání nahraného souboru, smazání projektu. Na zbývající operace jsem použil metodu PUT -- vložit nahraný soubor na časovou osu, posunout položku, rozdělit položku na 2 části.
+
+I ideálním případě nevzniknout kolize a každý zdroj bude mít přiřazenou maximálně jednu operaci k jedné HTTP metodě. V mém případě má zdroj \textbf{položka na časové ose} dvě metody PUT -- posunout položku, rozdělit položku na 2 části. V této chvíli je potřeba operace dále rozlišit, přesun identifikuji jako \texttt{move} a rozdělení položek jako \texttt{split}.
+
+Aby nemohlo dojít ke kolizi mezi URL určených pro webové stránky a pro API, mají veškeré požadavky na API prefix \texttt{api}. Do budoucna to umožní například verzovat API. Výsledný návrh API uvádím v následujícím seznamu:
+\begin{itemize}
+\item project
+\begin{itemize}
+\item POST: \texttt{/project}
+\item GET: \texttt{/project/\{projectID\}}
+\item DELETE: \texttt{/project/\{projectID\}}
+\item PUT: \texttt{/project/\{projectID\}}
+\end{itemize}
+\item file
+\begin{itemize}
+\item POST: \texttt{/project/\{projectID\}/file}
+\item DELTE: \texttt{/project/\{projectID\}/file/\{fileID\}}
+\item PUT: \texttt{/project/\{projectID\}/file/\{fileID\}}
+\end{itemize}
+\item filter
+\begin{itemize}
+\item POST: \texttt{/project/\{projectID\}/filter}
+\item DELETE: \texttt{/project/\{projectID\}/filter}
+\end{itemize}
+\item transition
+\begin{itemize}
+\item POST: \texttt{/project/\{projectID\}/transition}
+\item DELETE: \texttt{/project/\{projectID\}/transition}
+\end{itemize}
+\item item
+\begin{itemize}
+\item DELETE: \texttt{/project/\{projectID\}/item}
+\item PUT: \texttt{/project/\{projectID\}/item/move}
+\item PUT: \texttt{/project/\{projectID\}/item/split}
+\end{itemize}
+\end{itemize}
+
+Požadavek na \textit{REST} API musí být úplný, \textit{REST} API je bezstavové. Například požadavek DELETE \texttt{/project/\{projectID\}} je úplný, serveru říkáme, že má smazat projekt a zároveň i uvádíme identifkátor projektu. U některých požadavků je ale potřeba blíže specifikovat parametry požadavku. Například u požadavku POST: \texttt{/project/\{projectID\}/filter} nevíme, jaký filtr se má aplikovat a ani nevíme, na jakou položku. Vyjma metody GET mohou mít požadavky tělo s parametry. Parametry mohou být předány v libovolném formátu, v projektu používám \textit{application/json} a pro nahrávání souboru \textit{multipart/form-data}. Přechozí požadavek je upřesněn parametry \texttt{track}, \texttt{item}, \texttt{filter} a \texttt{params} (parametry filtru). Kompletní specifikace navrženého API se nachází v dokumentaci API.
 
 \chapter{Práce s multimédii}
 \section{MLT framework}
