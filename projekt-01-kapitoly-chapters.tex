@@ -34,7 +34,7 @@ Mezi kvalitní proprietární programy se řadí program \textit{iMovie} od firm
 	\caption{Uživatelské rozhraní iMovie. Časová osa nemá jednotné měřítko.}\label{img:imovie}
 \end{figure}
 
-Zajímavým projektem mezi desktopovými aplikacemi je open source editor \textit{fwf}\footnote{fwf -- JavaScriptový FFmpeg editor, \url{https://github.com/daem-on/fwf}.} -- lineární video editor využívající knihovnu \textit{FFmpeg}\footnote{FFmpeg -- multiplatformní řešení pro nahrávání, konverzi a streamování audia a videa, \url{https://ffmpeg.org/}.}. Program je napsaný v~JavaScriptovém frameworku \textit{Vue.js}\footnote{Vue.js -- open source JavaScriptový framwork pro tvorbu uživatelských rozhraní, \url{https://vuejs.org/}.} a zkompilovaný pomocí nástroje \textit{Electron}.\footnote{Electron -- nástroj pro tvorbu desktopových aplikací za pomocí JavaScriptu, HTML a CSS, \url{https://electronjs.org/}.} Video editor má pouze základní funkce, není příliš spolehlivý, ale lze se u~něj inspirovat s~použitými technologiemi pro implementaci uživatelského rozhraní, obrázek \ref{img:fwf}.
+Zajímavým projektem mezi desktopovými aplikacemi je open source editor \textit{fwf}\footnote{fwf -- JavaScriptový FFmpeg editor, \url{https://github.com/daem-on/fwf}.} -- lineární video editor využívající knihovnu \textit{FFmpeg}\footnote{FFmpeg -- multiplatformní řešení pro nahrávání, konverzi a streamování audia a videa, \url{https://ffmpeg.org/}.}. Program je napsaný v~JavaScriptovém frameworku \textit{Vue.js}\,\footnote{Vue.js -- open source JavaScriptový framwork pro tvorbu uživatelských rozhraní, \url{https://vuejs.org/}.} a zkompilovaný pomocí nástroje \textit{Electron}.\footnote{Electron -- nástroj pro tvorbu desktopových aplikací za pomocí JavaScriptu, HTML a CSS, \url{https://electronjs.org/}.} Video editor má pouze základní funkce, není příliš spolehlivý, ale lze se u~něj inspirovat s~použitými technologiemi pro implementaci uživatelského rozhraní, obrázek \ref{img:fwf}.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.4}{
@@ -42,7 +42,7 @@ Zajímavým projektem mezi desktopovými aplikacemi je open source editor \texti
 	}
 	\caption{Uživatelské rozhraní editoru \textit{fwf}, sestavené nástrojem Electron.}\label{img:fwf}
 \end{figure}
-Na časovou osu byla použita knihovna \textit{vis.js}.\footnote{vis.js -- JavaScriptová knihovna na vizualizaci dat, \url{http://visjs.org/}.}. \textit{Timeline} je jen jedním z vizualizačních nástrojů knihovny. Knihovna slouží k zobrazení událostí od Unixové epochy (00:00:00,000 1. ledna 1970), zatímco projekt začíná časem 0. Dále jsem z projektu použil font Source Sans Pro zveřejněnou pod svobodnou Open Font Licencí a pro ikony odnož použitého fontu Material Icons od Google (licence Apache-2.0).
+Na časovou osu jsem použil knihovnu \textit{vis.js}.\footnote{vis.js -- JavaScriptová knihovna na vizualizaci dat, \url{http://visjs.org/}.}. \textit{Timeline} je jen jedním z vizualizačních nástrojů knihovny. Knihovna slouží k zobrazení událostí od Unixové epochy (00:00:00,000 1. ledna 1970), zatímco projekt začíná časem 0. Dále jsem z projektu použil font Source Sans Pro zveřejněnou pod svobodnou Open Font Licencí a pro ikony odnož\,\footnote{Material Design Icons -- odnož projektu Google, \url{https://github.com/jossef/material-design-icons-iconfont}} použitého fontu Material Icons od Google (licence Apache-2.0).
 
 \section{Webové editory}
 Na webový editor jsem nezískal žádný tip. Lidé v mém okolí raději sáhli po open source editoru či stáhli placený program obsahující crack pomocí torrentu. U~webových editorů je velký rozdíl mezi placenými řešeními a neplacenými. Placených aplikací je nepřeberné množství s~mnoha funkcemi, bezplatná řešení mají zásadní omezení. Řešení s~otevřeným zdrojovým kódem a svobodnou licencí jsem nenašel žádné.
@@ -127,13 +127,120 @@ Hlavním cílem práce je vytvořit videoeditor, který bude fungovat ve všech 
 
 Nejpoužívanějšími\footnote{Wappalyzer -- doplněk prohlížeče pro analýzu webových technologií, data od uživatelů agreguje do statistik, \url{https://www.wappalyzer.com/categories/javascript-frameworks}.} frameworky jsou: React, Backbone.js, RequireJS, AngularJS, nebo třeba Vue.js (používané programem \textit{fwf}). Z těchto frameworků jsem vybral React, který je zároveň i šablonovacím systémem a má kvalitní dokumentaci. Šablonovací systém používám zejména k rozdělení uživatelského rozhraní na komponenty.
 
-Webová aplikace bude potřebovat i serverovou část, na kterou klient nahraje soubory, popíše serveru operace nad soubory a dá pokyn pro vyhotovení výsledného videa. Tuto architekturu označujeme jako klient-server. Mezi klientem a serverem je nutné komunikovat. Pro výměnu dat po síti musejí obě části používat dohodnutý serializační formát. JavaScript nejčastěji používá \textit{XML} nebo \textit{JSON}. \textit{JSON} (JavaScriptový objektový zápis) je novější a zápis ve formátu \textit{JSON} je validním kódem JavaScriptu. \textit{XML} (rozšiřitelný značkovací jazyk) na druhou stranu umožňuje přenos binárních dat. Se serverem bude komunikovat JavaScript, volba formátu \textit{JSON} je tedy výhodná.
+Webová aplikace bude potřebovat i serverovou část, na kterou klient nahraje soubory, popíše serveru operace nad soubory a dá pokyn pro vyhotovení výsledného videa. Tuto architekturu označujeme z pohledu sítě jako klient-server. Z pohledu návrhu se bude jednat o MVC (model-view-controller) architekturu. Mezi klientem a serverem je nutné komunikovat. Pro výměnu dat po síti musejí obě části používat dohodnutý serializační formát. JavaScript nejčastěji používá \textit{XML} nebo \textit{JSON}. \textit{JSON} (JavaScriptový objektový zápis) je novější a zápis ve formátu \textit{JSON} je validním kódem JavaScriptu. \textit{XML} (rozšiřitelný značkovací jazyk) na druhou stranu umožňuje přenos binárních dat. Se serverem bude komunikovat JavaScript, volba formátu \textit{JSON} je tedy výhodná.
 
 Sever bude mít za úkol 2 činnosti. Nejprve bude muset uživateli poskytnout soubory s HTML, CSS a JavaScriptem a poté reagovat na JavaScriptové asynchronní požadavky. Při návrhu jsem se rozhodoval mezi implementací serveru pomocí jazyka PHP a pomocí Node.js. Jazyk PHP vznikal v době statických stránek a osobních webů, Node.js je obvykle spojován se single page aplikacemi. Node.js jsem si vybral právě protože plánuji vytvořit single page aplikaci, kvůli možnosti používat stejný jazyk pro klientskou i serverovou část a také kvůli asynchronnímu přístupu k blokujícím operacím. Po PHP bych naopak sáhl při tvorbě e-shopu, blogu či informačního systému.
 
 Server bude pro klienta dosputný skrze rozhraní (API). Rozhraní bude sloužit k vyvolání akcí na serveru i k získávání dat. Existuje více koncepcí pro komunikaci a tvorbu API, například \textit{XML-RPC}, \textit{SOAP} nebo \textit{REST}. \textit{XML-RPC} a \textit{SOAP} používají jako serializační formát pro výměnu dat \textit{XML}, kvůli JavaScriptu na střaně klienta i serveru jsem ovšem zvolil \textit{JSON}. \textit{REST} je způsob komunikace na základě HTTP požadavků. \textit{REST} není na HTTP vázaný, ale není praktický důvod používat odlišný protokol. Výchozím serializačním formátem pro výměnu dat je JSON, ovšem lze používat například i \textit{XML}.
 
-Multimediální soubory bude potřeba zpracovávat. \textit{Clipchamp Create} provádí zpracování na straně klienta ve webovém prohlížeči. Webový prohlížeč ani webové technologie ale nejsou navrženy na renderování videí, \textit{Clipchamp} vyvádí video déle, než bych byl ochotný čekat. Editor byl navržen aby zpracovával videa na serveru. K tomu může sloužit program \textit{FFmpeg} nebo \textit{MLT}. Program \textit{FFmpeg} používá například editor \textit{fwf} nebo Android aplikace \textit{Video Editor using FFmpeg}\footnote{Video Editor using FFmpeg -- open source editor videa pro android, \url{https://github.com/bhuvnesh123/FFmpeg-Video-Editor-Android}.}. \textit{FFmpeg} se používá skrze příkazový řádek. Každá operace představuje jeden příkaz (zkrátit video, přidat efekt, spojit videa). Na přadí operací záleží. Projekt by byl popsán souborem s posloupností příkazů pro FFmpeg, případně jedním dlouhým příkazem. Multimediální framework \textit{MLT} rovněž nabízí své nástroje skrze příkazový řádek. Projekt je možné popisovat posloupností příkazů a také pomocí serializačního formátu \textit{XML}. Celý projekt se popíše entitami \textit{XML} a programu \textit{MLT} se poté pouze předá \textit{XML} sobor. \textit{XML} soubor bude uložen po celou dobu na serveru a server jej bude editovat na základě požadavků klienta. \textit{REST API} je bezstavové, požadavek musí být úplný a stav projektu je uložen v \textit{XML} souboru projektu.
+Multimediální soubory bude potřeba zpracovávat. \textit{Clipchamp Create} provádí zpracování na straně klienta ve webovém prohlížeči. Webový prohlížeč ani webové technologie ale nejsou navrženy na renderování videí, \textit{Clipchamp} vyvádí video déle, než bych byl ochotný čekat. Editor byl navržen aby zpracovával videa na serveru. K tomu může sloužit program \textit{FFmpeg} nebo \textit{MLT}. Program \textit{FFmpeg} používá například editor \textit{fwf} nebo Android aplikace \textit{Video Editor using FFmpeg}\footnote{Video Editor using FFmpeg -- open source editor videa pro android, \url{https://github.com/bhuvnesh123/FFmpeg-Video-Editor-Android}.}. \textit{FFmpeg} se používá skrze příkazový řádek. Každá operace představuje jeden příkaz (zkrátit video, přidat efekt, spojit videa). Na přadí operací záleží. Projekt by byl popsán souborem s posloupností příkazů pro FFmpeg, případně jedním dlouhým příkazem. Multimediální framework \textit{MLT} rovněž nabízí své nástroje skrze příkazový řádek. Projekt je možné popisovat posloupností příkazů a také pomocí serializačního formátu \textit{XML}. Celý projekt se popíše entitami \textit{XML} a programu \textit{MLT} se poté pouze předá \textit{XML} sobor. \textit{XML} soubor bude uložen po celou dobu na serveru a server jej bude editovat na základě požadavků klienta. \textit{REST API} je bezstavové, požadavek musí být úplný a stav projektu je uložen v \textit{XML} souboru projektu. Projekt nebude využívat databázového systému.
+
+Seznam použitých technologií, jejich umístění a komunikaci zobrazuje obrázek \ref{img:server-architektura}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.6}{
+		\includegraphics{obrazky-figures/server-architektura.pdf}
+	}
+	\caption{Architera serveru.}\label{img:server-architektura}
+\end{figure}
+
+\section{Zvolené technologie}
+\subsection{Node.js}
+Node.js vytváří běhové prostředí JavaScriptu postavené na JavaScriptovém enginu V8 od firmy Google. Umožňuje používat JavaScript jako systémový jazyk, který má přístup k paměťi, bufferům, procesům, souborům a soketům. Cílem Node.js je poskytovat snadnou cestu k vytvoření škálovatelných síťových aplikací. Node.js nepoužívá vlákna, je založen na událostech a asynchronním vykonávání blokujících operací, umožňuje snadnou modularitu. Právě eliminací blokujících operací pomocí asynchronní obsluhy řízenou událostmi lze dosáhnout vysokého výkonu. PHP vytváří pro každý požadavek samostatné vlákno a v případě blokující operace čeká na vyřízení, Node.js používá pro všechny požadavky jedno vlákno a namísto paralelního zpracování používá Node.js pseudoparalelní zpracování.
+
+Pro porovnání rychlosti vykonání programu, uvedu příklad jednoduchého programu, ve kterém se v prázdném cyklu inkrementuje miliadkrát čítač. Doba běhu programu je pro jednotlivé jazyky následující -- JavaScript (Node.js verze 9.3.0) 0,635 sekund, jazyk C (Apple LLVM 8.1.0) 2,398 sekund a Python (3.6.1) 31,096 sekund. Všechny testy probíhaly na zařízení MacBook Pro s procesorem Intel Core i7 2,8 GHz. Překladač V8 JavaScript kompiluje namísto interpretování, díky tomu lze využívat vysokoúrovňový jazyk bez nutnosti vzdát se rychlosti kompilovaných jazyků\,\cite{MasteringNodejs}.
+
+JavaScript na klientské straně je pro interaktivní webovou aplikaci nutnost. Díky běhu JavaScriptu na klientské i serverové části mohou programátoři používat jeden jazyk v rámci projektu. Dále se otevírá možnost používat stejný kód na serveru i na straně klienta. Stačí vhodně členit funkce do modulů a tyto moduly poté importovat jak na straně serveru, tak na straně klienta. V mé práci takto sdílím kód pro práci s časovými značkami.
+
+\subsection{Express framework}
+Pro usnadnění tvorby webového serveru jsem použil ExpressJs (zkráceně Express). Express je webový framework pro Node.js. Express poskytuje knihovny užitečné pro zajištění základních funkcí webového serveru (routování, podpora šablonovacího systému pro generování stránek, zpracování dotazů, parametrů, sezení a cookies, autentifikaci, vytváření odpovědí, zpracování chyb, aj.).
+
+\subsection{ECMAScript, TypeScript}
+Jedná se o programovací jazyk se syntaxí inspirovanou jazykem C, který se překládá do JavaScriptu. TypeScript je nadstavba nad JavaScriptem, program v JavaScriptu je validním programem v TypeScriptu. Přináší silnou typovou kontrolu, třídy (dnes i v ES6), rozhraní, dědičnost. Offline překlad do JavaScriptu odhalí syntaktické chyby, a volitelně zajistí kompatibilitu se standardy ES3 a ES5 (alternativou je \textit{Babel}, na kontrolu kódu na syntaktické chyby pak \textit{ESLint}). Dále přidává spoustu \uv{syntaktického cukru} -- gettery/settery, výčtové typy, promises. Podporuje integraci s Angular 2 i React.
+
+Na druhou stranu je typová kontrola plnohodnotná pouze pokud všechny balíčky obsahují hlavičkové soubory TS. TypeScript je nutné začlenit do vývojového procesu s Node.js a React. Během vývoje se při každé změně zdrojového kódu musí provést kompilace do JavaScriptu. Pro začínajících programátory a pro malé projekty zavádí složitost, která nemusí převážit výhody zavedení.
+
+S příchodem ES6 přejal standard z TypeScriptu deklaraci proměnných s platností v daném rámci bez vedlejších efektů (\texttt{let}), možnost vytvářet třídy, dědičnost, rest parametry, promises a další. Hlavní výhodou zůstává silné typování a kontrola syntaxe při kompilaci. Vzhledem k mým předchozím zkušenostem s jazykem PHP jsem tyto vlastnosti nepožadoval, proto jsem se rozhodl použít standard ES6 a novější revize. Zpětnou kompatibilitu klientského JavaScriptu jsem zajistil nástrojem \textit{Babel}.
+
+\subsection{React}
+React je JavaScriptová knihovna pro tvorbu uživatelských rozhraní. Je založen na komponentách, stavech komponent a na signálech mezi komponentami. Knihovna dovolí rozdělit uživatelské rozhraní do od sebe izolovaných částí kódu -- komponent. Každá komponenta má svůj vlastní stav, své funkce a má plně pod kontrolou své vykreslení. Vztah komponent bývá hierarchický, skládáním komponent můžeme vytvořit komplexní rozhraní při zachování čistého kódu. Stav aplikace uchovávají jednotlivé komponenty, stav má jedno centrální úložiště. Někdy nám tato vlastnost nemusí vyhovovat. V takovém případě stačí vytvořit kořenovou komponentu, a původní komponenty vložit do kořenové komponenty. Úložištěm stavu poté může být kořenová komponenta. Jak může vypadat komponenta React ukazuje následující ukázka.
+\begin{lstlisting}[style=JavaScript]
+import React, { Component } from 'react';
+import SourcesTableRow from './SourcesTableRow';
+import Uploader from './Uploader';
+
+export default class Sources extends Component {
+    constructor(props) {
+        super(props);
+        this.delResource = this.delResource.bind(this);
+        this.putResource = this.putResource.bind(this);
+    }
+    render() {
+        return (
+            <div id={'sources'}>
+                <i className="material-icons" aria-hidden="true">video_library</i>
+                <table>
+                <tbody>
+                    {Object.keys(this.props.items).map(key =>
+                        <SourcesTableRow
+                            key={this.props.items[key].id}
+                            item={this.props.items[key]}
+                            onRemove={this.delResource}
+                            onInsert={this.putResource}
+                        />)
+                    }
+                    <tr>
+                        <td colSpan="3">
+                        <Uploader value={{
+                            onAdd: resource => this.props.onAddResource(resource),
+                            project: this.props.project,
+                        }}
+                        />
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        );
+    }
+    ...
+\end{lstlisting}
+
+Na ukázce je vidět hierarchie komponent. Aktuální komponentou je \texttt{Sources}, komponenta se v těle funkce pro vykreslední odkazuje na \texttt{SourcesTableRow} a \texttt{Uploader}. Komponenta \texttt{Sources} bude těmto dvěma komponentám nadřazená. Pokud by byla komponenta \texttt{Sources} kořenová, nemá na ni kdo odkazovat. Je potřeba určit v jakém místě HTML stránky se má vykreslit. Toho docílíme v JavaScriptovém souboru, který Webpack zkompiluje do klientského JavaScriptového souboru:
+\begin{lstlisting}[style=JavaScript]
+ReactDOM.render(<Sources items={{}} onAddResource={() => {}} />, document.getElementById('app'));
+\end{lstlisting}
+
+Pokud uživatel navštíví stránku s React komponentami, získá nejprve soubor HTML s kostrou stránky. Vespod HTML bude odkaz na JavaScriptový soubor, který se stáhne, vykoná a nahradí elementy kostry s vykreslenými React komponentami. V tomto případě se obsah elementu \texttt{ <div id="{}app"{}></div>} nahradí vykreslenou komponentou \texttt{Sources}.
+\begin{lstlisting}[language=HTML]
+<!DOCTYPE html>
+<html lang="cs" dir="ltr">
+    <head>
+        <title>React page</title>
+    </head>
+    <body>
+        <div id="app">
+            <h2>Nacitani<h2>
+            Pokud se aplikace nenacte, zkontrolujte zapnuty JavaScript
+        </div>
+        <script src="/main.js" async></script>
+    </body>
+</html>
+\end{lstlisting}
+
+Pokud má být výsledný kód přehledný, vyplatí se vytvářet komponety jako třídu, která rozšiřuje třídu \texttt{Component}. Je vhodné pro každou třídu použít samostatný soubor a třídu s komponentou určit jako výchozí export. Díky tomu můžeme ostatní komponenty použít importem souboru.
+
+Třída komponenty může obsahovat vlastní funkce a také funkce, které mají zvláštní význam. Funkce konstruktoru třídy (\texttt{constructor}) je obvyklá. Na začátku kontruktoru musíme volat konstruktor předka. V konstruktoru se obvykle nastavuje stav komponenty, atributy třídy a také se zde fixuje kontext pro proměnnou \texttt{this} uvnitř funkcí. Pokud totiž funkce předáme jiné komponentě v parametrech (jako callback) a funkci zavoláme z jiné komponenty, bude \texttt{this} odkazovat na komponentu, ze které volání vychází. Metoda \texttt{bind} tomuto nechtěnému chování zabrání.
+
+Dalšími důležitými metodami zvláštního významu jsou například: \texttt{render}, \texttt{componentDidMount}, \texttt{componentDidUpdate} a \texttt{componentWillUnmount}.
+
+Metoda \texttt{render} zajišťuje vykreslení komponenty. Funkce za úkol vrátit JSX kód komponenty. JSX je rozšíření syntaxe JavaScriptu. JSX svou syntaxí připomíná spíše XML, než HTML. Všechny tagy jsou párové (musejí být uzavřeny). Kód musí být uzavřen do kořenového elementu. Pokud nechceme vykreslovat žádný kořenový element, můžeme použít elementy s prázdnými tagy \texttt{<></>}. JSX kombinuje HTLM a JavaScript. Příkazy a proměnné JavaScriptu jsou dostupné ve složených závorkách -- \texttt{\{this.props.items\}}. Atributy HTML prvků se zapisují v CamelCase (notaci velkých písmen). Atributy nabývají stejných hodnot, jako JavaScriptové proměnné. Zvláštností je atribut \texttt{style}, který přijímá objekt s CSS vlastnostmi\,\cite{jsx}.
+
+Zbývající metody se volají při vložení komponenty do virtuálního DOM stromu, který si React vytváří, při aktualizaci a při odstraňování z DOM.
+
+Aby uživatelské rozhraní fungovalo, musejí mezi sebou komponenty komunikovat. Komponenty mají stromovou strukturu, komunikace probíhá dvěma směry -- od předka k potomkovi a naopak. Komponenty mohou podřazeným komponentám při jejich vytváření předat parametry. Můžeme předávat callbacky nebo stav komponenty. V podřazené komponenty jsou tyto parametry dostupné skrze objekt \texttt{this.props}. Pokud podřažené komponentě předáme stav a podřazená komponenta se stavem přímo pracuje ve funkci \texttt{render}, dojde se změnou stavu předka i k aktualizaci a překreslení podřazené komponenty. Pokud například změníme stav kořenové komponenty, může tato změna \uv{probublat} ke komponentám o několik úrovní níže, vše se děje automaticky. Komunikace směrem ke kořeni probíhá pomocí callbacků. Podřazená komponenta může změnit stav nadřazené pouze nepřímo. Zavolá funkci, kterou mu nadřazená kompnenta zpřístupnila v \texttt{this.props}, na základě volání nadřazená komponenta změní svůj stav a obě komponenty se překreslí.
+
+Stav komponety se nastavuje metodou \texttt{this.setState}. Jako parametr se předá objekt s položkami, které se mají přepsat. Předchozí a následující stav se nesmí ovlivňovat. Pokud chceme upravit jen jednu položku objektu, musíme vytvořit kopii objektu a tuto kopii nastavit jako nový stav\,\cite{react}.
 
 \section{Návrh uživatelského rozhraní}
 Cílovou skupinou jsou počítačově gramotní uživatelé, kteří někdy používali program na editování videa. Rozhraní je voleno tak, aby připomínalo klasické desktopové aplikace a pomohlo uživatelům se zorientovat. Typickou úlohou pro videoeditor bude sestříhat záznam přednášky do výukového videa nebo vytvořit tutoriál ze záznamu z kamery nebo obrazovky. Aplikace bude využívána na na počítačích a noteboocích, není nutné přizpůsobovat rozhraní obrazovkám mobilních zařízení. Ovládání bude pomocí klávesnice a myši, dotekové obrazovky se sice nepředpokládají, ale ani nevylučují.
@@ -305,7 +412,7 @@ Aby nemohlo dojít ke kolizi mezi URL určených pro webové stránky a pro API,
 \end{itemize}
 \end{itemize}
 
-Požadavek na \textit{REST} API musí být úplný, \textit{REST} API je bezstavové. Například požadavek DELETE \texttt{/project/\{projectID\}} je úplný, serveru říkáme, že má smazat projekt a zároveň i uvádíme identifkátor projektu. U některých požadavků je ale potřeba blíže specifikovat parametry požadavku. Například u požadavku POST: \texttt{/project/\{projectID\}/filter} nevíme, jaký filtr se má aplikovat a ani nevíme, na jakou položku. Vyjma metody GET mohou mít požadavky tělo s parametry. Parametry mohou být předány v libovolném formátu, v projektu používám \textit{application/json} a pro nahrávání souboru \textit{multipart/form-data}. Přechozí požadavek je upřesněn parametry \texttt{track}, \texttt{item}, \texttt{filter} a \texttt{params} (parametry filtru). Kompletní specifikace navrženého API se nachází v dokumentaci API.
+Požadavek na \textit{REST} API musí být úplný, \textit{REST} API je bezstavové. Například požadavek DELETE \texttt{/project/\{projectID\}} je úplný, serveru říkáme, že má smazat projekt a zároveň i uvádíme identifkátor projektu. U některých požadavků je ale potřeba blíže specifikovat parametry požadavku. Například u požadavku POST: \texttt{/project/\{projectID\}/filter} nevíme, jaký filtr se má aplikovat a ani nevíme, na jakou položku. Vyjma metody GET mohou mít požadavky tělo s parametry. Parametry mohou být předány v libovolném formátu, v projektu používám \textit{application/json} a pro nahrávání souboru \textit{multipart/form-data}. Přechozí požadavek je upřesněn parametry \texttt{track}, \texttt{item}, \texttt{filter} a \texttt{params} (parametry filtru). Kompletní specifikace navrženého API se nachází v dokumentaci API. API jsem zdokumentoval dle specifikace \textit{OpenAPI 3.0}\footnote{OpenAPI 3.0 -- komunitní specifikace pro popis REST API, \url{https://www.openapis.org/}.} pomocí online nástroje \textit{Swagger Editor}.\footnote{Swagger Editor -- open source online editor pro dokumentování API, \url{https://editor.swagger.io/}.}
 
 \chapter{Práce s multimédii}
 \section{MLT framework}
@@ -631,82 +738,142 @@ Canvas najde uplatnění zejména v případech, kdy pracujeme s důvěryhodným
 HTML5 je živý standard, který neustále rozšiřuje možnosti tvorby webového obsahu. Práce s multimédii je v HTML5 prakticky neomezená, ale ne všechny funkce jsou standardizovány. Při implementaci je nutné sledovat stav standardu a rozšířenost v prohlížečích. Vždy je nutné začít výběrem formátu multimédií. Pokud chceme mít jistotu, že každý uživatel bude mít prohlížeč s kompatibilním kodekem, musíme prohlížeči videa nabízet alespoň ve 2 formátech. Jednoduché úpravy obrazu provádíme pomocí CSS filtrů, na složitější filtry použijeme SVG filtry. Chceme-li přistupovat přímo k obrazovým datům, použijeme Canvas. Jednoduchý videoeditor si pro náhledové video vystačí s CSS filtry -- dostatečně rychlé, na implementaci jednoduché a s podporou v moderních prohlížečích.
 
 \chapter{Realizace, experimenty}
+V úvodu této kapitoly nastíním strukturu projektu, části, ze kterých se projekt skládá. Dále popisuji způsob instalace a zprovoznění, popisuji důležité soubory z hlediska nasazení a údržby projektu. Ve druhé části se věnuji roli jednotlivých částí při obsluze požadavku a poté a jednotlivé části projektu podrobně rozebírám.
 
-\section{Generování XML}
-Se založením nového projektu je vytvořen soubor \texttt{project.mlt} obsahující hlavičku XML a odkaz na DTD schéma umístěné v repositáři projektu MLT. Poté následuje kořenový tag \texttt{<mlt>}. Uvnitř se nachází jeden playlist pro výchozí stopu \texttt{videotrack0} a hlavní kontejner \texttt{<track>} obsahující odkazy na všechny stopy v projektu. Tento hlavní kontejner musí být vždy poslední položkou v kořenovém \texttt{<mlt>}.
-
-Uvnitř kořenového elementu se nejprve  nacházejí zdrojové soubory (elementy <producer>) u kterých jsou poznamenány následující vlastnosti -- absolutní cesta k souboru (\texttt{resource}), typ souboru (\texttt{musecut:mime\_type}), původní název souboru (\texttt{musecut:name}) a v případě video souboru délka v milisekundách (\texttt{length}). Zdrojové soubory mají id s prefixem \uv{producer} a 20 znaky náhodně generovanými při nahrávání souboru.
-Po posledním elementu \texttt{<producer>} jsou pomocné playlisty
+\section{Struktura projektu}
+V kořenovém adresáři projektu se nacházejí konfigurační soubory, soubory správce balíčků a hlavní soubor pro spuštění projektu. Zdrojové soubory jsou uloženy v podadresářích, ze struktury projektu je patrná architektura MVC, obrázek \ref{img:structure}.
 \begin{figure}[h]
 	\centering
-	\scalebox{0.6}{
-		\includegraphics{obrazky-figures/schemaXML.pdf}
-	}
-	\caption{Obecné schéma prvků generovaných souborů.}\label{img:schemaXML}
+	\scalebox{0.9}{
+	    \includegraphics{obrazky-figures/file-structure.pdf}
+    }
+	\caption{Struktura projektu.}\label{img:structure}
 \end{figure}
 
+Významu konfiguračních souborů a souborům v kořenovém adresáři se budu věnovat v následujících kapitolách. Jednotlivé části projektu rozebírám v druhé polovině této kapitoly.
 
-\section{API serveru}
-\section{Zvolené technologie}
+\section{Nastavení, konfigurační soubory}
+Po spuštění aplikace se začne vykonávat kód v souboru \texttt{/server.js}. Nejprve se nastaví prostředí pro zpracovávání požadavků. K tomu se využívají další soubory -- \texttt{/config.js}, \text{/router.js} a soubory nainstalovaných balíčků.
+
+\subsection{Server}
+Soubor \texttt{/server.js} je hlavním souborem projektu. Při spuštění projektu začne interpret Node.js interpretovat právě tento soubor. Soubor má na starost inicializaci prostředí, konkrétně má na starost následující:
+\begin{enumerate}
+\item Inicializuje JavaScriptový framework \textit{Express}.
+\item Inicializuje rozšíření pro zpracování nahrávaných souborů (\textit{busboy}).
+\item Inicializuje rozšíření pro zpracování těl požadavků ve formátu \textit{JSON}.
+\item Nastaví šablonovací systém, z pohledu \textit{Express} čisté HTML ve složce \texttt{/views}.
+\item Nastaví router na \texttt{/router.js}.
+\item Nastaví \texttt{/public} jako veřejný adresář, přístupný ze sítě.
+\item Nastaví server, aby naslouchal na portu a adrese uvedené v souboru \texttt{config.js}.
+\end{enumerate}
+Tyto činnosti se vykonávají pouze při spuštění serveru. Jakmile se provedou všechny úkony, server naslouchá požadavkům a příchozí požadavky předává routeru.
+
+\subsection{Config\label{cap:config}}
+Soubor \texttt{/config.js} je centrem všech konfiguračních direktiv.  Před nasazením v novém prostředí je nutné hodnoty v souboru \texttt{/config.js} upravit dle aktuálních údajů. Prvních sedm údajů je závislých na prostředí, ve kterém je plánováno nasazení:
 \begin{itemize}
-\item Google Material Icons -- \url{https://github.com/jossef/material-design-icons-iconfont}
-\item Visual timeline -- vis.js \url{https://github.com/almende/vis}
-\item FFMPEG JS API: \url{https://github.com/bilashcse/Online-Video-Editor}
-\item FFmpeg v~JavaScriptu: \url{https://github.com/bgrins/videoconverter.js}
-\item Python knihovna pro usnadnění práce s~MLT frameworkem: \url{https://github.com/antiboredom/vidpy}
-\end{itemize}
-Emaily:
-\begin{itemize}
-\item odesílání \texttt{nodemailer}
-\item zachytávání pro testování \texttt{Papercut} / \texttt{smtp-sink} (node.js řešení)
+\item \texttt{port} -- číslo portu, na kterém bude server spuštěn. Port musí být volný. Porty s číslem menším než 1024 mohou vyžadovat oprávnění správce. Výchozí hodnotou je \uv{8080}.
+\item \texttt{host} -- doménové jméno. Například \uv{localhost} nebo \uv{eva.fit.vutbr.cz}. Výchozí hodnotou je \uv{localhost}.
+\item \texttt{emailServer} -- doménové jméno SMTP serveru pro zasílání emailových upozornění, výchozí hodnotou je \uv{smtp.stud.fit.vutbr.cz}.
+\item \texttt{emailPort} -- port SMTP serveru pro zasílání emailových upozornění, výchozím portem je \uv{465}.
+\item \texttt{emailUser} -- uživatelské jméno účtu pro autentizaci na SMTP serveru. Z tohoto účtu jsou emailová upozornění zasílána. Výchozí hodnotu \uv{xkudla15} je nutné změnit.
+\item \texttt{emailUser} -- heslo k účtu pro autentizaci na SMTP serveru. Výchozí hodnota nemá význam.
+\item \texttt{adminEmail} -- emailová adresa administrátora. Adresa slouží k zasílání chyb administrátorovi, ke kontaktování. Výchozí hodnota je \uv{xkudla15@stud.fit.vutbr.cz}.
 \end{itemize}
 
-Volba PHP vs Node.js. Volba EcmaScript vs TypeScript vs CoffeeScript.
-\begin{figure}[h]
-	\centering
-	\scalebox{0.4}{
-		\includegraphics{obrazky-figures/server-architektura.png}
-	}
-	\caption{Architera serveru.}\label{img:server-architektura}
-\end{figure}
+Po konfiguračních direktivách následují funkce \texttt{serverUrl} a \texttt{apiUrl}, které zjednodušují přístup k adrese napříč projektem. Hodnoty se používají například při vytváření asynchronních požadavků v React komponentách. Funkce vracejí hodnoty pro protokol HTTP, v případě nasazení HTTPS je nutné tyto dvě funkce upravit.
 
-\subsection{Node.js}
-Node.js vytváří běhové prostředí JavaScriptu postavené na JavaScriptovém enginu V8 od firmy Google. Umožňuje používat JavaScript jako systémový jazyk, který má přístup k paměťi, bufferům, procesům, souborům a soketům. Cílem Node.js je poskytovat snadnou cestu k vytvoření škálovatelných síťových aplikací. Node.js nepoužívá vlákna, je založen na událostech a asynchronním vykonávání blokujících operací, umožňuje snadnou modularitu. Právě eliminací blokujících operací pomocí asynchronní obsluhy řízenou událostmi lze dosáhnout vysokého výkonu. PHP vytváří pro každý požadavek samostatné vlákno a v případě blokující operace čeká na vyřízení, Node.js používá pro všechny požadavky jedno vlákno a namísto paralelního zpracování používá Node.js pseudoparalelní zpracování.
+Následuje položka \texttt{projectPath}, která udává umístění adresáře s podadresáři MLT projektů. Podadresáře obsahují jak nahrané soubory, tak i XML soubor pro program MLT. Výchozí hodnotu \uv{WORKER} není nutné měnit, pokud nepotřebujete mít soubory například na jiném disku.
 
-Pro porovnání rychlosti vykonání programu, uvedu příklad jednoduchého programu, ve kterém se v prázdném cyklu inkrementuje miliadkrát čítač. Doba běhu programu je pro jednotlivé jazyky následující -- JavaScript (Node.js verze 9.3.0) 0,635 sekund, jazyk C (Apple LLVM 8.1.0) 2,398 sekund a Python (3.6.1) 31,096 sekund. Všechny testy probíhaly na zařízení MacBook Pro s procesorem Intel Core i7 2,8 GHz. Překladač V8 JavaScript kompiluje namísto interpretování, díky tomu lze využívat vysokoúrovňový jazyk bez nutnosti vzdát se rychlosti kompilovaných jazyků\,\cite{MasteringNodejs}.
+Poslední položkou je objekt \texttt{mapFilterNames}. Objekt slouží k mapování vlastních názvů filtrů (které nejsou součástí MLT) na názvy filtrů, které jsou součástí MLT. Objekt není nutné upravovat, pokud neimplementujeme další aliasy pro názvy filtrů.
 
-JavaScript na klientské straně je pro interaktivní webovou aplikaci nutnost. Díky běhu JavaScriptu na klientské i serverové části mohou programátoři používat jeden jazyk v rámci projektu. Dále se otevírá možnost používat stejný kód na serveru i na straně klienta. Stačí vhodně členit funkce do modulů a tyto moduly poté importovat jak na straně serveru, tak na straně klienta. V mé práci takto sdílím kód pro práci s časovými značkami.
-
-\subsubsection{Souborový systém}
-Práci se souborovým systémem umožňuje modul File System (\texttt{fs}). Používání funkcí modulu \texttt{fs} je podobné POSIX funkcím jazyka C. Všechny funkce mají synchronní a asynchronní variantu. U I/O operací je silně doporučeno používat asynchronní práci se souborovým systémem. Asynchronní funkce mají jako poslední parametr callback, který se zavolá po dokončení operace. Callbacku je jako první parametr předán objekt pro uchování chyb a poté volitelně data operace. Callback je volán při úspěchu i neúspěchu, neúspěch je indikován objektem 1. parametru. Dalším modulem spojeným se souborovým systémem je \texttt{path}, který poskytuje nástroje pro práci s cestami k souborům a adresářům. Jak vypadá asynchronní čtení souboru ukazuje následující ukázka.
+\subsection{Router}
+Routování zajišťuje soubor \texttt{router.js}, který se skládá z routovacích a middleware pravidel. Pravidla překládají adresu URL na JavaScriptovou funkci (controller), která zajistí obsluhu požadavku. Router z pohledu architektury MVC též spadá mezi controllery . Routovací pravidlo se obvykle aplikuje první, odpovídající URL požadavku, middleware pravidla se vykonají před routovacími pravidly a pokud v nich na konci zavoláme funkci \texttt{next}, vykonají se i pravidla následující. Middleware pravidlo používám pro logování všech přístupů, do budoucna i pro autorizaci uživatele. Funkce pro obsluhu požadavku obdrží objekt s požadavkem, objekt pro budoucí odpověď a funkci \texttt{next}. V následující ukázce je první pravidlo middleware a druhé je routovací.
 \begin{lstlisting}[style=JavaScript]
-fs.open(path.join(projectPath, 'processing')), 'wx', (err, fd) => {
-    if (err) throw err;
-    // prace se souborem
-    fs.close(fd, (err) => {
-        if (err) console.error(err.stack);
-    };
+// Log access
+router.use((req, res, next) => {
+    console.info(new Date(), ` @ ${req.originalUrl}`);
+    next(); // go to the next routes
 });
-console.log('stale se muze cekat na nacteni souboru);
+// API route
+router.post('/api/project/:projectID/file', apiController.projectFilePOST);
 \end{lstlisting}
 
-Funkce \texttt{fs.open} je zavolána, vytvoří požadavek souborovému systému a namísto aktivního čekání je funkce uspána a pokračuje se dál vykonáváním příkazů pod \texttt{fs.open}. V tomto případě by se vypsal do terminálu text \uv{stale se muze cekat na nacteni souboru} a k práci se souborem by se JavaScriptový engine vrátil až po zpřístupnění požadovaného souboru. Z toho plyne, že I/O operace jednoho požadavku nebrzdí vykonávání souběžných požadavků.
+V případě, že router nenalezne v seznamu pravidel odpovídající routovací pravidlo, vrací odpověď s kódem 404. Tělo odpovědi obsahuje HTML s textem \uv{Cannot GET /fuu}, pro požadavek metody \uv{GET} a adresou \uv{/fuu}.
 
-\subsubsection{Práce s procesy}
-Díky událostem a asynchronnímu přístupu k blokujícím požadavkům není problém čekat na mnohem náročnější operace, než je práce se souborovým systémem. V projektu je potřeba zpracovávat, konvertovat a získávat informace o multimédiích. Pro JavaScript například není problém vytvořit potomka, který zpracuje videosoubor, a po skončení potomka pracovat s jeho výstupem. U PHP by to byl problém a čekající procesy by mohly způsobit vyčerpání prostředků serveru. Práci s procesy zpřístupňuje modul Child Processes (\texttt{child\_process}). Z něj využívám funkci \texttt{exec}, který vytvoří shell a umožní v něm vykonávat příkazy. Po dokončení posledního příkazu je k dispozici obsah standardního výstupu a standardního chybového výstupu. Použití příkazu \texttt{exec} demonstruje následující ukázka.
+Posledním middleware pravidlem je pravidlo pro odchytávání chyb, které  se použije, pokud během řádné obsluhy požadavku dojde k chybě a je zavolána funkce \texttt{next}. Chybu zpracuje \texttt{errorController}.
 \begin{lstlisting}[style=JavaScript]
-exec(`ffmpeg -i ${filepath} 2>&1 | grep Duration | cut -d \' \' -f 4 | sed s/,// | sed s/\\\\./,/`,
-    (err, stdout, stderr) => {
-        if (err) console.error(err);
-        else {
-            console.log(stdout.trim());
-        }
-});
+// Error handling
+router.use(errorController.default);
 \end{lstlisting}
-Funkce \texttt{exec} vytvoří potomka a v rámci něj získá informaci o délce souboru \text{filepath}. Délku vypíše v této ukázce na obrazovku, ale pomocí Promises\footnote{Promise -- objekt, který reprezentuje budoucí úspěšné/neúspěšné dokončení asynchronní události a jeho budoucí hodnotu, \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise}.} je možné vytvořit funkci \texttt{getDuration} a délku asynchronně vracet.
 
-\subsubsection{Import modulů}
-Moduly zastřešují související funkce do jednoho celku. Moduly obvykle obsahují proměnné a funkce, které se zpřístupní importováním. Aby bylo možné funkce a promměnné importovat, je nutné v modulu uvádět klíčové slovo \text{export}. Pokud máme v modulu více funkcí, musíme uvést, kterou funkci chceme importovat. Při neuvedení se importuje výchozí export. Pokud chceme používat více funkcí jedním importem, je nutné v modulu veškeré funkce a proměnné obalit do společného objektu, který bude výchozí export. Následující ukázka využívá jednoho hlavního objektu, který je výchozím exportem.
+\subsection{npm}
+Soubory \texttt{/package.json} a \texttt{/package-lock.json} slouží k uložení informací o projektu. Soubory používá program \textit{npm}. V souboru \texttt{/package.json} jsou uloženy informace o projektu, jako je název projektu a popis, verze, Github repozitář, informace o autorovi a licenci, URL pro hlášení chyb a URL stránky projektu. Dále je zde uložen název hlavního JavaScriptového souboru (\texttt{server.js}) a skripty. Například pokud napíšeme v kořenovém adresáři příkaz \texttt{npm run dev}, použije se příkaz \texttt{./node\_modules/.bin/webpack -wd}.
+
+Nejdůležitější částí souboru je seznam závislostí. Pokud potřebujeme rozšířit funkcionalitu projektu a další funkce, můžeme sáhnout po balíčkovém systému \texttt{npm}.\footnote{npm -- balíčkový systém pro Node.js, \url{https://www.npmjs.com/}.} K 22. dubnu 2019 bylo v systému registrováno téměř 810 tisíc balíčků.\footnote{\url{http://www.modulecounts.com/}} Správce \texttt{npm} je výchozí balíčkový systém Node.js, jedná se obdobu správce závislostí \texttt{Composer} pro PHP. Příkazem \texttt{npm install <balicek> --save} provedeme stažení a nainstalování závislosti a zároveň je tato závislost uložena v souboru \texttt{/package.json}.
+
+Pro zjednodušení soubor \texttt{/package-lock.json} neuvádím ve struktuře projektu. Soubor není pro funkčnost aplikace vyžadován. Pokud soubor neexistuje, \textit{npm} si jej vytvoří. V tomto souboru je uložen aktuální stav nainstalovaných balíčků, zatímco v \texttt{/package.json} je seznam balíčků, které \uv{měli} být nainstalovány. Například pokud by měl být nainstalován balíček \texttt{react} ve verzi \textsuperscript{$\wedge$}16.8.6, ve skutečnosti mohl být nainstalován balíček ve verzi 16.8.9. Díky tomu, že závislosti trvají pouze na hlavní verzi, mohou být instalovány nové verze, které jsou zpětně kompatibilní (například opravy chyb).
+
+\section{Zprovoznění projektu}
+Pro běh aplikace je nezbytné mít v systému nainstalované \textit{Node.js}. Postup instalace je uveden na oficiálních stránkách.\footnote{Oficiální stránky Node.js, \url{https://nodejs.org/en/download/}.} Aplikace vyžaduje verzi Node.js 8 nebo novější. Nainstalovanou verzi si lze ověřit příkazem \texttt{node --version}. Pro získání závislostí je nutné mít nainstalovaný program \textit{npm}. Měl by být součástí instalace \textit{Node.js}. Nainstalovanou verzi ověříte příkazem \texttt{npm --version}.
+
+Nejprve si projekt zkopírujeme, nebo stáhneme z repoziráře na Github.com\footnote{Github repozitář kudlav/videoeditor, \url{https://github.com/kudlav/videoeditor}.} tak, aby adresářová struktura projektu odpovídala obrázku \ref{img:structure}. Adresář, ve kterém se nacházejí soubory projektu dále označuji jako \textit{kořenový adresář} se symbolem \uv{/}. Tímto adresářem se nemyslí kořen souborového systému. Projekt se může nacházet v libovolném adresáři, pro který máte oprávnění.
+
+Projekt využívá externích závislostí, které nejsou součástí archivu. Některé závislosti jsou závislé na architektuře procesoru. správce závislostí  Seznam závislostí je uveden v souboru \texttt{package.json}. Stažení všech závislostí provedete příkazem v kořenovém adresáři \texttt{npm install}.
+
+Před spuštěním je potřeba zkontrolovat a upravit nastavení v konfiguračním souboru. Popis konfiguračního souboru nabízí kapitola \ref{cap:config}.
+
+Další postup se odvíjí od účelu, za jakým bude server spuštěn. Postup zprovoznění pro účely testování je odlišný od postupu pro produkční nasazení na server. Rozlišení je důležité z hlediska výkonu a spolehlivosti serveru.
+
+\subsection{Spuštění ve vývojářském režimu}
+Pro spuštění se používají 2 následující příkazy.
+\begin{lstlisting}[style=bash]
+npm run build
+npm run dev
+\end{lstlisting}
+První příkaz (\texttt{npm run build}) kompiluje soubor \texttt{views/style.scss} do souboru \texttt{/public/style.css} (kaskádové styly) a také veškerý JavaScript a React komponenty ve složce \texttt{/react} do jednoho souboru: \texttt{/public/main.js}. Po zadání příkazu provede program webpack kompilaci, dokončení je indikováno následujícím výpisem:
+\begin{lstlisting}
+Version: webpack 4.29.6
+Time: 13391ms
+Built at: 2019-05-01 12:00:00
+...
+\end{lstlisting}
+
+V případě, že plánujeme upravovat soubor \texttt{views/style.scss} nebo soubory ve složce \texttt{/react}, necháme skript dále běžet. Skript bude hlídat soubory a v případě změny provede novou kompilaci. Pokud soubory neplánujeme upravovat, lze skript po první úspěšné kompilaci ukončit (\texttt{CTR+C}). Webpack lze konfigurovat v souboru \texttt{/webpack.config.js}. V souboru se nastavují vstupní a výstupní soubory a pravidla pro konverzi vstupů na výstupy.
+
+Druhým příkazem spustíme server -- \texttt{npm run dev}. Server bude běžet dokud skript neukončíme nebo nedojde k neošetřené výjimce. Pokud dojde k chybě, server se zastaví a čeká na změnu souborů. Server lze restartovat ručně zadáním příkazu \texttt{rs}. Při změně JavaScriptových souborů (vyjma složky \texttt{/public}) je server automaticky restartován. Toto chování je dobré na vývoj, ale nevhodné pro produkční nasazení. Kompatibilitu kódu zajišťuje \textit{Babel}, konfiguraci ukládá do souboru \texttt{/.babelrc}.
+
+\subsection{Produkční nasazení}
+Při prvním spuštění je nejprve potřeba zkompilovat JavaScriptový soubor, který je zasílán webovému prohlížeči uživatele. Klientský JavaScriptový soubor obsahuje hodnoty z konfiguračního souboru, protoje nutné provést překompilování zdrojů po každé změně konfigurace. Zkompilování zdrojů provede následující příkaz:
+\begin{lstlisting}[style=bash]
+npm run build
+\end{lstlisting}
+Po první úspěšné kompilaci skript ukončíme (\texttt{CTR+C}), viz předchozí kapitola.
+
+Dále je vhodné nastavit v prostředí operačního systému proměnnou \texttt{NODE\_ENV}. Díky tomuto nastavení bude \textit{Express} používat cache pro šablony a změní případná chybová hlášení. Dle oficiálních stránek může toto nastavení zvýšit výkon trojnásobně. Proměnnou můžeme nastavit před spuštěním aplikace následujícím příkazem:
+\begin{lstlisting}[style=bash]
+export NODE_ENV=production
+\end{lstlisting}
+Další možností je nastavovat proměnnou automaticky při startu systému v \texttt{/etc/init/env.conf} nebo \texttt{/etc/systemd/system/myservice.service}.\,\cite{express}
+
+Nyní spustíme samotný server (příkaz je alias pro \texttt{npm run start}):
+\begin{lstlisting}[style=bash]
+npm start
+\end{lstlisting}
+JavaScriptový kód se spustí ve výchozím režimu kompatibility nástroje \textit{Babel}. Nástroj lze konfigurovat souborem \texttt{/.babelrc}.
+
+\section{Model}
+Model je část serveru, která má na starost práci s daty, operace nad soubory a také poskytuje například emailové služby. Tato část je odstíněna od požadavků a odpovědí, jednotlivé moduly lze používat samostatně, potřebná data se funkcím předají v parametrech. Funkce mohou, ale nemusí, vracet hodnotu.
+
+Modul \texttt{emailManager} obsahuje funkci \texttt{sendProjectFinished}. Funkce se používá při dokončení zpracování výsledného videa. Jako parametry požaduje emailovou adresu příjemce, připadne více adres oddělených čárkou, ID projektu a výsledek zpracování (\texttt{true} pro úspěch, \texttt{false} při chybě). Funkce zasílá emaily skrze SMTP server v konfiguraci. Aplikace díky tomu nevyžaduje vlastní emailový server. V případě úspěchu se email zašle pouze vlastníkovi projektu. V případě, že během zpracování došlo k chybě, je email zaslán vlastníkovi i administrátorovi. K odesílání emailů využívám knihovnu \textit{nodemailer}\footnote{nodemailer -- npm balíček pro snadné odesílání emailů s podporou HTML i Unicode, \url{https://github.com/nodemailer/nodemailer}.}.
+
+Modul \texttt{fileManager} má na starost získávání informací o nahraných souborech. Obsahuje funkci \texttt{getDuration}, která je asynchronní. Funkce vrací \textit{Promise}. V případě, že se dotážeme na délku video nebo audio souboru, vytvoří se potomek procesu a v něm se spustí příkaz \textit{FFmpeg} pro zjistění délky média. Jakmile je délka zjištěna, vrací se hodnota funkcí \textit{resolve}. Dotaz na jiný typ souboru vrací hodnotu \texttt{null}. Více o vytváření procesů v kapitole \ref{ch:Práce s procesy}.
+
+Modul \texttt{mltxmlManager} usnadňuje práci s \textit{XML} souborem generovaným pro program \textit{MLT}. Modul má na starost ukládání souboru \texttt{project.mlt}, jako parametry vyžaduje ID projektu a obsah kořenového elementu \texttt{<mlt>} včetně samotného \texttt{<mlt>} tagu. Funkce doplní záhlaví XML a celý řetězec zapíše do souboru projektu. Dále obsahuje funkce na získání relativní cesty k MLT souboru (\texttt{getMLTpath}) a k adresáři projektu (\texttt{getWorkerDir}). Zbývající funkce pracují přímo s XML, zjednodušují například vytváření playlistů nebo tractorů.
+
+Modul \texttt{timeManager} slouží k práci s časovými značkami. V projektu používám pro označení časových okamžiků a k označení doby trvání čas ve formátu "00:00:00,000", přičemž doba trvání nesmí být nulová. Tento modul obsahuje funkce na sčítání (\texttt{addDuration}) a odčítání času (\texttt{subDuration}) a kontrolu, zda je formát doby trvání validní (\texttt{isValidDuration}). Modul je používán jak na straně serveru, tak v React komponentách.
+
+\subsection{Import modulů}
+Moduly zastřešují související funkce do jednoho celku. Moduly obvykle obsahují proměnné a funkce, které se zpřístupní importováním. Aby bylo možné funkce a proměnné importovat, je nutné v modulu uvádět klíčové slovo \text{export}. Pokud máme v modulu více funkcí, musíme uvést, kterou funkci chceme importovat. Při neuvedení se importuje výchozí export. Pokud chceme používat více funkcí jedním importem, je nutné v modulu veškeré funkce a proměnné obalit do společného objektu, který bude výchozí export. Následující ukázka využívá jednoho hlavního objektu, který je výchozím exportem.
 \begin{lstlisting}[style=JavaScript]
 export default {
     subDuration(durationA, durationB) {
@@ -721,27 +888,93 @@ export default {
 }
 \end{lstlisting}
 
-Pokud chceme moduly použít, je postup jak na straně serveru, tak i na straně klienta (v React) stejná.
+\subsection{Práce s procesy}\label{ch:Práce s procesy}
+Díky událostem a asynchronnímu přístupu k blokujícím požadavkům není problém čekat na mnohem náročnější operace, než je práce se souborovým systémem. V projektu je potřeba zpracovávat, konvertovat a získávat informace o multimédiích. Pro JavaScript například není problém vytvořit potomka, který zpracuje videosoubor, a po skončení potomka pracovat s jeho výstupem. U PHP by to byl problém a čekající procesy by mohly způsobit vyčerpání prostředků serveru. Práci s procesy zpřístupňuje modul Child Processes (\texttt{child\_process}). Z něj využívám funkci \texttt{exec}, který vytvoří shell a umožní v něm vykonávat příkazy. Po dokončení posledního příkazu je k dispozici obsah standardního výstupu a standardního chybového výstupu. Použití příkazu \texttt{exec} demonstruje následující ukázka.
 \begin{lstlisting}[style=JavaScript]
-import timeManager from '../../models/timeManager';
-let actualTime = timeManager.addDuration(timeA, timeB);
-\end{lstlisting}
-
-Moduly jsou používány v rámci jednoho projektu. Pokud potřebujeme rozšířit funkcionalitu projektu a další funkce, můžeme sáhnout po balíčkovém systému \texttt{npm}.\footnote{npm -- balíčkový systém pro Node.js, \url{https://www.npmjs.com/}.} K 22. dubnu 2019 bylo v systému registrováno téměř 810 tisíc balíčků.\footnote{\url{http://www.modulecounts.com/}} Správce \texttt{npm} je výchozí balíčkový systém Node.js, jedná se obdobu správce závislostí \texttt{Composer} pro PHP.
-
-\subsubsection{Express framework}
-Pro usnadnění tvorby webového serveru jsem použil ExpressJs (zkráceně Express). Express je webový framework pro Node.js. Express poskytuje knihovny užitečné pro zajištění základních funkcí webového serveru (routování, podpora šablonovacího systému pro generování stránek, zpracování dotazů, parametrů, sezení a cookies, autentifikaci, vytváření odpovědí, zpracování chyb, aj.). Routování zajišťuje soubor \texttt{router.js}, který se skládá z routovacích a middleware pravidel. Pravidla překládají adresu URL na JavaScriptovou fuknci, která zajistí obsluhu požadavku. Routovací pravidlo se obvykle aplikuje první odpovídající URL požadavku, middleware pravidla se vykonají před routovacími pravidly a pokud v nich na konci zavoláme funkci \texttt{next}, vykonají se i pravidla následující. Middleware pravidlo používám pro logování všech přístupů, do budoucna i pro autorizaci uživatele. Funkce pro obsluhu požadavku obrží objekt s požadavkem, s budoucí odpovědí a funkce \texttt{next}. V následující ukázce je první pravidlo middleware a druhé je routovací.
-\begin{lstlisting}[style=JavaScript]
-// Log access
-router.use((req, res, next) => {
-    console.info(new Date(), ` @ ${req.originalUrl}`);
-    next(); // go to the next routes
+exec(`ffmpeg -i ${filepath} 2>&1 | grep Duration | cut -d \' \' -f 4 | sed s/,// | sed s/\\\\./,/`,
+    (err, stdout, stderr) => {
+        if (err) console.error(err);
+        else {
+            console.log(stdout.trim());
+        }
 });
-// API route
-router.post('/api/project/:projectID/file', apiController.projectFilePOST);
+\end{lstlisting}
+Funkce \texttt{exec} vytvoří potomka a v rámci něj získá informaci o délce souboru \text{filepath}. Délku vypíše v této ukázce na obrazovku, ale pomocí Promises\footnote{Promise -- objekt, který reprezentuje budoucí úspěšné/neúspěšné dokončení asynchronní události a jeho budoucí hodnotu, \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise}.} je možné vytvořit funkci \texttt{getDuration} a délku asynchronně vracet.
+
+Při požadavku na vyvedení se zkontroluje, zda-li v projektu již neexistuje soubor \texttt{processing}. Pro vyvedení projektu se obdobným způsobem, pomocí \texttt{exec}, volá program \texttt{mlt}. Pokud dojde k chybě, je odeslán chybový email. Při úspěchu dojde k zapsání standardního výstupu i chybového výstupu do souborů v projektu (\texttt{stdout.log} a \texttt{stderr.log}), je odstraněn příznak pro probíhající zpracování (\texttt{processing}) a je odeslán email o úspěchu.
+\begin{lstlisting}[style=JavaScript]
+exec(`cd ${projectPath} && melt project.mlt -consumer avformat:output.mp4 acodec=aac vcodec=libx264`,
+(err, stdout, stderr) => {
+    if (err) console.error(`exec error: ${err}`);
+    fs.writeFile(path.join(projectPath, 'stdout.log'), stdout, (err) => {
+        if (err) console.error(err.stack);
+    });
+    fs.writeFile(path.join(projectPath, 'stderr.log'), stderr, (err) => {
+        if (err) console.error(err.stack);
+    });
+    fs.unlink(path.join(projectPath, 'processing'), (err) => {
+        if (err) console.error(err.stack);
+    });
+    if (isset(req.body.email)) {
+        emailManager.sendProjectFinished(req.body.email, req.params.projectID, !(err));
+    }
+});
+\end{lstlisting}\textbf{}
+
+\subsection{Generování XML}
+Se soubory XML se pracuje v modelu i controlleru. Jelikož se jedná o práci s daty, popíšu strukturu generovaných souborů v této kapitole. Struktura je znázorněna graficky na obrázku \ref{img:schemaXML}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.6}{
+		\includegraphics{obrazky-figures/schemaXML.pdf}
+	}
+	\caption{Obecné schéma prvků generovaných souborů.}\label{img:schemaXML}
+\end{figure}
+
+Se založením nového projektu je vytvořen soubor \texttt{project.mlt} obsahující hlavičku XML a odkaz na DTD schéma umístěné v repositáři projektu MLT. Poté následuje kořenový tag \texttt{<mlt>}. Uvnitř se nachází jeden playlist pro výchozí stopu \texttt{videotrack0} a hlavní kontejner \texttt{<track>} obsahující odkazy na všechny stopy v projektu. Tento hlavní kontejner musí být vždy poslední položkou v kořenovém \texttt{<mlt>}.
+\begin{lstlisting}[style=xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mlt SYSTEM "https://raw.githubusercontent.com/mltframework/mlt/master/src/modu...
+<mlt>
+    <playlist id="videotrack0"/>
+    <tractor id="main">
+        <multitrack>
+            <track producer="videotrack0" />
+        </multitrack>
+    </tractor>
+</mlt>
 \end{lstlisting}
 
-V projektu používám odpovědi pro API výhradně ve formátu JSON. Každá odpověď obsahuje atribut \texttt{msg}, v případě úspěchu může obsahovat další položky, v případě neúspěchu obsahuje odpověď vždy položku \texttt{err} a \texttt{msg}. Odpovědi jsou sestavovány v souboru \texttt{apiController}, jak vypadá odpověď ve funkci \texttt{projectFilePOST}, pokud nepřiložíme nahrávaný soubor, ukazuje následující ukázka.
+Uvnitř kořenového elementu se nejprve  nacházejí zdrojové soubory (elementy <producer>) u kterých jsou poznamenány následující vlastnosti -- absolutní cesta k souboru (\texttt{resource}), typ souboru (\texttt{musecut:mime\_type}), původní název souboru (\texttt{musecut:name}) a v případě video souboru délka v milisekundách (\texttt{length}). Zdrojové soubory mají id s prefixem \uv{producer} a 20 znaky náhodně generovanými při nahrávání souboru.
+Po posledním elementu \texttt{<producer>} jsou umístěny pomocné playlisty.
+
+Pomocné playlisty přestavují kontejnery pro položky filtrů a přechodů. Uvnitř těchto playlistů se nachází vždy jedna položka \texttt{<entry>}. Před touto položkou může být v případě playlistu sloužící pro přechod položka \texttt{<blank>}. Pomocné playlisty jsou identifikovány jako \uv{playlist} a pořadové číslo playlistu. Nové playlisty jsou vkládány na začátek této sekce.
+
+Po playlistech následují tractory (elementy \texttt{<tractor>}). Tyto elementy představují kontejnery pro filtry a přechody. Nesou informace o aplikovaných filtrech a přechodech. Přechody a filtry aplikují na pomocné playlisty definované výše. Tractor může obsahovat zároveň filtry i přechody. Identifikovány jsou jako \uv{tractor} a pořadové číslo tractoru. Nové tractory jsou vkládány na konec sekce, před stopu s id \uv{videotrack0};
+
+Předposlední sekcí v generovaných souborech je část určená stopám. Stopy jsou realizovány jako playlisty. Rozlišují se video a audio stopy. Video stopy jsou identifikovány jako \uv{videotrack} a pořadové číslo video stopy, audio stopy jako \uv{audiotrack} a pořadové číslo audio stopy. Nové stopy jsou vkládány na konec této sekce, před hlavní tractor s id \uv{main}. Playlisty obsahují posloupnost položek časové osy. Mohou obsahovat \texttt{<entry>} s odkazem na \texttt{<resource>}, v případě jednoduché položky, nebo \texttt{<entry>} s odkazem na \texttt{<tractor>} v případě aplikovaného filtru nebo přechodu. Mezery mezi položkami řeší vložení elementu \texttt{<blank>} mezi položky.
+
+Posledním elementem v kořenovém elementu \texttt{<mlt>} musí být vždy hlavní tractor s id \uv{main}. Tento tractor obsahuje odkaz na všechny stopy. Tento element je pouze jeden a nemůže být smazán. Tento element načítá program \textit{MLT}, z tohoto elementu jsou skrze odkazy dosažitelné všechny ostatní elementy.
+
+\section{View}
+View je část zodpovědná za zobrazení HTML stránek uživateli. Nepoužívám jej při dotazech na API, to je určeno ke strojovému zpracování, ne ke komunikaci s koncovým uživatelem. View se nachází ve složkách \texttt{/views} a \texttt{/react}. Ve složce \texttt{/views} se nacházejí šablony. Složka \texttt{/react} obsahuje React komponenty.
+
+\subsection{Šablony}
+Framework \textit{Express} poskytuje nástroje pro používání různých typů šablon. Protože pro tvorbu uživatelského rozhraní používám React komponenty, zvolil jsem jednoduché HTML soubory. V těchto soubore je kostra pro namapování React komponent na DOM HTML. V souborech se rovněž odkazuje na CSS styly a na JavaScriptový soubor, který obsahuje React elementy. Pokud si stránku zobrazí uživatel bez zapnutného JavaScriptu, zobrazí se postup řešení problému s načítáním, obrázek \ref{}.
+
+
+\subsection{React komponenty}
+
+\section{Controller}
+Controllery mají za úkol přijmout požadavek, zpracovat parametry požadavku, na základě požadavku vykonat s pomocí modelu požadované akce a poté zajistit odpověď. Odpověď může controller vytvořit sám nebo použije view. Controller je řadič -- řídí ostatní součásti. Složka \texttt{/controllers} obsahuje 3 controllery -- \texttt{apiController}, \texttt{errorController} a \texttt{mainController}.
+
+\subsection{apiController}
+Nejrozsáhlejší controller je \texttt{apiController}. Ten nese zodpovědnost za celé API. Má na starost přijímaní požadavků, manipulaci s XML i vytváření odpovědí. Tento controller nepoužívá view, neboť používám odpovědi pro API výhradně v jednoduchém formátu \textit{JSON}. Na konci souboru \texttt{apiController} se nacházejí také 3 pomocné funkce -- \texttt{fileErr} (vytvoří odpověď s chybou čtení projektu), \texttt{isNaturalNumber} (test na nezáporná celá čísla) a \texttt{isset} (kontrola existence proměnných). Tyto funkce jsou pomocné a jsou používány pouze v rámci souboru.
+
+Nejednodušším požadavkem je \texttt{GET /api}. Obsluhu zajistí funkce \texttt{default}, která pouze vrátí informaci o umístění dokumentace k API. Nejpozději na konci každé hlavní funkce controlleru dojde k vygenerování odpovědi. V případě chyby dojde k vytvoření odpovědi ihned po zaznamenání.
+
+\subsubsection{Vytváření odpovědí}
+Každá odpověď obsahuje atribut \texttt{msg}, v případě úspěchu může obsahovat další položky, v případě neúspěchu obsahuje odpověď vždy položku \texttt{err} a \texttt{msg}. Jak vypadá odpověď ve funkci \texttt{projectFilePOST}, pokud nepřiložíme nahrávaný soubor, ukazuje následující ukázka.
 \begin{lstlisting}[style=JavaScript]
 res.status(400);
 res.json({
@@ -761,27 +994,82 @@ res.json({
 });
 \end{lstlisting}
 
-\subsection{TypeScript, ECMAScript}
-Jedná se o programovací jazyk se syntaxí inspirovanou jazykem C, který se překládá do JavaScriptu. TypeScript je nadstavba nad JavaScriptem, program v JavaScriptu je validním programem v TypeScriptu. Přináší silnou typovou kontrolu, třídy (dnes i v ES6), rozhraní, dědičnost. Offline překlad do JavaScriptu odhalí syntaktické chyby, a volitelně zajistí kompatibilitu se standardy ES3 a ES5 (alternativou je \textit{Babel}). Dále přidává spoustu \uv{syntaktického cukru} -- gettery/settery, výčtové typy, promises. Podporuje integraci s Angular 2 i React.
+\subsubsection{Zpracování parametrů požadavku}
+Většina funkcí controlleru potřebuje k činnosti upřesňující parametry HTTP požadavků. Parametry jsou dostupné skrze objekt požadavku (první předávaný parametr). Parametry, které jsou součástí cesty v URL (projectID, fileID) jsou dostupné skrze \texttt{req.params.projectID}, případně \texttt{req.params.fileID}. Tyto parametry jsou vždy definované. Pokud uživatel parametr v URL vynechá, router nezavolá obslužnou funkci a zobrazí uživateli chybu 404. V některých případech by nebylo možné uvádět všechny parametry přímo do URL. Parametry mohou být také v těle požadavku. K těmto parametrům se přistupuje pomocí \texttt{req.body.xyz}. Parametry mohou v požadavku chybět, controller musí na začátku sám ověřit uvedení poviných parametrů funkcí \texttt{isset}.
+\begin{lstlisting}[style=JavaScript]
+// Required parameters: track, item, filter
+if (!isset(req.body.track, req.body.item, req.body.filter)) {
+    res.status(400);
+    res.json({
+        err: 'Chybi parametry.',
+        msg: 'Chybi povinne parametry: "track", "item", "filter".',
+    });
+    return;
+}
+\end{lstlisting}
 
-Na druhou stranu je typová kontrola plnohodnotná pouze pokud všechny balíčky obsahují hlavičkové soubory TS. TypeScript je nutné začlenit do vývojového procesu s Node.js a React. Během vývoje se při každé změně zdrojového kódu musí provést kompilace do JavaScriptu. Pro začínajících programátory a pro malé projekty zavádí složitost, která nemusí převážit výhody zavedení.
+Odlišně se přistupuje k požadavkům během nahrávání souboru. Soubory k nahrání jsou rovněž uvnitř požadavků jako parametr. Nejsou ve formátu \textit{JSON}, ale \textit{multipart/form-data}. Během nahrávání není potřeba s daty manipulovat. Při zahájení nahrávání se určí soubor, do kterého se bude zapisovat, a s dokončením nahrávání vrátí server odpověď o úspěšnosti operace. K tomu slouží rozšíření \textit{busboy}. Při přijetí požadavku otestuji, zda-li obsahuje požadovaná data a poté data přesměruji do souboru.
 
-S příchodem ES6 přejal standard z TypeScriptu deklaraci proměnných s platností v daném rámci bez vedlejších efektů (\texttt{let}), možnost vytvářet třídy, dědičnost, rest parametry, promises a další. Hlavní výhodou zůstává silné typování a kontrola syntaxe při kompilaci. Vzhledem k mým předchozím zkušenostem s jazykem PHP jsem tyto vlastnosti nepožadoval, proto jsem se rozhodl použít standard ES6 a novější revize. Zpětnou kompatibilitu klientského JavaScriptu jsem zajistil nástrojem \textit{Babel}.
+\subsubsection{Práce s XML}
+Serverová část je postavená na práci s XML. Na parsování XML souborů používám balíček \textit{jsdom}\,\footnote{busboy -- implementace standardů pro práci s DOM pro Node.js, \url{https://www.npmjs.com/package/jsdom}.}. Node.js neobsahuje nástroje pro práci s DOM, které jsou v prohlížečích k dispozici. Zpracování XML pomocí SAX parseru nepřipadá v úvahu. SAX parsery procházejí soubory sekvenčně od začátku do konce. DOM přístup umožňuje náhodný přístup k elementům v XML dokumentu. Knihovna poskytuje objekt \texttt{windows} a \texttt{document}, skrze který jsou dostupné metody známé z prohlížečů (\texttt{document.getElementById}, \texttt{document.querySelector} apod.). Soubor lze načíst příkazem \texttt{JSDOM.fromFile(mltPath, \{contentType:'text/xml'\})}. Při ukládání lze získat celé XML pomocí atributu \texttt{outerHTML} na kořenový element \texttt{<mlt>} a poté uložit získaný textový řetězec do souboru.
 
-\subsection{React}
+\subsubsection{Práce se souborovým systémem}
+Aby mohl controller správně pracovat, potřebuje přístup k souborům ve složce \texttt{WORKER}. Práci se souborovým systémem umožňuje modul File System (\texttt{fs}). Používání funkcí modulu \texttt{fs} je podobné POSIX funkcím jazyka C. Všechny funkce mají synchronní a asynchronní variantu. U I/O operací je silně doporučeno používat asynchronní práci se souborovým systémem. Asynchronní funkce mají jako poslední parametr callback, který se zavolá po dokončení operace. Callbacku je jako první parametr předán objekt pro uchování chyb a poté volitelně data operace. Callback je volán při úspěchu i neúspěchu, neúspěch je indikován objektem 1. parametru. Dalším modulem spojeným se souborovým systémem je \texttt{path}, který poskytuje nástroje pro práci s cestami k souborům a adresářům. Jak vypadá asynchronní čtení souboru ukazuje následující ukázka.
+\begin{lstlisting}[style=JavaScript]
+fs.open(path.join(projectPath, 'processing')), 'wx', (err, fd) => {
+    if (err) throw err;
+    // prace se souborem
+    fs.close(fd, (err) => {
+        if (err) console.error(err.stack);
+    };
+});
+console.log('stale se muze cekat na nacteni souboru);
+\end{lstlisting}
 
-\section{XML}
-Výběr knihovny pro práci s XML.
-Přímá práce s XML / konverze do JSON a zpět.
-Způsoby přímé práce s XML: SAX / DOM.
-\url{https://github.com/zeligzhou/xmldom-qsa}\\
-\url{https://github.com/nfarina/xmldoc}\\
-\url{https://www.npmjs.com/package/jsdom}
+Funkce \texttt{fs.open} je zavolána, vytvoří požadavek souborovému systému a namísto aktivního čekání je funkce uspána a pokračuje se dál vykonáváním příkazů pod \texttt{fs.open}. V tomto případě by se vypsal do terminálu text \uv{stale se muze cekat na nacteni souboru} a k práci se souborem by se JavaScriptový engine vrátil až po zpřístupnění požadovaného souboru. Z toho plyne, že I/O operace jednoho požadavku nebrzdí vykonávání souběžných požadavků.
 
-\section{REST API}
-\url{https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4}\\
-\url{https://restapitutorial.com/lessons/httpmethods.html}\\
-\url{https://editor.swagger.io/}
+Pokud chceme moduly použít, je postup jak na straně serveru, tak i na straně klienta (v React) stejná.
+\begin{lstlisting}[style=JavaScript]
+import timeManager from '../../models/timeManager';
+let actualTime = timeManager.addDuration(timeA, timeB);
+\end{lstlisting}
+
+Moduly jsou používány v rámci jednoho projektu, nejedená se o \textit{npm} balíčky. Jsou novější alternativou k používání příkazu \texttt{require}.
+
+\subsubsection{Generování identifikátorů}
+Při vytváření nového projektu a při nahrávání souborů je potřeba vygenerovat jednoznačný identifikátor. Generování zajišťuje \texttt{apiController} pomocí balíčku \textit{nanoid}\,\footnote{nanoid -- bezpečný generátor identifikátorů, které mohou být použité v URL, \url{https://github.com/ai/nanoid}}. Pro nový projekt se vytváří 32znakový identifikátor, pro nahrávaný soubor generuje 21 znaků. Identifikátory obsahují číslice, velká a malá písmena anglické abecedy a znak podtržítka a spojovníku (A-Za-z0-9\_-). Teoreticky by neměla nastat kolize identifikátorů. Kolizi dokáže spočítak kalkulačka\,\footnote{Nano ID Collision Calculator -- nástroj pro zjistění pravděpodobnosti kolize ID generované balíčkem \textit{nanoid}, \url{https://zelark.github.io/nano-id-cc/}.} v popisu balíčku -- aby byla pravděpodobnost kolize 32znakových identifikátorů 1 \%, museli bychom generovat 1000 identifikátorů za sekundu po dobu větší, než 1 kvadrilion let. V případě 21znakového identifikátoru souborů bychom museli nahrávat 1000 souborů za sekundu po dobu přibližně 41 milionů let\,\cite{collision}. Součástí projektů mohou být soukromé soubory, které budou chtít uživatelé ochránit před náhodným hádáním ID projektu. Teoreticky je možné procházet všechny možné identifikátory hrubou silou. Hrubou silou by ale bylo možné obejít zabezpečení pomocí uživatelských účtů. Do budoucna se plánuje zkombinovat zabezpečení pomocí ID projektů s přihlašováním pomocí centrálního autentizačního serveru VUT. Pokud bychom chtěli získat konkrétní projekt hrubou silou, trvalo by nám to opět více než kvadrilion let\,\footnote{K výsledku jsem dospěl na základě kalkulačky \url{http://daleswanson.org/things/password.htm} a \url{https://random-ize.com/how-long-to-hack-pass/}}. 
+
+\subsection{errorController}
+Pokud dojde během řádné obsluhy požadavku k výjimce, nebo pokud je zavolána funkce \texttt{next}, předá router oblsuhu požadavku controlleru \textsuperscript{errorController}. Tento controller obsahuje pouze funkci \texttt{default}. Dojde k zalogování chyby a odeslání odpovědi s chybovým kódem 500 a JSON odpovědí \uv{Internal server error occured.}.
+\begin{lstlisting}[style=JavaScript]
+exports.default = (err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500);
+    res.json({
+        msg: 'Internal server error occured.',
+    });
+};
+\end{lstlisting}
+
+\subsection{mainController}
+Controller \texttt{mainController} zpracovává požadavky, u kterých se očekává odpověď ve formě HTML pro vykreslení webovým prohlížečem. Používá se pro 3 situace. Uživatel navštíví úvodní stránku s možností vytvořit nový projekt, uživatel zobrazí stránku s editorem, uživatel zobrazí stránku s výsledným videem / s obrazovkou informující o stavu zpracování. Činost controlleru je jednoduchá. Při zobrazení úvodní stránky nebo stránky s projektem controller pouze předá požadavek na vykreslení view.
+\begin{lstlisting}[style=JavaScript]
+exports.main = (req, res) => res.render('main', {});
+\end{lstlisting}
+
+Při požadavku na výsledné video se controller podívá do adresáře projektu po příznaku probíhajícího zpracování (soubor \texttt{processing}). V případě probíhajícího zpracování požádá view o vykreslení čekací obrazovky. Pokud se video nezpracovává, podívá se, jestli existuje výsledný soubor \texttt{output.mp4}. Pokud soubor neexistuje, nemá projekt výsledné video a je vrácena chyba 404. Pokud je soubor k dispozici, zašle se v odpovědi přímo samotný soubor, odpovědí není HTML stránka.
+\begin{lstlisting}[style=JavaScript]
+fs.access(path.join(config.projectPath, req.params.projectID, 'processing'), fs.constants.R_OK, (err) => {
+    if (err) {
+        const outputFile = path.resolve(path.join(config.projectPath, req.params.projectID, 'output.mp4'));
+        fs.access(outputFile, fs.constants.R_OK, (err) => {
+            if (err) res.sendStatus(404);
+            else res.sendFile(outputFile);
+        });
+    }
+    else res.render('finished', {});
+});
+\end{lstlisting}
 
 \section{Zpracování vstupních videí}
 Framework \textit{MLT} pracuje s videii po snímcích. Uživatelé videoeditorů pracují s časem na časové ose. Časové značky je nutné převádět na konkrétní snímek ve videu a naopak je nutné získat z videa celkový čas a celkový počet snímků. Spočítání snímků a celkového času videa zvládne program \texttt{ffmpeg} i \texttt{ffprobe}. Problém nastává, pokud chceme získat snímek videa v určitém čase. Získat snímek trojčlenkou ($ (pocet\ snimku / celkovy\ cas) * aktualni\ cas $) by bylo možné za předpokladu, že všechny snímky trvají shodnou dobu, tato vlastnost videí se nazývá \textit{Constatnt Frame rate (CFR)}. CFR videa mají stálou snímkovací frekvenci udávanou v hertzích (Hz) nebo snímcích za sekundu (FPS), například 60 FPS.\footnote{\url{https://en.wikipedia.org/wiki/Variable_frame_rate}} Kromě video kontejneru AVI jej popdorují všehchny rozšířené kontejnery.\footnote{\url{https://en.wikipedia.org/wiki/Comparison_of_video_container_formats}} Opakem jsou videa s promnělivou snímkovací frekvencí -- \textit{Variable Frame Rate (VFR)}.\footnote{\url{https://www.bandicam.com/support/tips/vfr-cfr/}} Promměnná snímkovací frekvence je efektivní způsob, jakým lze získat video s vysokou snímkovací frekvecí a nízkou velikostí výsledného souboru. Pokud bychom zaznamenávali obrazovku, VFR by ukládalo snímky pouze při změně na obrazovce, zatímco CFR by snímky zaznamenávalo neustále. S VFR natáčejí fotoaparáty\footnote{\url{https://camerajabber.com/variable-frame-rate-recording-video/}} i chytré telefony. VFR je tedy mnohem lepší způsob snímkování než CFV, pokud chceme video sdílet bez úprav. Úpravy VFR videí jsou problematické a například Sony Vegas jej nepodporuje, Adobe Premiere Pro VFR podporuje od ledna 2018\footnote{\url{https://www.premierebro.com/blog/premiere-pro-1201-update-variable-frame-rate-and-new-features}} a Shotcut VFR detekuje a nabídne konverzi na video s CFR\footnote{\url{https://github.com/mltframework/mlt/commit/fa4deb88ed233810d63ea8120aaa1783cc170a0e}}.
@@ -789,6 +1077,9 @@ Framework \textit{MLT} pracuje s videii po snímcích. Uživatelé videoeditorů
 Všechny nahraná videa jsou na serveru překonvertována na videa s CFR, nejprve s nízkým rozlišení o šířce 480 px pro zobrazení náhledu v prohlížeči. Konverze probíhá do kontejneru MP4 obsahující video formátu H.264 a AAC audio. Tento formát podporuje prohlížeč Chrome, Firefox, Internet Explorer, Opera, Safari.\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats\#Browser_compatibility}} Po překonvertování je video zasláno spolu s délkou videa a počtem snímků zpět prohlížeči. Poté se video překonvertuje se stejnými vlastnostmi ale v původním rozlišení pro urychlení vyvádění výsledného videa. Počet snímků obou videí je shodný, náhledové video je ale získáno 4x až 5x rychleji.
 
 \chapter{Testování}
+ESLint!!! -- soubor \texttt{.eslintrc.js}.
+Otestování controllerů: \texttt{npx eslint controles/}
+
 \section{Testování uživatelského rozhraní}
 \section{Testování API}
 %Pro JavaScript existuje řada testovacích frameworků. Dva nejčasttěji používané jsou \textit{Jasmine}\footnote{Jasmine -- \url{jasmine.github.io}} a \textit{QUnit}\footnote{QUnit\url{http://qunitjs.com}}. Jasmin testy lze vizualozovat nástroji \textit{Testem} (CLI runner) a \textit{Protractor} (klikání v browseru). \textit{Protractor} <- \textit{Selenium}.
@@ -829,21 +1120,5 @@ Porovnat a popřemýšlet o~server/client side přístupu. Při přiložení vid
 Zkusit vytvořit algoritmus pro serializaci/deserializaci projektu -- generování XML souboru na základě uživatelských akcí.
 
 V~rámci návrhu byla vytvořena statická stránka video editoru. V~nadcházejícím semestru bude nutné napojit rozhraní na API serveru a implementovat funkčnost na straně klienta.
-
-\section{TODO}
-Našel jsem tyto předchozí práce:\\
-\begin{itemize}
-\item \url{https://primo.lib.vutbr.cz/primo-explore/fulldisplay?docid=420BUT_Aleph000135488&context=L&vid=420BUT&search_scope=Everything&tab=default_tab&lang=cs_CZ}
-\item \url{https://primo.lib.vutbr.cz/primo-explore/fulldisplay?docid=420BUT_DSpace11012/54562&context=L&vid=420BUT&search_scope=Everything&tab=default_tab&lang=cs_CZ}
-\item \url{https://primo.lib.vutbr.cz/primo-explore/fulldisplay?docid=420BUT_DSpace11012/55948&context=L&vid=420BUT&search_scope=Everything&tab=default_tab&lang=cs_CZ}
-\item \url{https://primo.lib.vutbr.cz/primo-explore/fulldisplay?docid=420BUT_Aleph000135647&context=L&vid=420BUT&search_scope=Everything&tab=default_tab&lang=cs_CZ}
-\end{itemize}
-
-\begin{itemize}
-\item \textbf{Podívat se na techniky základu střihu - jak udělat video, aby editor nutil udělat hezké videa
-\item \textbf{umožnit přesouvání prvků s přechodem / do přechodu}
-\item \textbf{controller přesunout a rozčlenit do modelů, používat promises, odchytávat chyby, systematicky vracet JSON v controlleru, viz vygenerovaný kód ze Swagger}
-}
-\end{itemize}
 
 %===============================================================================
