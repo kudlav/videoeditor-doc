@@ -47,7 +47,7 @@ Na časovou osu jsem použil knihovnu \textit{vis.js}.\footnote{vis.js -- JavaSc
 \section{Webové editory}
 Na webový editor jsem nezískal žádný tip. Lidé v mém okolí raději sáhli po open source editoru či stáhli placený program obsahující crack pomocí torrentu. U~webových editorů je velký rozdíl mezi placenými řešeními a neplacenými. Placených aplikací je nepřeberné množství s~mnoha funkcemi, bezplatná řešení mají zásadní omezení. Řešení s~otevřeným zdrojovým kódem a svobodnou licencí jsem nenašel žádné.
 
-Placená řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~placených editorů zmiňuji \textit{WeVideo}\footnote{WeVideo --  proprietární online editor, \url{https://www.wevideo.com}.}, \textit{Magisto}\footnote{Magisto -- proprietární online editor, \url{https://www.magisto.com/}.}, \textit{Loopster}\footnote{Loopster -- proprietární online editor, \url{https://www.loopster.com}.}, \textit{Animatron}\footnote{Animatron -- proprietární online editor s~nejdražším předplatným, \url{https://www.animatron.com}.} a \textit{Clipchamp}\footnote{Clichamp -- proprietární online editor, který lze používat s~omezeními bezplatně, \url{https://clipchamp.com}.}.
+Placená řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~placených editorů zmiňuji \textit{WeVideo}\footnote{WeVideo --  proprietární online editor, \url{https://www.wevideo.com}.}, \textit{Magisto}\footnote{Magisto -- proprietární online editor, \url{https://www.magisto.com/}.}, \textit{Loopster}\footnote{Loopster -- proprietární online editor, \url{https://www.loopster.com}.}, \textit{Animatron}\footnote{Animatron -- proprietární online editor s~nejdražším předplatným, \url{https://www.animatron.com}.} a \textit{Clipchamp}\footnote{Clichamp Create -- proprietární online editor, který lze používat s~omezeními bezplatně, \url{https://clipchamp.com}.}.
 
 \textit{WeVideo} je poskytováno v mnoha plánech. Nejdražší varianta neomezuje velikostí souboru ani maximální délkou. Uživatelské rozhraní umožňuje pracovat s video soubory již během nahrávání na server. Náhled je generován v prohlížeči, výsledné video na serveru. Po dokončení zpracování je uživateli zaslán email. Videa vytvořená v bezplatném plánu obsahují vodoznak.
 
@@ -156,7 +156,7 @@ JavaScript na klientské straně je pro interaktivní webovou aplikaci nutnost. 
 Pro usnadnění tvorby webového serveru jsem použil ExpressJs (zkráceně Express). Express je webový framework pro Node.js. Express poskytuje knihovny užitečné pro zajištění základních funkcí webového serveru (routování, podpora šablonovacího systému pro generování stránek, zpracování dotazů, parametrů, sezení a cookies, autentifikaci, vytváření odpovědí, zpracování chyb, aj.).
 
 \subsection{ECMAScript, TypeScript}
-Jedná se o programovací jazyk se syntaxí inspirovanou jazykem C, který se překládá do JavaScriptu. TypeScript je nadstavba nad JavaScriptem, program v JavaScriptu je validním programem v TypeScriptu. Přináší silnou typovou kontrolu, třídy (dnes i v ES6), rozhraní, dědičnost. Offline překlad do JavaScriptu odhalí syntaktické chyby, a volitelně zajistí kompatibilitu se standardy ES3 a ES5 (alternativou je \textit{Babel}, na kontrolu kódu na syntaktické chyby pak \textit{ESLint}). Dále přidává spoustu \uv{syntaktického cukru} -- gettery/settery, výčtové typy, promises. Podporuje integraci s Angular 2 i React.
+Jedná se o programovací jazyk se syntaxí inspirovanou jazykem C, který se překládá do JavaScriptu. TypeScript je nadstavba nad JavaScriptem, program v JavaScriptu je validním programem v TypeScriptu. Přináší silnou typovou kontrolu, třídy (dnes i v ES6), rozhraní, dědičnost. Offline překlad do JavaScriptu odhalí syntaktické chyby, a volitelně zajistí kompatibilitu se standardy ES3 a ES5 (alternativou je \textit{Babel}, na kontrolu kódu na syntaktické chyby pak \textit{ESLint}\,\footnote{ESLint -- nástroj pro analýzu JavaScriptového kódu, \url{https://eslint.org/}.}). Dále přidává spoustu \uv{syntaktického cukru} -- gettery/settery, výčtové typy, promises. Podporuje integraci s Angular 2 i React.
 
 Na druhou stranu je typová kontrola plnohodnotná pouze pokud všechny balíčky obsahují hlavičkové soubory TS. TypeScript je nutné začlenit do vývojového procesu s Node.js a React. Během vývoje se při každé změně zdrojového kódu musí provést kompilace do JavaScriptu. Pro začínajících programátory a pro malé projekty zavádí složitost, která nemusí převážit výhody zavedení.
 
@@ -737,7 +737,7 @@ Canvas najde uplatnění zejména v případech, kdy pracujeme s důvěryhodným
 \subsection{Shrnutí}
 HTML5 je živý standard, který neustále rozšiřuje možnosti tvorby webového obsahu. Práce s multimédii je v HTML5 prakticky neomezená, ale ne všechny funkce jsou standardizovány. Při implementaci je nutné sledovat stav standardu a rozšířenost v prohlížečích. Vždy je nutné začít výběrem formátu multimédií. Pokud chceme mít jistotu, že každý uživatel bude mít prohlížeč s kompatibilním kodekem, musíme prohlížeči videa nabízet alespoň ve 2 formátech. Jednoduché úpravy obrazu provádíme pomocí CSS filtrů, na složitější filtry použijeme SVG filtry. Chceme-li přistupovat přímo k obrazovým datům, použijeme Canvas. Jednoduchý videoeditor si pro náhledové video vystačí s CSS filtry -- dostatečně rychlé, na implementaci jednoduché a s podporou v moderních prohlížečích.
 
-\chapter{Realizace, experimenty}
+\chapter{Realizace}
 V úvodu této kapitoly nastíním strukturu projektu, části, ze kterých se projekt skládá. Dále popisuji způsob instalace a zprovoznění, popisuji důležité soubory z hlediska nasazení a údržby projektu. Ve druhé části se věnuji roli jednotlivých částí při obsluze požadavku a poté a jednotlivé části projektu podrobně rozebírám.
 
 \section{Struktura projektu}
@@ -827,10 +827,10 @@ Další postup se odvíjí od účelu, za jakým bude server spuštěn. Postup z
 \subsection{Spuštění ve vývojářském režimu}
 Pro spuštění se používají 2 následující příkazy.
 \begin{lstlisting}[style=bash]
-npm run build
-npm run dev
+npm run dev-build
+npm run dev-start
 \end{lstlisting}
-První příkaz (\texttt{npm run build}) kompiluje soubor \texttt{views/style.scss} do souboru \texttt{/public/style.css} (kaskádové styly) a také veškerý JavaScript a React komponenty ve složce \texttt{/react} do jednoho souboru: \texttt{/public/main.js}. Po zadání příkazu provede program webpack kompilaci, dokončení je indikováno následujícím výpisem:
+První příkaz (\texttt{npm run dev-build}) kompiluje soubor \texttt{views/style.scss} do souboru \texttt{/public/style.css} (kaskádové styly) a také veškerý JavaScript a React komponenty ve složce \texttt{/react} do jednoho souboru: \texttt{/public/main.js}. Po zadání příkazu provede program \textit{Webpack} kompilaci, dokončení je indikováno následujícím výpisem:
 \begin{lstlisting}
 Version: webpack 4.29.6
 Time: 13391ms
@@ -840,14 +840,13 @@ Built at: 2019-05-01 12:00:00
 
 V případě, že plánujeme upravovat soubor \texttt{views/style.scss} nebo soubory ve složce \texttt{/react}, necháme skript dále běžet. Skript bude hlídat soubory a v případě změny provede novou kompilaci. Pokud soubory neplánujeme upravovat, lze skript po první úspěšné kompilaci ukončit (\texttt{CTR+C}). Webpack lze konfigurovat v souboru \texttt{/webpack.config.js}. V souboru se nastavují vstupní a výstupní soubory a pravidla pro konverzi vstupů na výstupy.
 
-Druhým příkazem spustíme server -- \texttt{npm run dev}. Server bude běžet dokud skript neukončíme nebo nedojde k neošetřené výjimce. Pokud dojde k chybě, server se zastaví a čeká na změnu souborů. Server lze restartovat ručně zadáním příkazu \texttt{rs}. Při změně JavaScriptových souborů (vyjma složky \texttt{/public}) je server automaticky restartován. Toto chování je dobré na vývoj, ale nevhodné pro produkční nasazení. Kompatibilitu kódu zajišťuje \textit{Babel}, konfiguraci ukládá do souboru \texttt{/.babelrc}.
+Druhým příkazem spustíme server -- \texttt{npm run dev-start}. Server bude běžet dokud skript neukončíme nebo nedojde k neošetřené výjimce. Pokud dojde k chybě, server se zastaví a čeká na změnu souborů. Server lze restartovat ručně zadáním příkazu \texttt{rs}. Při změně JavaScriptových souborů (vyjma složky \texttt{/public}) je server automaticky restartován. Toto chování je dobré na vývoj, ale nevhodné pro produkční nasazení. Kompatibilitu kódu zajišťuje \textit{Babel}, konfiguraci ukládá do souboru \texttt{/.babelrc}.
 
 \subsection{Produkční nasazení}
-Při prvním spuštění je nejprve potřeba zkompilovat JavaScriptový soubor, který je zasílán webovému prohlížeči uživatele. Klientský JavaScriptový soubor obsahuje hodnoty z konfiguračního souboru, protoje nutné provést překompilování zdrojů po každé změně konfigurace. Zkompilování zdrojů provede následující příkaz:
+Při prvním spuštění je nejprve potřeba zkompilovat JavaScriptový soubor, který je zasílán webovému prohlížeči uživatele. Klientský JavaScriptový soubor obsahuje hodnoty z konfiguračního souboru, protoje nutné provést překompilování zdrojů po každé změně konfigurace. JavaScriptové soubory se pro produkční prostředí liší od těch, generovaných pro testovací sestavení. Zkompilování zdrojů provede následující příkaz:
 \begin{lstlisting}[style=bash]
 npm run build
 \end{lstlisting}
-Po první úspěšné kompilaci skript ukončíme (\texttt{CTR+C}), viz předchozí kapitola.
 
 Dále je vhodné nastavit v prostředí operačního systému proměnnou \texttt{NODE\_ENV}. Díky tomuto nastavení bude \textit{Express} používat cache pro šablony a změní případná chybová hlášení. Dle oficiálních stránek může toto nastavení zvýšit výkon trojnásobně. Proměnnou můžeme nastavit před spuštěním aplikace následujícím příkazem:
 \begin{lstlisting}[style=bash]
@@ -903,15 +902,9 @@ Funkce \texttt{exec} vytvoří potomka a v rámci něj získá informaci o délc
 
 Při požadavku na vyvedení se zkontroluje, zda-li v projektu již neexistuje soubor \texttt{processing}. Pro vyvedení projektu se obdobným způsobem, pomocí \texttt{exec}, volá program \texttt{mlt}. Pokud dojde k chybě, je odeslán chybový email. Při úspěchu dojde k zapsání standardního výstupu i chybového výstupu do souborů v projektu (\texttt{stdout.log} a \texttt{stderr.log}), je odstraněn příznak pro probíhající zpracování (\texttt{processing}) a je odeslán email o úspěchu.
 \begin{lstlisting}[style=JavaScript]
-exec(`cd ${projectPath} && melt project.mlt -consumer avformat:output.mp4 acodec=aac vcodec=libx264`,
-(err, stdout, stderr) => {
+exec(`cd ${projectPath} && melt project.mlt -consumer avformat:output.mp4 acodec=aac
+vcodec=libx264 > stdout.log 2> stderr.log`, (err) => {
     if (err) console.error(`exec error: ${err}`);
-    fs.writeFile(path.join(projectPath, 'stdout.log'), stdout, (err) => {
-        if (err) console.error(err.stack);
-    });
-    fs.writeFile(path.join(projectPath, 'stderr.log'), stderr, (err) => {
-        if (err) console.error(err.stack);
-    });
     fs.unlink(path.join(projectPath, 'processing'), (err) => {
         if (err) console.error(err.stack);
     });
@@ -960,10 +953,38 @@ Posledním elementem v kořenovém elementu \texttt{<mlt>} musí být vždy hlav
 View je část zodpovědná za zobrazení HTML stránek uživateli. Nepoužívám jej při dotazech na API, to je určeno ke strojovému zpracování, ne ke komunikaci s koncovým uživatelem. View se nachází ve složkách \texttt{/views} a \texttt{/react}. Ve složce \texttt{/views} se nacházejí šablony. Složka \texttt{/react} obsahuje React komponenty.
 
 \subsection{Šablony}
-Framework \textit{Express} poskytuje nástroje pro používání různých typů šablon. Protože pro tvorbu uživatelského rozhraní používám React komponenty, zvolil jsem jednoduché HTML soubory. V těchto soubore je kostra pro namapování React komponent na DOM HTML. V souborech se rovněž odkazuje na CSS styly a na JavaScriptový soubor, který obsahuje React elementy. Pokud si stránku zobrazí uživatel bez zapnutného JavaScriptu, zobrazí se postup řešení problému s načítáním, obrázek \ref{}.
-
+Framework \textit{Express} poskytuje nástroje pro používání různých typů šablon. Protože pro tvorbu uživatelského rozhraní používám React komponenty, zvolil jsem jednoduché HTML soubory. V těchto soubore je kostra pro namapování React komponent na DOM HTML. V souborech se rovněž odkazuje na CSS styly a na JavaScriptový soubor, který obsahuje React elementy. Aktuálně se používají 3 šablony -- \texttt{main.html}, \texttt{project.html}, \texttt{finished.html}. Šablona \texttt{main.html} slouží k zobrazení úvodní obrazovky. Obsahuje přípravu na modální okno pro vytvoření nového projektu. Šablona \texttt{project.html} poskytuje kostru pro stránku s editorem videa. Šablona \texttt{finished.html} slouží k zobrazení obrazovky během zpracovávání videa. Stránka se periodicky obnovuje. Pokud si stránky zobrazí uživatel bez zapnutného JavaScriptu, zobrazí se postup řešení problému s načítáním, obrázek \ref{img:loading-page}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.9}{
+	    \includegraphics{obrazky-figures/loading-page.pdf}
+    }
+	\caption{Šablona zobrazená v prohlížeči s vypnutým JavaScriptem.}\label{img:loading-page}
+\end{figure}
 
 \subsection{React komponenty}
+React komponenty používám na úvodní stránce pro vytvoření projektu a na stránce se samotným editorem. Komponeny pro úvodní stránku jsou ve složce \texttt{/react/newProject}, komponenty editory pak ve složce \texttt{/react/editor}.
+
+Na úvodní stránce je kořenovou komponentou třída \texttt{NewProjectDialog}. Třída vykreslí dialo na vytvoření nového projektu. Po stisknutí tlačítka \uv{Vytvořit nový projekt} se pošle požadavek \texttt{POST /api/project}. Pokud API vrátí ID vytvořeného projektu, dojde k přesměrování na stránku s editorem. Třída \texttt{NewProjectDialog} je závislá na komponentě \texttt{Modal} z \textit{npm} balíčku \textit{react-modal}\,\footnote{react-modal -- React komponenta pro vytváření dialogových oken, \url{https://github.com/reactjs/react-modal}.}. Přehled komponent a jejich vzájemných závislostí nabízí obrázek \ref{img:react}.
+\begin{figure}[h]
+	\centering
+	\scalebox{0.7}{
+	    \includegraphics{obrazky-figures/react.pdf}
+    }
+	\caption{Diagram tříd. Potomci třídy Component s vyznačením závislostí typu \uv{používání}.}\label{img:react}
+\end{figure}
+
+Struktura komponent editoru je rozsáhlejší:
+
+\begin{itemize}
+\item \texttt{Editor} je kořenovou komponentou.  Ve svém stavu drží informace o id projektu, seznam zdrojů projektu a časové osy projektu. Stav projektu získá po načtení stránky z API požadavkem \texttt{GET /api/project/:projectID}. Poté, co úspěšně získá stav projektu, skryje překryvnou vrstvu s načítáním. Rovněž řídí viditelnost dialogu pro dokončení projektu. Stav projektu propaguje do podřazených komponent \texttt{Timeline} a \texttt{Sources}. Pomocí zpětných volání s kořenovou komponentou komunikují podřazené komponenty při požadavcích na manipulaci se zdroji a časovou osou.
+\item \texttt{SubmitDialog} má na starost dialogové okno pro dokončení projektu. Obsahuje formulář pro vyplnění emailu. Po vyplnění emailové adresy a potvrzení zašle na API požadavek \texttt{PUT /api/project/:projectID}. Pokud se vrátí kladná odpověď, je uživatel přesměrován na stránku \texttt{/project/:projectID/finished}.
+\item \texttt{Sources} vykresluje seznam zdrojů projektu a formulář pro nahrávání dalších zdrojů. Nahrávání souborů zajišťuje komponenta \texttt{Sources}. Třída \texttt{Sources} používá pro položky zdrojových souborů podřízenou komponentu \texttt{SourcesTableRow}. Pokud podřízené komponenty požádají o změnu zdrojových souborů / časové osy předá požadavek nadřízené komponentě \texttt{Editor}.
+\item \texttt{SourcesTableRow} vykreslí jeden řádek v seznamu zdrojových souborů. Položka si jako svůj stav udržuje informace o položce. Položku zdrojů lze přidávat na časovou osu nebo smazat z projektu. Komponenta volá API -- \texttt{PUT /api/project/:projectID/file/:fileID} pro přidání položky na časovou osu a \texttt{DELETE /api/project/:projectID/file/:fileID} pro smazání souboru. Pokud API vrátí odpověď bez chyby, komponenta požádá nadřazenou komponentu \texttt{Sources} o změnu zdrojových souborů / časové osy.
+\item \texttt{Uploader} slouží k vykreslení formuláře pro nahrávání souborů. Má za úkol nakonfigurovat komponentu \texttt{Dropzone} z npm balíčku. Komponentě předá funkce pro zpětná volání při změně stavu (dokončení nahrávání, selhání nahrávání) a tato volání obsluhuje. Při úspěšném nahrání souboru požádá nadřazenou komponentu \texttt{Sources} o přidání souboru do seznamu zdrojových souborů.
+\item \texttt{Timeline} má na starost časovou osu. Časová osa není komponenta React. K inicializaci časové osy dochází ve funkci \texttt{componentDidMount}, která se volá po umístění komponenty do virtuálního DOM. Při změně položek časové osy dojde k překreslení pomocí funkce \texttt{componentDidUpdate}. Komponenta má na starost také přidávání filtrů a zobrazování dialogového okna pro přidání filtru -- komponenty \texttt{AddFilterDialog}. Komponenta si ve stavu uchovává pole s označenými položkami na časové ose a informaci, zda-li má být viditelné dialogové okno pro přidání filtru. Pokud dialog požádá o přidání filtru, je požadavek předán nadřazené komponentě \texttt{Editor}.
+\item \texttt{AddFilterDialog} vykresluje formulář pro přidání filtru. Ve svém stavu si uchovává hodnoty z formuláře -- zvolený filtr a jeho hodnotu. Při potvrzení formuláře, komponenta vytvoří objekt flitru a požádá nadřazenou komponentu \texttt{Timeline} o přidání filtru.
+\end{itemize}
 
 \section{Controller}
 Controllery mají za úkol přijmout požadavek, zpracovat parametry požadavku, na základě požadavku vykonat s pomocí modelu požadované akce a poté zajistit odpověď. Odpověď může controller vytvořit sám nebo použije view. Controller je řadič -- řídí ostatní součásti. Složka \texttt{/controllers} obsahuje 3 controllery -- \texttt{apiController}, \texttt{errorController} a \texttt{mainController}.
@@ -1071,54 +1092,56 @@ fs.access(path.join(config.projectPath, req.params.projectID, 'processing'), fs.
 });
 \end{lstlisting}
 
-\section{Zpracování vstupních videí}
-Framework \textit{MLT} pracuje s videii po snímcích. Uživatelé videoeditorů pracují s časem na časové ose. Časové značky je nutné převádět na konkrétní snímek ve videu a naopak je nutné získat z videa celkový čas a celkový počet snímků. Spočítání snímků a celkového času videa zvládne program \texttt{ffmpeg} i \texttt{ffprobe}. Problém nastává, pokud chceme získat snímek videa v určitém čase. Získat snímek trojčlenkou ($ (pocet\ snimku / celkovy\ cas) * aktualni\ cas $) by bylo možné za předpokladu, že všechny snímky trvají shodnou dobu, tato vlastnost videí se nazývá \textit{Constatnt Frame rate (CFR)}. CFR videa mají stálou snímkovací frekvenci udávanou v hertzích (Hz) nebo snímcích za sekundu (FPS), například 60 FPS.\footnote{\url{https://en.wikipedia.org/wiki/Variable_frame_rate}} Kromě video kontejneru AVI jej popdorují všehchny rozšířené kontejnery.\footnote{\url{https://en.wikipedia.org/wiki/Comparison_of_video_container_formats}} Opakem jsou videa s promnělivou snímkovací frekvencí -- \textit{Variable Frame Rate (VFR)}.\footnote{\url{https://www.bandicam.com/support/tips/vfr-cfr/}} Promměnná snímkovací frekvence je efektivní způsob, jakým lze získat video s vysokou snímkovací frekvecí a nízkou velikostí výsledného souboru. Pokud bychom zaznamenávali obrazovku, VFR by ukládalo snímky pouze při změně na obrazovce, zatímco CFR by snímky zaznamenávalo neustále. S VFR natáčejí fotoaparáty\footnote{\url{https://camerajabber.com/variable-frame-rate-recording-video/}} i chytré telefony. VFR je tedy mnohem lepší způsob snímkování než CFV, pokud chceme video sdílet bez úprav. Úpravy VFR videí jsou problematické a například Sony Vegas jej nepodporuje, Adobe Premiere Pro VFR podporuje od ledna 2018\footnote{\url{https://www.premierebro.com/blog/premiere-pro-1201-update-variable-frame-rate-and-new-features}} a Shotcut VFR detekuje a nabídne konverzi na video s CFR\footnote{\url{https://github.com/mltframework/mlt/commit/fa4deb88ed233810d63ea8120aaa1783cc170a0e}}.
-
-Všechny nahraná videa jsou na serveru překonvertována na videa s CFR, nejprve s nízkým rozlišení o šířce 480 px pro zobrazení náhledu v prohlížeči. Konverze probíhá do kontejneru MP4 obsahující video formátu H.264 a AAC audio. Tento formát podporuje prohlížeč Chrome, Firefox, Internet Explorer, Opera, Safari.\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats\#Browser_compatibility}} Po překonvertování je video zasláno spolu s délkou videa a počtem snímků zpět prohlížeči. Poté se video překonvertuje se stejnými vlastnostmi ale v původním rozlišení pro urychlení vyvádění výsledného videa. Počet snímků obou videí je shodný, náhledové video je ale získáno 4x až 5x rychleji.
-
 \chapter{Testování}
-ESLint!!! -- soubor \texttt{.eslintrc.js}.
-Otestování controllerů: \texttt{npx eslint controles/}
+Testování slouží k odhalení chyb a k vylepšení uživatelského zážitku. Cíl testování může být různý. Nejprve se v této kapitole věnuji testování vykreslování (UI) a testování uživatelského zážitku (UX), ve druhé části se zaměřuji na testování modelu a testování stavu aplikace.
 
 \section{Testování uživatelského rozhraní}
+Už při návrhu editoru a uživatelského rozhraní jsem navrhované řešení konzultoval s neprofesionálními uživateli desktopových editorů. Během průzkumu jsem zjišťoval používané filtry a typy přechodů. Nakonec jsem filtry roztřídil do dvou kategorií -- vylepšení a efekty. Zatímco vylepšení mohou zlepšit uživatelský zážitek z výukového videa, efekty odpoutávají pozornost od sdělení videa. Mezi vylepšení se zařadilo například úprava jasu, kontrastu, odstínu, světlosti, sytosti, ostrosti, vyvážení bílé, otočení a velikost, úprava polohy, ořezání, průhlednost. Mezi nepotřebné efekty se zařadil například sépiový a šedotónový filtr filtr, negativ, rozmazání, posun barev, přidávání kazů do videa, apod. Bylo důležité s uživateli provést toto rozdělení, aby mohly být implementovány pouze efekty zlepšující zážitek z videa. Omezení výběru filtrů a obecně funkcí vede uživatele k vytváření kvalitních videí (pro výukové účely).
+
+Pro ověření navrženého rozhraní probíhalo uzavřené testování s vybranými uživateli. Vybíral jsem uživatele, kteří mají zkušenost s úpravou videí pomocí desktopových aplikací, ale zároveň tyto editory nepoužívají na profesionální úrovni. Potřeboval jsem uživatele, který zná rámcově práci s videi, ale zároveň může být při používání editoru nejistý. Volba videa byla na uživatelích, aby se objevily možné problémy s formáty. Za úkol měli spojit 2 videa a na videa aplikovat alespoň jeden filtr. Během testování byl uživateli k dispozici tester, testování probíhalo formou pozorování.
+
+Z hlediska implementace UI bylo během testování odhaleno odlišné vykreslování rozložení prvků při rozlišením větším, než 2K. Dále bylo upraveno umisťování dialogových oken a ztmavení obrazovky při zobrazení okna.
+
+Rozložení uživatelského rozhraní přišlo všem testovaným subjektům logické, věděli, kde se co nachází a k čemu jednotlivé části slouží. Připomínky byly k zadávání hodnoty filtru. Hodnota obrazových filtrů se nyní zadává posuvníkem, zadávání hodnoty do textového vstupu zůstalo pouze pro dobu trvání. Na řešení uživatelé kritizovaly chybějící funkce, které chyběli z důvodu nekompletní implementace. S implementovaným uživatelským rozhraním byli uživatelé spokojení, pravděpodobně díky tomu, že bylo rozhraní implementováno, aby odpovídalo principům klasických editorů (např. \textit{iMovie}).
+
 \section{Testování API}
-%Pro JavaScript existuje řada testovacích frameworků. Dva nejčasttěji používané jsou \textit{Jasmine}\footnote{Jasmine -- \url{jasmine.github.io}} a \textit{QUnit}\footnote{QUnit\url{http://qunitjs.com}}. Jasmin testy lze vizualozovat nástroji \textit{Testem} (CLI runner) a \textit{Protractor} (klikání v browseru). \textit{Protractor} <- \textit{Selenium}.
+Základním stupněm testování je použití analyzátoru kódu \textit{ESLint}. ESLint dokáže odhalit syntaktické chyby, časté sémantické chyby v kódu a dále kontroluje jednotný styl kódu. Kontrolu lze provádět v z kořenového adresáře projektu příkazem \texttt{npx eslint <soubor>}. Kontrolu lze provést nad jedním souborem nebo rekurzivně nad obsahem adresáře. Kontrola nástrojem ESLint má smysl pro složky \texttt{/controllers}, \texttt{/models} a \texttt{/react}. Rozsah kontroly se nastavuje konfiguračním souborem \texttt{.eslintrc.js}.
 
-%?? Mocha pro Node.js + Typescript ??
+V průběhu implementace byla průběžně testována správnost generovaného XML souboru. Soubor byl testován na syntaktickou správnost a správnost dle externího \textit{DTD} souboru. Soubor \textit{DTD} je součástí projektu \textit{MLT} a určuje, jakého obsahu může XML nabývat. Validní soubor XML je základem pro úspěšně vyexportovaný projekt. Kontrolu provádělo automaticky vývojové prostředí \textit{IntelliJ IDEA} a namátkově jsem soubor ověřoval na portálu \textit{TRUUGO}\,\footnote{TRUUGO XML Validator -- bezplaný online XML validátor, včetně podpory externího DTD, \url{https://www.truugo.com/xml_validator/}.}.
 
-%\subsection{Průběžná integrace (CI)}
-%CI (Continous integration) - build server nad všemi commity spouští testy a v případě chyb reportuje. Vhodné pro práci více vývojářů na projektu. Známými nástroji je \textit{Jenkins} a \textit{TeamCity}. Build server postupuje v následujících krocích:
-\begin{enumerate}
-\item kontrola na novější verzi zdrojového kódu, zvýší se číslo sestavení
-\item sestaví aplikaci na serveru
-\item spustí server-side unit testy
-\item zabalí aplikaci pro vývoj
-\item zabalenou aplikaci nainstaluje ve vývojovém prostředí
-\item spustí server-side integrační testy
-\item spustí JavaScriptové unit testy, integrační testy a akceptační testy
-\item označí build jako splňující testy nebo jako nevyhovující v případě, že selže jeden z předchozích bodů
-\item v případě, že build neprochází testy, upozorní vývojáře, který danou změnu provedl
-\end{enumerate}
+Správnost výstupního videa byla kontrolována i vizuálně. Vyvedení projektu jsem testoval pod 32bitovým Ubuntu 16.04 a pod 64bitovým Ubuntu 18.04. Server \textit{prednasky.com}, na kterém je plánováno nasazení, používá operační systém Ubuntu, proto jsem projekt testoval právě pod tímto operačním systémem.
 
-\subsection{Cíl testování}
-\begin{itemize}
-\item testování modelu
-\item testování stavu aplikace
-\item test vykreslování
-\item testování DOM událostí
-\item akceptační testy
-\end{itemize}
-\cite{Mastering_TypeScript}
+Při testování jsem se s menšími obněnami vytvářel následující výstupní video: 1. položka jednoduchá, 2. položka s přechodem do 3. položky, 3. položka s aplikovaným filtrem a s přechody na předchozí i následující 4. položku a poslední 5. položka je bez přechodu, ale s aplikovaným filtrem, obrázek \ref{img:testcase}.
+\begin{figure}[h]
+	\centering
+	\scalebox{1}{
+		\includegraphics{obrazky-figures/testcase.pdf}
+	}
+	\caption{Vzorový projekt pro testování. Zelené položky mají aplikován filtr, fialová značí přechod mezi položkami.}\label{img:testcase}
+\end{figure}
+
+\section{Rychlost zpracování, maximální délka}
+Aby mohlo řešení uživatelům nabídnout lepší služby, než stávající řešení, musí být schopné zpracovat video o délce delší než 30 minut, ideálně delší než 60 minut, viz srovnání stávajích řešení v tabulce \ref{tab:prices}.
+
+Testování použitelnosti řešení z hlediska výkonu a maximální možné délky videa probíhalo na zařízení MacBook Air s 1,3GHz procesorem (turbo až 2,6 GHz) \textit{dual-core Intel Core i5} a 4 GB operační paměti. Komunikace s vlastním řešením probíhala po lokální síti rychlostí až 300 Mb/s, s konkurenčními řešeními jsem komunikoval rychlostí až 50 Mb/s. Testy byly voleny tak, aby rychlost sítě nehrála roli.
+
+Během testování jsem zkoušel zpracování videa o délce 1 hodiny a 40 minut při rozlišení 1280x720 a 30 snímcích za sekundu. Velikost videa byla 333 MB, video bylo kódováno ve formátu H264, audio ve formátu AAC, použitý kontejner byl MPEG-4. Video bylo nahráno na portál, vloženo do časové osy a byl na něj aplikován filtr pro zvýšení jasu. Poté byl projekt vyveden.
+
+Nahrávání videa do vlastního řešení proběhlo za necelé 4 minuty. Zpracování videa trvalo 45 minut. Po celou dobu zvládal server odpovídat na požadavky ostatních uživatelů. Druhý testovaný nástroj -- \textit{Clipchamp Create} provádí úpravy na straně prohlížeče. Video bylo po přidání do projektu k dispozici po 10 sekundách. Renderování videa ovšem trvalo přibližně 2,5 hodiny.
+
+V porovnání těchto přístupů vyhrává serverové zpracování videí. U kratších videí se náskok snižuje, ale stále převažuje. Implementované řešení zvládá zpracovat videa delší než 60 minut a překonává tak existující řešení, vyjma \textit{WeVideo} s neomezenými parametry výsledných videí.
 
 \chapter{Závěr}
-V~závěru bych rád shrnul úkony, které mě čekají v~letním semestru.
+V rámci této práce vznikl REST API server, který slouží k úpravám multimediálních souborů. K API je přiložena dokumentace umožnující komukoliv vytvořit vlastní libovolnou aplikaci nad tímto API. K provozování serveru není zapotřebí databáze ani webový server. K získávání informací o souborech používá \textit{FFmpeg}, k vykreslování výsledného videa framework \textit{MLT}. Server ukládá stav projektů do XML souborů. V případě potřeby může uživatel editoru znovu načíst projekt ve stavu, v jakém jej opustil. Také je možné v libovolném čase vzít složku s projektem ze serveru a nechat jej ručně zpracovat programem \textit{MLT}. Stačí pouze upravit cesty k souborům. Zpracování videa není omezeno velikostí souborů ani délkou.
 
-Zjistit možnosti JavaScriptu ve zpracování multimédií. Efekty nebo přechody je možné simulovat přímo v~prohlížeči\,\cite{ManipulatingVideo}. V~nadcházejícím semestru bude cílem mimo jiné zhodnotit dopad na výkon přehrávače při simulování efektů na straně prohlížeče.
+Dále vznikl jednoduchý videoeditor demonstrující základní použití API pro úpravu videí, zejména střih a úpravu záznamů přednášek. Uživatelské rozhraní odpovídá zažitým zvyklostem z desktopových aplikací. V současné době umožňuje vkládání videí na časovou osu aplikování filtrů, postupného náběhu a postupného mizení. Uživatelské rozhraní tvoří React komponenty, je tedy snadno rozšiřovatelné. Celá aplikace je tvořena jako open source řešení a zdrojové kódy jsou umístěny na Github.com\,\footnote{Github repozitář pojektu -- dostupný z \url{https://github.com/kudlav/videoeditor}.} pod licencí Apache-2.0.
 
-Porovnat a popřemýšlet o~server/client side přístupu. Při přiložení video-souboru je nutné video předzpracovat (délka, miniatura), jsou dvě možnosti -- předzpracování provede server, uživatel musí počkat na nahrání a předzpracování souboru, nebo provede předzpracování klient, JavaScript internetového prohlížeče, výhodou je, že uživatel nemusí čekat na nahrání videa na server.
+Součástí této práce je návod pro zprovoznění řešení pro běžné použití i návod pro sestavení projektu určený budoucím vývojářům. Projekty jsou zabezpečeny unikátním ID. Délka identifikátoru neumožňuje získání konkrétního projektu hrubou silou. Aplikace je dále rozšiřovatelná. Do budoucna se počítá s rozšířením možností editoru a s napojením na uživatelské účty na externí autentizační službu.
 
-Zkusit vytvořit algoritmus pro serializaci/deserializaci projektu -- generování XML souboru na základě uživatelských akcí.
+Dále vznikl ucelený přehled možností manipulace s multimediálním obsahem přímo v prohlížeči, včetně ukázek použití pro videoeditor. Efekty nebo přechody je možné simulovat přímo v~prohlížeči, ale samotné renderování výsledného videa je lepší přenechat serverové části.
 
-V~rámci návrhu byla vytvořena statická stránka video editoru. V~nadcházejícím semestru bude nutné napojit rozhraní na API serveru a implementovat funkčnost na straně klienta.
+Tato práce má potenciál pro další rozvoj. Nejvíce prostoru vidím v možnostech editoru. Zbývá implementovat přechody, některé filtry a náhled videa na základě demonstračních příkladů práce s videem v prohlížeči. Konkurenční řešení mají i u placených programů omezené parametry výsledného videa. Do budoucna vidím možnost zpeněžení nástroje nabídnutím nástroje koncovým uživatelům nebo například online reklamním agenturám.
+
+Za největší přínos považuji vytvoření REST API, díky kterému mohou vzniknout další zajímavé projekty nezávisle na platformě. Může tak vzniknout například nástroj pro úpravu a okamžité sdílení videí s ostatními uživateli. Se samotným editorem se počítá na portálu \textit{presnasky.com}, kam by měl být nasazen do září 2019.
 
 %===============================================================================
