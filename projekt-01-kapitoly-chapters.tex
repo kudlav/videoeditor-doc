@@ -8,132 +8,294 @@ Potřeby jednoduchého online video editoru vznikly při práci na portálu s~v�
 
 V~první kapitole jsou zmíněny a srovnávány významné video editory, zejména v~oblasti dostupných funkcí a licence. Dále jsou zmíněny technologie a principy uživatelského rozhraní, které byli inspirovány stávajícími editory. Druhá kapitola je věnována návrhu řešení. Objasňuje cíl práce, způsob, jakým je editor řešený, a vysvětluje zvolené technologie. Ve třetí kapitole jsou rozebírány teoretické základy pro práci s~multimédii, na kterých práce staví. Je zde vysvětlen způsob práce s~multimediálním frameworkem MLT a možnosti práce s~multimédii přímo ve webovém prohlížeči. Ve čtvrté kapitole je popsán způsob použití zvolených technologií, členění a implementace projektu. V~této kapitole jsou uvedeny požadavky pro nasazení, způsob nasazení a princip fungování programu. Pátá kapitola je věnována testování uživatelského rozhraní, získávání zpětné vazby a testování kódu. Závěrečná kapitola shrnuje aktuální stav projektu, nastiňuje budoucí směr vývoje a další možné aplikace, které mohou na základě této práce vzniknout.
 
-\chapter{Existující řešení}
-Při návrhu editoru jsem zkoumal existující videoeditory. Vybíral jsem editory známé od Youtuberů, všeobecně známé i na základě doporučení od mého vedoucího práce a známých. Stávající řešení se dají rozdělit do dvou skupin. Desktopové video editory a online video editory. Při průzkumu existujících řešení jsem se zaměřoval zejména na projekty, které mají svobodnou licenci, nebo je lze využívat bezplatně.
+\chapter{Existující řešení}\label{cap:comparsion}
+Při návrhu editoru jsem zkoumal existující videoeditory. Vybíral jsem editory známé od Youtuberů, všeobecně známé i na základě doporučení od mého vedoucího práce a známých. Stávající řešení se dají rozdělit do dvou skupin. Desktopové video editory a online video editory. Průzkum existujících řešení je zaměřen zejména na projekty, které mají svobodnou licenci, nebo je lze využívat bezplatně.
 
 \section{Desktopové editory}
-Mezi desktopovými video editory existuje řada bezplatných řešení s~licencemi vhodnými pro další i komerční využití. Rozhraní aplikací bývá podobné, rozsáhlé, pro jednoduché editace využívá uživatel zlomek funkcí. Nevýhodou bývá pomalá křivka učení a nutnost provozovat aplikaci na dostatečně výkonném zařízení.
+Mezi desktopovými videoeditory existuje řada bezplatných řešení s~licencemi vhodnými pro další i komerční využití. Rozhraní aplikací bývá podobné, rozsáhlé, pro jednoduché editace využívá uživatel zlomek funkcí. Nevýhodou bývá pomalá křivka učení a nutnost provozovat aplikaci na dostatečně výkonném zařízení.
 
-Z~řešení s~otevřeným zdrojovým kódem lze vyjmenovat například projekty \textit{Shotcut}\,\footnote{Shotcut -- bezplatný nelineární multiplatformní editor s~otevřeným zdrojovým kódem,\\\url{https://www.shotcut.org/}.} a \textit{Kdenlive}\,\footnote{Kdenlive -- bezplatný nelineární editor pro prostředí KDE4, \url{https://kdenlive.org/}.}, které používají jako jádro framework MLT. Oba projekty používají pro zpracování multimediálních souborů framework MLT. I~v~bezplatných aplikacích lze vytvořit libovolný projekt, oproti komerčním řešení není uživatel nijak omezován. U~bezplatných řešení jsem zaznamenal problémy se stabilitou, základem je průběžné ukládání projektu. Rozhraní je u~obou projektů téměř stejné, obrázek \ref{img:shotcut}. Na horní liště nabídek jsou umístěny globální akce projektu, jako otevření projektu, uložení, vpřed, zpět a renderování projektu. Pod nabídkou je obrazovka rozdělena do několika sloupců. Levý sloupec slouží ke správě zdrojů projektu, správě filtrů u~vybrané položky na časové ose a pro nastavování vlastností a parametrů. Pro přepínání zobrazení používají oba programy karty/záložky. Pravý sloupec zobrazuje náhled zdrojových souborů nebo výsledného videa. Aktuální pozici vizualizuje svislá čára na časové ose. Přehrávání náhledu se ovládá prvky přímo pod videem. Vespod je umístěna časová osa. Operace nad časovou osou jsou umístěny v~liště nabídek přímo nad osou. Osa obsahuje libovolné množství stop. Zvukové stopy mají zelenou barvu, video stopy barvu modrou.
+Z~řešení s~otevřeným zdrojovým kódem lze vyjmenovat například projekty \textit{Shotcut}\,\footnote{Shotcut -- bezplatný nelineární multiplatformní editor s~otevřeným zdrojovým kódem,\\\url{https://www.shotcut.org/}.} a \textit{Kdenlive}\,\footnote{Kdenlive -- bezplatný nelineární editor pro prostředí KDE4, \url{https://kdenlive.org/}.}. Oba projekty používají pro zpracování multimediálních souborů framework MLT. I~v~bezplatných aplikacích lze vytvořit libovolný projekt, oproti komerčním řešení není uživatel nijak omezován. Při testování bezplatných řešení byly zaznamenány problémy se stabilitou, základem je průběžné ukládání projektu. Rozhraní je u~obou programů téměř shodné, obrázek \ref{img:shotcut}. Na horní liště nabídek (D) jsou umístěny globální akce projektu, jako otevření projektu, uložení, vpřed, zpět a renderování projektu. Levý sloupec (A) slouží ke správě zdrojů projektu, správě filtrů a přechodů vybrané položky na časové ose a pro nastavování vlastností a parametrů. Pro přepínání zobrazení používají oba programy karty/záložky. Pravý sloupec (B) zobrazuje náhled zdrojových souborů nebo výsledného videa. Přehrávání náhledu se ovládá prvky pod videem. Vespod je umístěna časová osa (C). Operace s časovou osou jsou umístěny nad osou. Aktuální pozici vizualizuje svislá čára. Osa obsahuje libovolné množství stop. Zvukové stopy mají zelenou barvu, video stopy barvu modrou.
 \begin{figure}[h]
 	\centering
-	\scalebox{0.6}{
+	\scalebox{0.5}{
 		\includegraphics{obrazky-figures/shotcup.png}
 	}
-	\caption{Uživatelské rozhraní nelineárního video editoru Shotcut.}\label{img:shotcut}
+	\caption{Uživatelské rozhraní nelineárního video editoru \textit{Shotcut} s vyznačeným rozložením ovládacích prvků. Zdrojové soubory -- A, náhled zdrojových souborů / časové osy -- C, globální akce nad projektem -- D, záložka filtrů a přechodů -- E, F.}\label{img:shotcut}
 \end{figure}
 
-Bezplatnou aplikací nevyužívající framework MLT je například program \textit{Openshot}\,\footnote{Openshot -- bezplatný nelineární editor s~prostředím GTK+, \url{https://www.openshot.org/}.}, který přešel na vlastní jádro. Jeho rozhraní je oproti předchozím dvou editorům velmi zjednodušené. Rozvržení zůstává stejné, pouze omezuje počet informací, které uživateli poskytuje. Nahoře se opět nacházejí akce k~projektu, vlevo knihovna souborů, filtrů a přechodů, vpravo náhled s~jednoznačnými ikonami a ve spodní části se nacházejí časové osy a rovněž se zde nastavují vlastnosti filtrů/přechodů. I~přes zjednodušení rozhraní zde žádné funkce nechybí.
+Bezplatnou aplikací nevyužívající framework MLT je například program \textit{Openshot}\,\footnote{Openshot -- bezplatný nelineární editor s~prostředím GTK+, \url{https://www.openshot.org/}.}, který přešel na vlastní jádro. Jeho rozhraní je oproti předchozím dvou editorům velmi zjednodušené. Rozvržení zůstává stejné, pouze omezuje počet informací, které uživateli poskytuje. Nahoře se opět nacházejí akce k~projektu, vlevo knihovna souborů, filtrů a přechodů, vpravo náhled a ve spodní části se nacházejí časové osy a nastavení vlastností filtrů/přechodů. I~přes zjednodušení rozhraní zde žádné funkce nechybí.
 
-Mezi kvalitní proprietární programy se řadí program \textit{iMovie} od firmy Apple, \textit{Adobe Premiere Pro} od firmy Adobe Systems a \textit{VEGAS Movie Studio} od firmy Sony. Profesionální programy se od bezplatných liší zejména vyšší stabilitou, propracovanějšími filtry a šablonami. Licence se pohybují v~řádech tisícikorun a například Adobe nabízí svůj produkt pouze ve formě předplatného. Z~těchto programů jsem vyzkoušel \textit{iMovie}. Program od firmy Apple dělí pracovní prostor do stejných skupin. Na rozdíl od předešlých programů zobrazuje v~levé polovině nejen soubory k~aktuálnímu projektu, ale i soubory v~knihovnách. V~navrhovaném řešení je rovněž potřeba řešit sdílenou knihovnu s~obecnými zdroji sdílenými například s~uživateli fakulty. Odlišná je aplikace filtrů. Filtry se nacházejí nad náhledem videa, jako ikony pro skupiny filtrů. Po rozkliknutí ikony se zobrazí nabídka filtrů. Uživatel nikdy nenastavuje číselné hodnoty. Nastavení filtrů je řešeno vizuálními posuvníky, kapátky a dalšími nástroji. Zajímavě řešená je časová osa, která nemá pravítko s~časem. Měřítko času je na ose proměnlivé, obrázek \ref{img:imovie}. Mezi klipy je mezera, ačkoliv konec předchozího a začátek následujícího klipu je ve stejný čas. Z~mého pohledu se jedná o~rušivý prvek, při přehrávání ukazatel aktuálního času přeskakuje a mění svou rychlost. Na druhou stranu lze do mezer pohodlně vkládat přechody. Za zvláštní vlastnost považuji nemožnost posouvat položky po časové ose, je možné pouze měnit pořadí položek. Pokud potřebujeme mít ve videu prázdné místo, musíme zde vložit jednolitou barvu z~knihovny (záložky Pozadí). Nad časovou osou chybí lišta nástrojů. Nástroje k~položkám časové osy jsou dostupné skrze kontextovou nabídku vyvolanou stiskem pravého tlačítka myši nebo skrze klávesové zkratky. Video stopy jsou laděny do modrých barev, zvukové stopy do barev zelených. Z~programu iMovie jsem čerpal tmavé barevné schéma.
+Mezi kvalitní proprietární programy se řadí program \textit{iMovie} od firmy Apple, \textit{Adobe Premiere Pro} od firmy Adobe Systems a \textit{VEGAS Movie Studio} od firmy Sony. Profesionální programy se od bezplatných liší zejména vyšší stabilitou, propracovanějšími filtry a šablonami. Licence se pohybují v~řádech tisícikorun a například Adobe nabízí svůj produkt pouze ve formě předplatného. Z~těchto programů jsem vyzkoušel \textit{iMovie}\,\footnote{iMovie -- proprietární nelineární videoeditor od firmy Apple, \url{https://www.apple.com/imovie/}.}. Program od firmy Apple dělí pracovní prostor do stejných skupin, obrázek \ref{img:imovie}. Na rozdíl od předešlých programů zobrazuje v~levé polovině (A) nejen soubory k~aktuálnímu projektu, ale i soubory v~knihovnách. V~navrhovaném řešení je rovněž potřeba řešit sdílenou knihovnu s~obecnými zdroji sdílenými například s~uživateli fakulty. Odlišná je aplikace filtrů. Filtry se nacházejí nad náhledem videa (F). Po rozkliknutí ikony se zobrazí nabídka filtrů. Uživatel nikdy nenastavuje číselné hodnoty. Nastavení filtrů je řešeno vizuálními posuvníky, kapátky a dalšími nástroji. Zajímavě řešená je časová osa (C), která nemá pravítko s~časem. Měřítko času je na ose proměnlivé. Mezi klipy je mezera, ačkoliv konec předchozího a začátek následujícího klipu je ve stejný čas. Z~mého pohledu se jedná o~rušivý prvek, při přehrávání ukazatel aktuálního času přeskakuje a mění svou rychlost. Na druhou stranu lze do mezer pohodlně vkládat přechody. Položky na časové ose nelze posouvat, je možné měnit pouze jejich pořadí. Pokud potřebujeme mít ve videu prázdné místo, musíme zde vložit jednolitou barvu z~knihovny (záložky Pozadí). Nad časovou osou chybí lišta nástrojů. Nástroje k~položkám časové osy jsou dostupné skrze kontextovou nabídku vyvolanou stiskem pravého tlačítka myši nebo skrze klávesové zkratky. Video stopy jsou laděny do modrých barev, zvukové stopy do barev zelených. Z~programu \textit{iMovie} vychází barevné schéma tohoto projektu.
 \begin{figure}[h]
 	\centering
-	\scalebox{0.3}{
+	\scalebox{0.4}{
 		\includegraphics{obrazky-figures/iMovie.png}
 	}
-	\caption{Uživatelské rozhraní iMovie. Časová osa nemá jednotné měřítko.}\label{img:imovie}
+	\caption{Uživatelské rozhraní \textit{iMovie} s vyznačeným rozložením ovládacích prvků. Knihovna souborů -- A, náhled výsledného videa -- B, časová osa bez jednotného měřítka -- C, globální akce -- D, záložka s přechody -- E, správa filtrů -- F.}\label{img:imovie}
 \end{figure}
 
-Zajímavým projektem mezi desktopovými aplikacemi je open source editor \textit{fwf}\,\footnote{fwf -- JavaScriptový FFmpeg editor, \url{https://github.com/daem-on/fwf}.} -- lineární video editor využívající knihovnu \textit{FFmpeg}\,\footnote{FFmpeg -- multiplatformní řešení pro nahrávání, konverzi a streamování audia a videa, \url{https://ffmpeg.org/}.}. Program je napsaný v~JavaScriptovém frameworku \textit{Vue.js}\,\footnote{Vue.js -- open source JavaScriptový framework pro tvorbu uživatelských rozhraní, \url{https://vuejs.org/}.} a zkompilovaný pomocí nástroje \textit{Electron}\,\footnote{Electron -- nástroj pro tvorbu desktopových aplikací za pomocí JavaScriptu, HTML a CSS, \url{https://electronjs.org/}.}. Video editor má pouze základní funkce, není příliš spolehlivý, ale lze se u~něj inspirovat s~použitými technologiemi pro implementaci uživatelského rozhraní, obrázek \ref{img:fwf}.
+Zajímavým projektem mezi desktopovými aplikacemi je open source editor \textit{fwf}\,\footnote{fwf -- JavaScriptový FFmpeg editor, \url{https://github.com/daem-on/fwf}.} -- lineární video editor využívající knihovnu \textit{FFmpeg}\,\footnote{FFmpeg -- multiplatformní řešení pro nahrávání, konverzi a streamování audia a videa, \url{https://ffmpeg.org/}.}. Program je napsaný v~JavaScriptovém frameworku \textit{Vue.js}\,\footnote{Vue.js -- open source JavaScriptový framework pro tvorbu uživatelských rozhraní, \url{https://vuejs.org/}.} a zkompilovaný pomocí nástroje \textit{Electron}\,\footnote{Electron -- nástroj pro tvorbu desktopových aplikací za pomocí JavaScriptu, HTML a CSS, \url{https://electronjs.org/}.}. Video editor má základní funkce, není příliš spolehlivý, ale lze se u~něj inspirovat s~použitými technologiemi pro implementaci uživatelského rozhraní, obrázek \ref{img:fwf}.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.4}{
 		\includegraphics{obrazky-figures/fwf.png}
 	}
-	\caption{Uživatelské rozhraní editoru \textit{fwf}, sestavené nástrojem Electron.}\label{img:fwf}
+	\caption{Uživatelské rozhraní editoru \textit{fwf}, sestavené nástrojem Electron, s vyznačeným rozložením ovládacích prvků. Zdrojové soubory -- A, náhled následujících 5 sekund od aktuálního času -- B, časová osa s jednou stopou -- C, globální akce -- D, přidání filtrů -- F.}\label{img:fwf}
 \end{figure}
-Na časovou osu jsem použil knihovnu \textit{vis.js}\,\footnote{vis.js -- JavaScriptová knihovna na vizualizaci dat, \url{http://visjs.org/}.}. \textit{Timeline} je jen jedním z~vizualizačních nástrojů knihovny. Knihovna slouží k~zobrazení událostí od Unixové epochy (00:00:00,000 1. ledna 1970), zatímco projekt začíná časem 0. Dále jsem z~projektu použil font Source Sans Pro zveřejněnou pod svobodnou Open Font Licencí a pro ikony odnož\,\footnote{Material Design Icons -- odnož projektu Google, \url{https://github.com/jossef/material-design-icons-iconfont}.} použitého fontu Material Icons od Google (licence Apache-2.0).
+Program nepodporuje přechody. Na časovou osu (C) používá knihovnu \textit{vis.js}\,\footnote{vis.js -- JavaScriptová knihovna na vizualizaci dat, \url{http://visjs.org/}.}. \textit{Timeline} je jen jedním z~vizualizačních nástrojů knihovny. Nástroj slouží k~zobrazení událostí od Unixové epochy (00:00:00,000 1. ledna 1970), zatímco projekt začíná časem 0. Program využívá font Source Sans Pro zveřejněnou pod svobodnou Open Font Licencí a pro ikony odnož\,\footnote{Material Design Icons -- odnož projektu Google, \url{https://github.com/jossef/material-design-icons-iconfont}.} použitého fontu Material Icons od Google (licence Apache-2.0).
 
 \section{Webové editory}
-Na webový editor jsem nezískal žádný tip. Lidé v~mém okolí raději sáhli po open source editoru či stáhli placený program obsahující crack pomocí torrentu. U~webových editorů je velký rozdíl mezi placenými řešeními a neplacenými. Placených aplikací je nepřeberné množství s~mnoha funkcemi, bezplatná řešení mají zásadní omezení. Řešení s~otevřeným zdrojovým kódem a svobodnou licencí jsem nenašel žádné.
+Na webový editor jsem nezískal žádný tip. Lidé v~mém okolí raději sáhli po open source editoru či stáhli placený program obsahující crack pomocí torrentu. U~webových editorů je velký rozdíl mezi placenými řešeními a neplacenými. Placené aplikace disponují mnoha funkcemi, bezplatná řešení mají zásadní omezení. Řešení s~otevřeným zdrojovým kódem a svobodnou licencí jsem nenašel žádné.
 
-Placená řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~placených editorů zmiňuji \textit{WeVideo}\,\footnote{WeVideo --  proprietární online editor, \url{https://www.wevideo.com}.}, \textit{Magisto}\,\footnote{Magisto -- proprietární online editor, \url{https://www.magisto.com/}.}, \textit{Loopster}\,\footnote{Loopster -- proprietární online editor, \url{https://www.loopster.com}.}, \textit{Animatron}\,\footnote{Animatron -- proprietární online editor s~nejdražším předplatným, \url{https://www.animatron.com}.} a \textit{Clipchamp}\,\footnote{Clichamp Create -- proprietární online editor, který lze používat s~omezeními bezplatně, \url{https://clipchamp.com}.}.
+Placená řešení se funkcemi i rozhraním blíží nativním aplikacím. Z~placených editorů zmiňuji \textit{WeVideo}\,\footnote{WeVideo --  proprietární online editor, \url{https://www.wevideo.com}.}, \textit{Magisto}\,\footnote{Magisto -- proprietární online editor, \url{https://www.magisto.com/}.}, \textit{Loopster}\,\footnote{Loopster -- proprietární online editor, \url{https://www.loopster.com}.}, \textit{Animatron}\,\footnote{Animatron -- proprietární online editor, \url{https://www.animatron.com}.} a \textit{Clipchamp}\,\footnote{Clichamp Create -- proprietární online editor, který zpracovává videa v prohlížeči, \url{https://clipchamp.com}.}.
 
-\textit{WeVideo} je poskytováno v~mnoha plánech. Nejdražší varianta neomezuje velikostí souboru ani maximální délkou. Uživatelské rozhraní umožňuje pracovat s~video soubory již během nahrávání na server. Náhled je renderován v~prohlížeči, výsledné video na serveru. Po dokončení renderování je uživateli zaslán email. Videa vytvořená v~bezplatném plánu obsahují vodoznak.
+\textit{WeVideo} je poskytováno v~pěti cenových variantách. Nejdražší varianta neomezuje velikostí souboru ani maximální délkou. Uživatelské rozhraní umožňuje pracovat s~video soubory již během nahrávání na server. Náhled je renderován v~prohlížeči, výsledné video na serveru. Po dokončení renderování je uživateli zaslán email. Videa vytvořená v~bezplatné variantě obsahují vodoznak.
 
-\textit{Magisto} nabízí pouze placené plány. Nejlevnější plán limituje maximální délkou výsledného videa 2,5 minuty. Nejdražší plám má rovněž velmi limitující omezení -- 10 minut.
+\textit{Magisto} nabízí placené varianty. Nejlevnější limituje maximální délkou výsledného videa 2,5 minuty. Nejdražší limituje 10 minutami. Při vytváření projektu není k dispozici časová osa. Klipy zobrazuje jako posloupnost položek, podobně jako správci souborů. Filtry a přechody nelze nastavit pro položky zvlášť, nastavují se globálně pro celý projekt pomocí šablon. Bezplatná varianta nabízí jednoduchou 3krokovou editaci videa, ve které jsou omezené funkce.
 
-\textit{Loopster} nabízí ve všech plánech výstupní rozlišení 1080p. Zásadním problémem pro zpracovávání přednášek je maximální délka -- 30 minut u~nejdražšího plánu.
+\textit{Loopster} nabízí ve všech plánech výstupní rozlišení 1080p. Zásadním problémem pro zpracovávání přednášek je maximální délka -- 30 minut u~nejdražší varianty.
 
-\textit{Animatron} slouží spíše k~tvorbě krátkých upoutávek a reklam. Umožňuje v~nejdražším předplatném vytvořit projekt o~maximální délce 10 minut. Bezplatný plán neumožňuje stažení videa, pouze vystavení videa na sociálních sítích. Při práci s~editorem jsem zaznamenal problém s~různou orientací stejného videa napříč editorem.
+\textit{Animatron} slouží zejména k~tvorbě krátkých upoutávek a reklam. Umožňuje v~nejdražší variantě vytvořit projekt o~maximální délce 10 minut. Bezplatný plán neumožňuje stažení videa, pouze vystavení videa na sociálních sítích. Při práci s~editorem jsem zaznamenal problém s~různou orientací stejného videa napříč editorem.
 
-Pro nenáročné uživatele by mohl být dostačující nástroj \textit{Clipchamp Create}, který nabízí i bezplatný plán s~omezením rozlišení videí na 480p. Velikost projektu omezena není a video není opatřeno reklamním vodoznakem. Rozhraní je shodné s~desktopovými programy, obrázek \ref{img:clipchamp}. Editor běží pouze v~prohlížeči Google Chrome a zpracování videa probíhá na straně webového prohlížeče. Uživatel nesmí videoeditor během zpracovávání opustit. Doba zpracování videa o~délce do 2 minut trvá i při rozlišení 480p cca 20 minut.
+Pro nenáročné uživatele by mohl být dostačující nástroj \textit{Clipchamp Create}, který nabízí i bezplatnou variantu s~omezením rozlišení videí na 480p. Velikost projektu a maximální délka omezena není, video není opatřeno reklamním vodoznakem. V nejdražší variantě umožňuje vytvářet videa o rozlišení až 1080p. Rozhraní je shodné s~desktopovými programy, obrázek \ref{img:clipchamp}. Editor běží pouze v~prohlížeči Google Chrome a zpracování videa probíhá na straně webového prohlížeče. Uživatel nesmí videoeditor během zpracovávání opustit. Doba zpracování videa o~délce do 2 minut trvá i při rozlišení 480p cca 20 minut. Kromě nahraných souborů (A) poskytuje knihovnu s audiem a videem.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.5}{
 		\includegraphics{obrazky-figures/clipchamp.png}
 	}
-	\caption{Uživatelské rozhraní nelineárního online video editoru \textit{Clipchamp Create}.}\label{img:clipchamp}
+	\caption{Uživatelské rozhraní nelineárního online video editoru \textit{Clipchamp Create} s vyznačeným rozložením ovládacích prvků. Knihovna nahraných a poskytovaných souborů -- A, náhled videa -- B, časová osa s libovolným množstvím stop -- C, export projektu -- D, knihovna přechodů a filtrů -- E, F.}\label{img:clipchamp}
 \end{figure}
 
-Další dva editory uvádím pro úplnost, ani jeden není použitelný -- \textit{Kizoa}\,\footnote{Kioza -- bezplatný lineární online video editor, \url{https://www.kizoa.com}.} a \textit{Movie Maker Online}\,\footnote{Movie Maker Online -- bezplatný online editor, \url{https://moviemakeronline.com/}.}.
+Další dva editory uvádím pro úplnost, ani jeden není vyhovující -- \textit{Kizoa}\,\footnote{Kioza -- bezplatný lineární online video editor, \url{https://www.kizoa.com}.} a \textit{Movie Maker Online}\,\footnote{Movie Maker Online -- bezplatný online editor, \url{https://moviemakeronline.com/}.}.
 
-Editor \textit{Kizoa} je vytvořen v~programu \textit{Adobe Flash}, obsahuje dostatečné množství efektů, přechodů a nastavení. Vespod zobrazuje jednu časovou osu, jedná se o~lineární editor. Hlavní nevýhodou je vázanost na \textit{Adobe Flash Player}, který je dnes na ústupu a jeho podpora skončí v~roce 2020\,\cite{FlashPlayer}. Bezplatné předplatné nabídne 2 minuty videa s~rozlišením 720p, nejdražší předplatné 4K video bez omezení délky.
+Editor \textit{Kizoa} je vytvořen v~programu \textit{Adobe Flash}, obsahuje dostatečné množství efektů (F), přechodů (E) a nastavení, obrázek \ref{img:kizoa}. Kromě nahraných souborů poskytuje vlastní knihovnu s obrázky, videi a audiem. Vespod zobrazuje jednu časovou osu (C), jedná se o~lineární editor. Náhled výsledného videa (B) zobrazuje v překryvném okně, při přehrávání náhledu dochází k problému se stabilitou prohlížeče. Hlavní nevýhodou je vázanost na \textit{Adobe Flash Player}, který je dnes na ústupu a jeho podpora skončí v~roce 2020\,\cite{FlashPlayer}. Bezplatná varianta nabídne 2 minuty videa s~rozlišením 720p, nejdražší varianta 4K video bez omezení délky.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.53}{
 		\includegraphics{obrazky-figures/kizoa.png}
 	}
-	\caption{Uživatelské rozhraní online lineárního video editoru Kizoa.}\label{img:kizoa}
+	\caption{Uživatelské rozhraní online lineárního video editoru \textit{Kizoa} s vyznačeným rozložením ovládacích prvků. Knihovna nahraných a poskytovaných souborů -- A, otevření okna s náhledem -- B, časová osa s jednou video a jednou audio stopou -- C, globální akce -- D, knihovna přechodů -- E, filtry a efekty -- F.}\label{img:kizoa}
 \end{figure}
 
-\textit{Movie Maker Online} představuje video editor s~netradičním uživatelským rozhraním. Nevyužívá zásuvných modulů a osu s~videem zobrazuje vertikálně. Jedná se o~nelineární editor, který má 4 stopy -- zvukovou, stopu s~pozadím, hlavní stopu a stopu s~překryvným textem. Přidat nebo odebrat stopu není možné. Editor je řešen jako jedna stránka, na které se pod sebou nacházejí jednotlivé kroky. Nahrávání souborů probíhá v~prvním kroku, poté se musí uživatel přesunout ke kroku 2 a provést editace. Pro uživatele desktopových aplikací se jedná o~zcela jiné rozhraní, ve kterém se budou těžko orientovat. Na rozdíl od předchozího řešení neumožňuje \textit{Movie Maker Online} projekt uložit nebo exportovat a později opětovně použít. Program lze používat bez registrace, výsledné video o~rozlišení 720p je opatřeno vodoznakem a nesmí přesáhnout 10 minut. Program by měl nabízet předplatné, aktuálně ale nelze získat.
+\textit{Movie Maker Online} představuje video editor s~netradičním uživatelským rozhraním, obrázek \ref{img:moviemakeronline}. Nevyužívá zásuvných modulů a osu s~videem zobrazuje vertikálně (C). Jedná se o~nelineární editor, který má 4 stopy -- zvukovou, stopu s~pozadím, hlavní stopu a stopu s~překryvným textem. Přidat nebo odebrat stopu není možné. Editor je řešen jako jedna stránka, na které se pod sebou nacházejí jednotlivé kroky. Nahrávání souborů probíhá v~prvním kroku (A), poté se musí uživatel přesunout ke kroku 2 a provést editace. Obsahuje omezené množství filtrů (F) a z přechodů lze realizovat prolnutí pomocí dvou stop s postupným náběhem/ztmíváním (E). Pro uživatele desktopových aplikací se jedná o~zcela jiné rozhraní, ve kterém se budou těžko orientovat. Na rozdíl od předchozího řešení neumožňuje \textit{Movie Maker Online} projekt uložit nebo exportovat a později opětovně použít. Program lze používat bez registrace, výsledné video o~rozlišení 720p je opatřeno vodoznakem a nesmí přesáhnout 10 minut. Program by měl nabízet předplatné, aktuálně ale nelze získat.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.53}{
 		\includegraphics{obrazky-figures/moviemakeronline.png}
 	}
-	\caption{Uživatelské rozhraní online video editoru Movie Maker Online.}\label{img:moviemakeronline}
+	\caption{Uživatelské rozhraní online video editoru \textit{Movie Maker Online} s vyznačeným rozložením ovládacích prvků. První krok s nahráváním souborů -- nad oblastí A, vertikální časová osa -- C, globální akce (D) se nacházejí vespod stránky, postupný náběh/ztmívání -- E, nastavení filtrů --- F.}\label{img:moviemakeronline}
 \end{figure}
 
 \section{Shrnutí}
 U~desktopových aplikací máme široký výběr. Všechny testované programy mají podobný způsob ovládání i podobné funkce. Nemusíme se bát sáhnout po bezplatném open source řešení, i tyto programy obsahují dostatek funkcí pro kvalitní tvorbu. Neobsahují omezení na maximální rozlišení nebo délku výsledného videa. Dražší programy nabídnou propracovanější filtry a vyšší stabilitu. Při návrhu online videoeditoru je dobré zachovat rozhraní, které uživatelé znají právě z~těchto aplikací. Z~pohledu technologií je zajímavý jednoduchý open source lineární editor \textit{fwf}, který je napsán v~JavaScriptovém framoworku \textit{Vue.js}.
 
-Webových řešení je rovněž široký výběr. Mezi jednotlivými aplikacemi je velký rozdíl ve funkcích a zejména v~omezeních výsledného videa. Z~testovaných řešení nabízí neomezenou délku videa pouze program \textit{WeVideo}, \textit{Clipchamp Create}, který ale zpracovává videa v~prohlížeči a \textit{Kizoa}, kterého jsem vyřadil ze srovnání kvůli vázanosti na \textit{Adobe Flash}. V~rozhraních jsou větší rozdíly než u~desktopových aplikací. Uživatel desktopových editorů videa nebude mít problém s~orientací v~jednom z~online editorů, vyjma \textit{Movie Maker Online} se zcela odlišným rozhraním. Nabízených tarify a zásadní omezení online videoeditorů srovnávám v~tabulce \ref{tab:prices}.
+U~webových řešení je také na výběr. Mezi jednotlivými aplikacemi je velký rozdíl ve funkcích a zejména v~omezeních výsledného videa. Z~testovaných řešení nabízí neomezenou délku videa pouze program \textit{WeVideo} a \textit{Clipchamp Create}, který ale zpracovává videa v~prohlížeči a \textit{Kizoa}, kterého jsem vyřadil ze srovnání kvůli vázanosti na \textit{Adobe Flash}. V~rozhraních jsou větší rozdíly než u~desktopových aplikací. Uživatel desktopových editorů videa nebude mít problém s~orientací v~jednom z~online editorů, vyjma \textit{Movie Maker Online} se zcela odlišným rozhraním. Funkce a zásadní omezení online videoeditorů srovnávám v~tabulce \ref{tab:prices}.
 
 V~případě, že požadujeme online editor videí, ale zároveň potřebujeme mít svá data pod kontrolou na svém serveru, připadá v~úvahu pouze program \textit{Clipchamp Create}. Program provádí veškeré operace přímo v~prohlížeči. Renderování delších videí s~rozlišením větší než 480p vyžaduje výkonný hardware. V~tomto případě je lepší sáhnout po desktopové aplikace. Pokud chceme zpracovávat videa online, ale na našem serveru, máme smůlu.
-
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|l|l|}
     \hline
-    Program   & Magisto & Animatron\\
+                & platforma         & desktop, Windows/macOS/Linux\\
+                & licence           & GPL-3.0, open source\\
+                & délka             & neomezená\\
+                & rozlišení         & 4K\\
+                & šablony           & \yes\\
+    Shotcut     & možnost ukládání  & \no\\
+                & knihovna médií    & \no\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes (77)\\
+                & přechody          & \yes (24)\\
     \hline
-    Plány   & 480p, 2,5 min 230 Kč & 720p, 15 s~0 Kč\\
-            & 720p, 10 min 461 Kč   & 720p, 1 min 230 Kč\\
-            & 1080p, 10 min 1614 Kč & 1080p, 5 min 899 Kč\\
-            &                       & 1080p, 10 min 1360 Kč\\
     \hline
-    Pozn.   & Měsíční i roční předplatné. & Měsíční i roční předplatné.\\
+                & platforma         & desktop, Linux / Windows (beta)\\
+                & licence           & GPL-2.0, open source\\
+                & délka             & neomezená\\
+                & rozlišení         & neomezené\\
+                & šablony           & \no\\
+    Kdenlive    & možnost ukládání  & \yes\\
+                & knihovna médií    & \no\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes\\
+                & přechody          & \yes\\
     \hline
     \hline
-    Program & Loopster                                  & WeVideo\\
-    \hline
-    Plány   & 1080p, 20 min, 10 GB 115 Kč               & 480p, 5 min/měs., 1 GB, 0 Kč\\
-            & 1080p, 30 min, 20 GB 230 Kč               & 720p, 30 min/měs., 20 GB, 230 Kč\\
-            & 1080p, 30 min, 100 GB 2975 Kč / 3 měs.    & 4K, neomezeno 369 Kč\\
-            &                                           & 4K, 3 uživ. 1383 Kč + 922 Kč/uživ.\\
-    \hline
-    Pozn.   & Roční předplatné.                         & Měsíční i roční předplatné.\\
-            & Poslední plán účtován čtvrtletně.         & Poslední plán je multilicence.\\
+                & platforma         & desktop, Windows/macOS/Linux\\
+                & licence           & GPL-3.0, open source\\
+                & délka             & neomezená\\
+                & rozlišení         & neomezená\\
+                & šablony           & \no\\
+    Openshot    & možnost ukládání  & \yes\\
+                & knihovna médií    & \no\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes\\
+                & přechody          & \yes\\
     \hline
     \end{tabular}
-    \caption{Přehled tarifů placených online video editorů. Pokud není uvedeno jinak, cena je za měsíc. Videa delší než 30 minut nabízí pouze WeVideo.}
+\end{table}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+                & platforma         & desktop, macOS\\
+                & licence           & proprietární software\\
+                & délka             & neomezená\\
+                & rozlišení         & 4K\\
+                & šablony           & \no\\
+    iMovie      & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (audio, pozadí, titulky)\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes (\textasciitilde 68)\\
+                & přechody          & \yes (24)\\
+    \hline
+    \hline
+                & platforma         & desktop, Windows/macOS\\
+                & licence           & MIT, open source\\
+                & délka             & neomezená\\
+                & rozlišení         & neomezená\\
+                & šablony           & \no\\
+    fwf         & možnost ukládání  & \yes\\
+                & knihovna médií    & \no\\
+                & video stopy       & 1\\
+                & audio stopy       & \no\\
+                & filtry            & \yes (14)\\
+                & přechody          & \no\\
+    \hline
+    \hline
+                & platforma         & webová aplikace, moderní prohlížeče\\
+                & licence           & proprietární software\\
+                & délka             & neomezená\\
+                & rozlišení         & 4K\\
+                & šablony           & \yes (32)\\
+    WeVideo     & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (video, audio)\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes (26)\\
+                & přechody          & \yes (42)\\
+    \hline
+    \hline
+                & platforma         & webová aplikace, moderní prohlížeče\\
+                & licence           & proprietární software\\
+                & délka             & 10 minut\\
+                & rozlišení         & 1080p\\
+                & šablony           & \yes\\
+    Magisto     & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (video, audio)\\
+                & video stopy       & \no\\
+                & audio stopy       & \no\\
+                & filtry            & \yes (4)\\
+                & přechody          & \no\\
+    \hline
+    \end{tabular}
+\end{table}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+                & platforma         & webová aplikace, moderní prohlížeče\\
+                & licence           & proprietární software\\
+                & délka             & 30 minut\\
+                & rozlišení         & 1080p\\
+                & šablony           & \no\\
+    Loopster    & možnost ukládání  & \yes\\
+                & knihovna médií    & \no\\
+                & video stopy       & 1\\
+                & audio stopy       & 1\\
+                & filtry            & hlasitost audia\\
+                & přechody          & \yes (6)\\
+    \hline
+    \hline
+                & platforma         & webová aplikace, moderní prohlížeče\\
+                & licence           & proprietární software\\
+                & délka             & 10 minut\\
+                & rozlišení         & 1080p\\
+                & šablony           & \no\\
+    Animatron   & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (video, obrázky, audio)\\
+                & video stopy       & 1\\
+                & audio stopy       & 1\\
+                & filtry            & \yes (6)\\
+                & přechody          & \yes (8)\\
+    \hline
+    \hline
+                & platforma         & webová aplikace, prohlížeč Google Chrome\\
+                & licence           & proprietární software\\
+                & délka             & neomezená\\
+                & rozlišení         & 1080p\\
+                & šablony           & \yes\\
+    Clipchamp   & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (video, audio)\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes (13)\\
+                & přechody          & \no\\
+    \hline
+    \hline
+                & platforma         & Adobe Flash applet, prohlížeč se zásuvným modulem\\
+                & licence           & proprietární software\\
+                & délka             & neomezená\\
+                & rozlišení         & 4K\\
+                & šablony           & \yes\\
+    Kioza       & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (video, audio, obrázky)\\
+                & video stopy       & 1\\
+                & audio stopy       & 1\\
+                & filtry            & \yes (52)\\
+                & přechody          & \yes (205)\\
+    \hline
+    \end{tabular}
+\end{table}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+                & platforma         & webová aplikace, moderní prohlížeče\\
+                & licence           & proprietární software\\
+                & délka             & 10 minut\\
+                & rozlišení         & 720p (s vodoznakem)\\
+                & šablony           & \no\\
+Movie Maker Online & možnost ukládání & \no\\
+                & knihovna médií    & \no\\
+                & video stopy       & 2\\
+                & audio stopy       & 1\\
+                & filtry            & \yes (36)\\
+                & přechody          & \no\\
+    \hline
+    \hline
+                & platforma         & webová aplikace, moderní prohlížeče\\
+                & licence           & Apache-2.0, open source\\
+                & délka             & alespoň 1 hodina\\
+                & rozlišení         & alespoň 1080p\\
+                & šablony           & \no\\
+Navrhované řešení & možnost ukládání  & \yes\\
+                & knihovna médií    & \yes (FIT intro)\\
+                & video stopy       & \yes\\
+                & audio stopy       & \yes\\
+                & filtry            & \yes\\
+                & přechody          & prolnutí\\
+    \hline
+    \end{tabular}
+    \caption{Přehled vlastností a funkcí editorů popisovaných v kapitole \ref{cap:comparsion}. Nejprve jsou uvedeny desktopové aplikace, poté webové a poslední srovnávanou položkou jsou očekávané vlastnosti editoru, který vzniká v rámci této práce. Knihovnou médií se rozumí soubory dostupné všem uživatelům pro použiti v projektu. Pokud jsou video/audio stopy zatržené, lze hovořit o nelineárním editoru.}
     \label{tab:prices}
 \end{table}
 
 \chapter{Návrh řešení}
-Hlavním cílem práce je vytvořit videoeditor, který bude fungovat ve všech moderních prohlížečích a výsledné zpracování videa nebude probíhat na straně klienta. K~dosažení těchto cílů bude za nutné vytvořit webovou aplikaci. Stejně jako stávající řešení by i tento editor měl provádět veškeré úkony pomocí JavaScriptu a asynchronních požadavků, bez nutnosti znovu načítat celou stránku. Vzhledem ke komplexnosti uživatelského rozhraní není vhodné zvolit čistý JavaScript. Vyplatí se sáhnout po JavaScriptovém frameworku, usnadňují časté operace, udržují dobré návyky a pomáhají vytvořit čistý kód.
+Hlavním cílem práce je vytvořit videoeditor, který bude fungovat ve všech moderních prohlížečích a výsledné zpracování videa nebude probíhat na straně klienta. K~dosažení těchto cílů bude nutné vytvořit webovou aplikaci. Stejně jako stávající řešení by i tento editor měl provádět veškeré úkony pomocí JavaScriptu a asynchronních požadavků, bez nutnosti znovu načítat celou stránku. Vzhledem ke komplexnosti uživatelského rozhraní není vhodné zvolit čistý JavaScript. Vyplatí se sáhnout po JavaScriptovém frameworku, usnadňují časté operace, udržují dobré návyky a pomáhají vytvořit čistý kód.
 
 Nejpoužívanějšími frameworky jsou: React, Backbone.js, RequireJS, AngularJS, nebo třeba Vue.js (používané programem \textit{fwf})\,\cite{WappalyzerJavasript}. Z~těchto frameworků jsem vybral React, který je zároveň i šablonovacím systémem a má kvalitní dokumentaci. Šablonovací systém používám zejména k~rozdělení uživatelského rozhraní na komponenty.
 
-Webová aplikace bude potřebovat i serverovou část, na kterou klient nahraje soubory, popíše serveru operace nad soubory a dá pokyn pro vyhotovení výsledného videa. Tuto architekturu označujeme z~pohledu sítě jako klient-server. Z~pohledu návrhu se bude jednat o~MVC (model-view-controller) architekturu. Mezi klientem a serverem je nutné komunikovat. Pro výměnu dat po síti musejí obě části používat dohodnutý serializační formát. JavaScript nejčastěji používá \textit{XML} nebo \textit{JSON}. \textit{JSON} (JavaScriptový objektový zápis) je novější a zápis ve formátu \textit{JSON} je validním kódem JavaScriptu. \textit{XML} (rozšiřitelný značkovací jazyk) na druhou stranu umožňuje přenos binárních dat. Se serverem bude komunikovat JavaScript, volba formátu \textit{JSON} je tedy výhodná.
+Webová aplikace bude potřebovat i serverovou část, na kterou klientská část nahraje soubory, popíše serveru operace nad soubory a dá pokyn pro vyhotovení výsledného videa. Tuto architekturu označujeme z~pohledu sítě jako klient-server. Z~pohledu návrhu se bude jednat o~MVC (model-view-controller) architekturu. Mezi klientem a serverem je nutné komunikovat. Pro výměnu dat po síti musejí obě části používat dohodnutý serializační formát. JavaScript nejčastěji používá \textit{XML} nebo \textit{JSON}. \textit{JSON} (JavaScriptový objektový zápis) je novější a zápis ve formátu \textit{JSON} je validním kódem JavaScriptu. \textit{XML} (rozšiřitelný značkovací jazyk) na druhou stranu umožňuje přenos binárních dat. Se serverem bude komunikovat kód v JavaScriptu, volba formátu \textit{JSON} je tedy výhodná.
 
 Sever bude mít za úkol 2 činnosti. Nejprve bude muset uživateli poskytnout soubory s~HTML, CSS a JavaScriptem a poté reagovat na JavaScriptové asynchronní požadavky. Při návrhu jsem se rozhodoval mezi implementací serveru pomocí jazyka PHP a pomocí Node.js. Jazyk PHP vznikal v~době statických stránek a osobních webů, Node.js je obvykle spojován se single page aplikacemi. Node.js jsem si vybral právě protože plánuji vytvořit single page aplikaci, kvůli možnosti používat stejný jazyk pro klientskou i serverovou část a také kvůli asynchronnímu přístupu k~blokujícím operacím. Po PHP bych naopak sáhl při tvorbě e-shopu, blogu či informačního systému.
 
 Server bude pro klienta dostupný skrze rozhraní (API). Rozhraní bude sloužit k~vyvolání akcí na serveru i k~získávání dat. Existuje více koncepcí pro komunikaci a tvorbu API, například \textit{XML-RPC}, \textit{SOAP} nebo \textit{REST}. \textit{XML-RPC} a \textit{SOAP} používají jako serializační formát pro výměnu dat \textit{XML}, kvůli JavaScriptu na straně klienta i serveru jsem ovšem zvolil \textit{JSON}. \textit{REST} je způsob komunikace na základě HTTP požadavků. \textit{REST} není na HTTP vázaný, ale není praktický důvod používat odlišný protokol. Výchozím serializačním formátem pro výměnu dat je JSON, ovšem lze používat například i \textit{XML}.
 
-Multimediální soubory bude potřeba zpracovávat. \textit{Clipchamp Create} provádí zpracování na straně klienta ve webovém prohlížeči. Webový prohlížeč ani webové technologie ale nejsou navrženy na renderování videí, \textit{Clipchamp} vyvádí video déle, než bych byl ochotný čekat. Editor byl navržen, aby zpracovával videa na serveru. K~tomu může sloužit program \textit{FFmpeg} nebo \textit{MLT}. Program \textit{FFmpeg} používá například editor \textit{fwf} nebo Android aplikace \textit{Video Editor using FFmpeg}\,\footnote{Video Editor using FFmpeg -- open source editor videa pro android, \url{https://github.com/bhuvnesh123/FFmpeg-Video-Editor-Android}.}. \textit{FFmpeg} se používá skrze příkazový řádek. Každá operace představuje jeden příkaz (zkrátit video, přidat efekt, spojit videa). Na pořadí operací záleží. Projekt by byl popsán souborem s~posloupností příkazů pro FFmpeg, případně jedním dlouhým příkazem. Multimediální framework \textit{MLT} rovněž nabízí své nástroje skrze příkazový řádek. Projekt je možné popisovat posloupností příkazů a také pomocí serializačního formátu \textit{XML}. Celý projekt se popíše entitami \textit{XML} a programu \textit{MLT} se poté pouze předá \textit{XML} sobor. \textit{XML} soubor bude uložen po celou dobu na serveru a server jej bude editovat na základě požadavků klienta. \textit{REST API} je bezstavové, požadavek musí být úplný a stav projektu je uložen v~\textit{XML} souboru projektu. Projekt nebude využívat databázového systému.
+Dále bude nutné zpracovávat multimediální soubory. \textit{Clipchamp Create} provádí zpracování na straně klienta ve webovém prohlížeči. Webový prohlížeč ani webové technologie nejsou navrženy pro renderování videí, renderování videí v prohlížeči není efektivní. Editor byl navržen, aby zpracovával videa na serveru. K~tomu může sloužit program \textit{FFmpeg} nebo \textit{MLT}. Program \textit{FFmpeg} používá například editor \textit{fwf} nebo Android aplikace \textit{Video Editor using FFmpeg}\,\footnote{Video Editor using FFmpeg -- open source editor videa pro android, \url{https://github.com/bhuvnesh123/FFmpeg-Video-Editor-Android}.}. \textit{FFmpeg} se používá skrze příkazový řádek. Každá operace představuje jeden příkaz (zkrátit video, přidat efekt, spojit videa). Na pořadí operací záleží. Projekt by byl popsán souborem s~posloupností příkazů pro FFmpeg, případně jedním dlouhým příkazem. Multimediální framework \textit{MLT} rovněž nabízí své nástroje skrze příkazový řádek. Projekt je možné popisovat posloupností příkazů a také pomocí serializačního formátu \textit{XML}. Celý projekt se popíše entitami \textit{XML} a programu \textit{MLT} se poté pouze předá \textit{XML} soubor. \textit{XML} soubor bude uložen po celou dobu na serveru a server jej bude editovat na základě požadavků klienta. \textit{REST API} je bezstavové, požadavek musí být úplný a stav projektu uložen v~\textit{XML} souboru projektu. Projekt nebude využívat databázový systém.
 
 Seznam použitých technologií, jejich umístění a komunikaci zobrazuje obrázek \ref{img:server-architektura}.
 \begin{figure}[h]
@@ -141,10 +303,12 @@ Seznam použitých technologií, jejich umístění a komunikaci zobrazuje obrá
 	\scalebox{0.6}{
 		\includegraphics{obrazky-figures/server-architektura.pdf}
 	}
-	\caption{Architektura serveru.}\label{img:server-architektura}
+	\caption{Použité technologie z hlediska architektury klient-server i z hlediska návrhového vzoru model-view-controller.}\label{img:server-architektura}
 \end{figure}
 
 \section{Zvolené technologie}
+Následující podkapitola shrnuje použité technologie, zobrazené ve schematickém obrázku \ref{img:server-architektura}. Zmiňuje podobné technologie, vysvětluje odlišnosti, shrnuje přínos pro projekt a nastiňuje použití.
+
 \subsection{Node.js}
 Node.js vytváří běhové prostředí JavaScriptu postavené na JavaScriptovém enginu V8 od firmy Google. Umožňuje používat JavaScript jako systémový jazyk, který má přístup k~paměti, bufferům, procesům, souborům a soketům. Cílem Node.js je poskytovat snadnou cestu k~vytvoření škálovatelných síťových aplikací. Node.js nepoužívá vlákna, je založen na událostech a asynchronním vykonávání blokujících operací, umožňuje snadnou modularitu. Právě eliminací blokujících operací pomocí asynchronní obsluhy řízenou událostmi lze dosáhnout vysokého výkonu. PHP vytváří pro každý požadavek samostatné vlákno a v~případě blokující operace čeká na vyřízení, Node.js používá pro všechny požadavky jedno vlákno a namísto paralelního zpracování používá Node.js pseudoparalelní zpracování.
 
@@ -158,23 +322,18 @@ Pro usnadnění tvorby webového serveru jsem použil Express. Express je webov�
 \subsection{ECMAScript, TypeScript}
 Jedná se o~programovací jazyk se syntaxí inspirovanou jazykem C, který se překládá do JavaScriptu. TypeScript je nadstavba nad JavaScriptem, program v~JavaScriptu je validním programem v~TypeScriptu. Přináší silnou typovou kontrolu, třídy (dnes i v~ES6), rozhraní, dědičnost. Offline překlad do JavaScriptu odhalí syntaktické chyby, a volitelně zajistí kompatibilitu se standardy ES3 a ES5 (alternativou je \textit{Babel}, na kontrolu kódu na syntaktické chyby pak \textit{ESLint}\,\footnote{ESLint -- nástroj pro analýzu JavaScriptového kódu, \url{https://eslint.org/}.}). Dále přidává spoustu \uv{syntaktického cukru} -- gettery/settery, výčtové typy, promises. Podporuje integraci s~Angular 2 i React.
 
-Na druhou stranu je typová kontrola plnohodnotná pouze pokud všechny balíčky obsahují hlavičkové soubory TS. TypeScript je nutné začlenit do vývojového procesu s~Node.js a React. Během vývoje se při každé změně zdrojového kódu musí provést kompilace do JavaScriptu. Pro začínajících programátory a pro malé projekty zavádí složitost, která nemusí převážit výhody zavedení.
+Na druhou stranu je typová kontrola plnohodnotná pouze pokud všechny balíčky obsahují hlavičkové soubory TypeScript. TypeScript je nutné začlenit do vývojového procesu s~Node.js a React. Během vývoje se při každé změně zdrojového kódu musí provést kompilace do JavaScriptu. Pro začínajících programátory a pro malé projekty zavádí složitost, která nemusí převážit výhody zavedení.
 
-S~příchodem ES6 přejal standard z~TypeScriptu deklaraci proměnných s~platností v~daném rámci bez vedlejších efektů (\texttt{let}), možnost vytvářet třídy, dědičnost, rest parametry, promises a další. Hlavní výhodou zůstává silné typování a kontrola syntaxe při kompilaci. Vzhledem k~mým předchozím zkušenostem s~jazykem PHP jsem tyto vlastnosti nepožadoval, proto jsem se rozhodl použít standard ES6 a novější revize. Zpětnou kompatibilitu klientského JavaScriptu jsem zajistil nástrojem \textit{Babel}.
+S~příchodem ES6 přejal standard z~TypeScriptu deklaraci proměnných s~platností v~daném rámci bez vedlejších efektů (\texttt{let}), možnost vytvářet třídy, dědičnost, rest parametry, promises a další. Hlavní výhodou zůstává silné typování a kontrola syntaxe při kompilaci. Vzhledem k~mým předchozím zkušenostem s~jazykem PHP jsem tyto vlastnosti nepožadoval, proto jsem se rozhodl použít standard ES6 a novější revize. Zpětnou kompatibilitu klientského JavaScriptu jsem zajistil nástrojem \textit{Babel}. Syntaktickou kontrolu jsem prováděl nástrojem \textit{ESLint}.
 
 \subsection{React}
-React je JavaScriptová knihovna pro tvorbu uživatelských rozhraní. Je založen na komponentách, stavech komponent a na signálech mezi komponentami. Knihovna dovolí rozdělit uživatelské rozhraní do od sebe izolovaných částí kódu -- komponent. Každá komponenta má svůj vlastní stav, své funkce a má plně pod kontrolou své vykreslení. Vztah komponent bývá hierarchický, skládáním komponent můžeme vytvořit komplexní rozhraní při zachování čistého kódu. Stav aplikace uchovávají jednotlivé komponenty, stav má jedno centrální úložiště. Někdy nám tato vlastnost nemusí vyhovovat. V~takovém případě stačí vytvořit kořenovou komponentu, a původní komponenty vložit do kořenové komponenty. Úložištěm stavu poté může být kořenová komponenta. Jak může vypadat komponenta React ukazuje následující ukázka.
+React je JavaScriptová knihovna pro tvorbu uživatelských rozhraní. Je založen na komponentách, stavech komponent a na signálech mezi komponentami. Knihovna dovolí rozdělit uživatelské rozhraní do od sebe izolovaných částí kódu -- komponent. Každá komponenta má svůj vlastní stav, své funkce a má plně pod kontrolou své vykreslení. Vztah komponent bývá hierarchický, skládáním komponent můžeme vytvořit komplexní rozhraní při zachování čistého kódu. Stav aplikace uchovávají jednotlivé komponenty, stav nemá jedno centrální úložiště. Někdy nám tato vlastnost nemusí vyhovovat. V~takovém případě stačí vytvořit kořenovou komponentu, a původní komponenty vložit do kořenové komponenty. Úložištěm stavu poté může být kořenová komponenta. Jak může vypadat komponenta React ukazuje následující ukázka.
 \begin{lstlisting}[style=JavaScript]
 import React, { Component } from 'react';
 import SourcesTableRow from './SourcesTableRow';
 import Uploader from './Uploader';
 
 export default class Sources extends Component {
-    constructor(props) {
-        super(props);
-        this.delResource = this.delResource.bind(this);
-        this.putResource = this.putResource.bind(this);
-    }
     render() {
         return (
             <div id={'sources'}>
@@ -211,7 +370,7 @@ Na ukázce je vidět hierarchie komponent. Aktuální komponentou je \texttt{Sou
 ReactDOM.render(<Sources items={{}} onAddResource={() => {}} />, document.getElementById('app'));
 \end{lstlisting}
 
-Pokud uživatel navštíví stránku s~React komponentami, získá nejprve soubor HTML s~kostrou stránky. Vespod HTML bude odkaz na JavaScriptový soubor, který se stáhne, vykoná a nahradí elementy kostry s~vykreslenými React komponentami. V~tomto případě se obsah elementu \texttt{ <div id="{}app"{}></div>} nahradí vykreslenou komponentou \texttt{Sources}.
+Pokud uživatel navštíví stránku s~React komponentami, získá nejprve soubor HTML s~kostrou stránky. Vespod HTML bude odkaz na JavaScriptový soubor, který se stáhne, vykoná a nahradí elementy kostry vykreslenými React komponentami. V~tomto případě se obsah elementu \texttt{ <div id="{}app"{}></div>} nahradí vykreslenou komponentou \texttt{Sources}.
 \begin{lstlisting}[language=HTML]
 <!DOCTYPE html>
 <html lang="cs" dir="ltr">
@@ -230,22 +389,22 @@ Pokud uživatel navštíví stránku s~React komponentami, získá nejprve soubo
 
 Pokud má být výsledný kód přehledný, vyplatí se vytvářet komponenty jako třídu, která rozšiřuje třídu \texttt{Component}. Je vhodné pro každou třídu použít samostatný soubor a třídu s~komponentou určit jako výchozí export. Díky tomu můžeme ostatní komponenty použít importem souboru.
 
-Třída komponenty může obsahovat vlastní funkce a také funkce, které mají zvláštní význam. Funkce konstruktoru třídy (\texttt{constructor}) je obvyklá. Na začátku konstruktoru musíme volat konstruktor předka. V~konstruktoru se obvykle nastavuje stav komponenty, atributy třídy a také se zde fixuje kontext pro proměnnou \texttt{this} uvnitř funkcí. Pokud totiž funkce předáme jiné komponentě v~parametrech (jako callback) a funkci zavoláme z~jiné komponenty, bude \texttt{this} odkazovat na komponentu, ze které volání vychází. Metoda \texttt{bind} tomuto nechtěnému chování zabrání.
+Třída komponenty může obsahovat vlastní funkce a také funkce, které mají zvláštní význam. Funkce konstruktoru třídy (\texttt{constructor}) je obvyklá. Na začátku konstruktoru musíme volat konstruktor předka. V~konstruktoru se obvykle nastavuje stav komponenty, atributy třídy a také se zde fixuje kontext pro proměnnou \texttt{this} uvnitř funkcí.
 
-Dalšími důležitými metodami zvláštního významu jsou například: \texttt{render}, \texttt{componentDidMount}, \texttt{componentDidUpdate} a \texttt{componentWillUnmount}.
+Dalšími důležitými metodami zvláštního významu jsou například: \texttt{componentDidMount}, \texttt{componentDidUpdate}, \texttt{componentWillUnmount} a \texttt{render}.
 
-Metoda \texttt{render} zajišťuje vykreslení komponenty. Funkce za úkol vrátit JSX kód komponenty. JSX je rozšíření syntaxe JavaScriptu. JSX svou syntaxí připomíná spíše XML, než HTML. Všechny tagy jsou párové (musejí být uzavřeny). Kód musí být uzavřen do kořenového elementu. Pokud nechceme vykreslovat žádný kořenový element, můžeme použít elementy s~prázdnými tagy \texttt{<></>}. JSX kombinuje HTLM a JavaScript. Příkazy a proměnné JavaScriptu jsou dostupné ve složených závorkách -- \texttt{\{this.props.items\}}. Atributy HTML prvků se zapisují v~CamelCase (notaci velkých písmen). Atributy nabývají stejných hodnot, jako JavaScriptové proměnné. Zvláštností je atribut \texttt{style}, který přijímá objekt s~CSS vlastnostmi\,\cite{jsx}.
+Metoda \texttt{render} zajišťuje vykreslení komponenty. Funkce má za úkol vrátit JSX kód komponenty. JSX je rozšíření syntaxe JavaScriptu. JSX svou syntaxí připomíná spíše XML, než HTML. Všechny tagy jsou párové (musejí být uzavřeny). Kód musí být uzavřen do kořenového elementu. Pokud nechceme vykreslovat kořenový element, můžeme použít prázdné tagy \texttt{<></>}. JSX kombinuje HTLM a JavaScript. Příkazy a proměnné JavaScriptu jsou dostupné ve složených závorkách -- \texttt{\{this.props.items\}}. Atributy HTML prvků se zapisují v~CamelCase (notaci velkých písmen). Atributy nabývají stejných hodnot, jako JavaScriptové proměnné. Zvláštností je atribut \texttt{style}, který přijímá objekt s~CSS vlastnostmi\,\cite{jsx}.
 
 Zbývající metody se volají při vložení komponenty do virtuálního DOM stromu, který si React vytváří, při aktualizaci a při odstraňování z~DOM.
 
-Aby uživatelské rozhraní fungovalo, musejí mezi sebou komponenty komunikovat. Komponenty mají stromovou strukturu, komunikace probíhá dvěma směry -- od předka k~potomkovi a naopak. Komponenty mohou podřazeným komponentám při jejich vytváření předat parametry. Můžeme předávat callbacky nebo stav komponenty. V~podřazené komponenty jsou tyto parametry dostupné skrze objekt \texttt{this.props}. Pokud podřazené komponentě předáme stav a podřazená komponenta se stavem přímo pracuje ve funkci \texttt{render}, dojde se změnou stavu předka i k~aktualizaci a překreslení podřazené komponenty. Pokud například změníme stav kořenové komponenty, může tato změna \uv{probublat} ke komponentám o~několik úrovní níže, vše se děje automaticky. Komunikace směrem ke kořeni probíhá pomocí callbacků. Podřazená komponenta může změnit stav nadřazené pouze nepřímo. Zavolá funkci, kterou mu nadřazená komponenta zpřístupnila v~\texttt{this.props}, na základě volání nadřazená komponenta změní svůj stav a obě komponenty se překreslí.
+Aby uživatelské rozhraní fungovalo, musejí mezi sebou komponenty komunikovat. Komponenty mají stromovou strukturu, komunikace probíhá dvěma směry -- od předka k~potomkovi a naopak. Komponenty mohou podřazeným komponentám při jejich vytváření předat parametry. Můžeme předávat callbacky nebo stav komponenty. V~podřazené komponentě jsou tyto parametry dostupné skrze objekt \texttt{this.props}. Pokud podřazené komponentě předáme stav a podřazená komponenta se stavem přímo pracuje ve funkci \texttt{render}, dojde se změnou stavu předka i k~aktualizaci a překreslení podřazené komponenty. Pokud například změníme stav kořenové komponenty, může tato změna \uv{probublat} ke komponentám o~několik úrovní níže, vše se děje automaticky. Komunikace směrem ke kořenu probíhá pomocí callbacků. Podřazená komponenta může změnit stav nadřazené pouze nepřímo. Zavolá funkci, kterou mu nadřazená komponenta zpřístupnila v~\texttt{this.props}, a na základě volání nadřazená komponenta změní svůj stav a obě komponenty se překreslí.
 
 Stav komponenty se nastavuje metodou \texttt{this.setState}. Jako parametr se předá objekt s~položkami, které se mají přepsat. Předchozí a následující stav se nesmí ovlivňovat. Pokud chceme upravit jen jednu položku objektu, musíme vytvořit kopii objektu a tuto kopii nastavit jako nový stav\,\cite{react}.
 
 \section{Návrh uživatelského rozhraní}
-Cílovou skupinou jsou počítačově gramotní uživatelé, kteří někdy používali program na editování videa. Rozhraní je voleno tak, aby připomínalo klasické desktopové aplikace a pomohlo uživatelům se zorientovat. Typickou úlohou pro videoeditor bude sestříhat záznam přednášky do výukového videa nebo vytvořit tutoriál ze záznamu z~kamery nebo obrazovky. Aplikace bude využívána na počítačích a noteboocích, není nutné přizpůsobovat rozhraní obrazovkám mobilních zařízení. Ovládání bude pomocí klávesnice a myši, dotekové obrazovky se sice nepředpokládají, ale ani nevylučují.
+Cílovou skupinou jsou počítačově gramotní uživatelé, kteří někdy používali program na editování videa. Rozhraní je voleno tak, aby připomínalo klasické desktopové aplikace a pomohlo uživatelům se zorientovat. Typickou úlohou pro videoeditor bude sestříhat záznam přednášky do výukového videa, nebo vytvořit tutoriál ze záznamu z~kamery nebo obrazovky. Aplikace bude využívána na počítačích a noteboocích, není nutné přizpůsobovat rozhraní obrazovkám mobilních zařízení. Ovládání bude pomocí klávesnice a myši, dotekové obrazovky se sice nepředpokládají, ale ani nevylučují.
 
-Po načtení hlavní stránky se zobrazí úvodní stránka s~možností vytvořit nový projekt. Stránka bude do budoucna připravena na rozšíření o~další možnosti, jako jsou šablony, autentizace uživatelů, či seznam vlastních projektů. Pro zahájení editace uživatel zvolí \textit{Vytvořit nový projekt}, obrázek \ref{img:novy-projekt}.
+Po načtení úvodní stránky se zobrazí možnost vytvořit nový projekt. Stránka bude do budoucna připravena na rozšíření o~další možnosti, jako jsou šablony, autentizace uživatelů, či seznam vlastních projektů. Pro zahájení editace uživatel zvolí \textit{Vytvořit nový projekt}, obrázek \ref{img:novy-projekt}.
 \begin{figure}[h]
 	\centering
 	\scalebox{0.5}{

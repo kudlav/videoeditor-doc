@@ -106,6 +106,10 @@
 % This solves the problems with links which leads after the picture
 \usepackage[all]{hypcap}
 
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\yes}{\ding{51}}%
+\newcommand{\no}{\ding{53}}%
 \lstdefinelanguage{JavaScript}{
   keywords={do, if, in, for, let, new, try, var, case, else, enum, eval, null, this, true, void, with, await, break, catch, class, const, false, super, throw, while, yield, delete, export, import, public, return, static, switch, typeof, default, extends, finally, package, private, continue, debugger, function, arguments, interface, protected, implements, instanceof},
   morecomment=[l]{//},
